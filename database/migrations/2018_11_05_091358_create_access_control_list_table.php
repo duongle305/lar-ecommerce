@@ -17,21 +17,18 @@ class CreateAccessControlListTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('display_name');
-            $table->string('note')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('role_id');
-            $table->primary(['user_id','role_id']);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('users',function(Blueprint $table){
+            $table->unsignedInteger('role_id')->after('password');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('display_name');
-            $table->string('note')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
         Schema::create('permission_role', function (Blueprint $table) {
@@ -59,7 +56,6 @@ class CreateAccessControlListTable extends Migration
     {
         Schema::dropIfExists('roles');
         Schema::dropIfExists('permissions');
-        Schema::dropIfExists('role_user');
         Schema::dropIfExists('permission_role');
         Schema::dropIfExists('permission_user');
     }
