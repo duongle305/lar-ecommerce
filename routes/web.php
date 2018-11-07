@@ -15,7 +15,8 @@ Route::post('login','Auth\LoginController@login')->name('login');
 Route::middleware('auth')->group(function (){
     Route::post('logout','Auth\LoginController@logout')->name('logout');
     Route::get('dashboard','DashboardController@index')->name('dashboard');
+    Route::prefix('acl')->group(function(){
+        Route::get('','AclController@index')->name('acl.index');
+        Route::get('users','AclController@allUser')->name('acl.users');
+    });
 });
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
