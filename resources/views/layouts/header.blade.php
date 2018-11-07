@@ -44,7 +44,10 @@
                             </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right animated fadeInUp">
-                        <a class="dropdown-item" href="#"><i class="ti-power-off mr-0-5"></i> Sign out</a>
+                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="ti-power-off mr-0-5"></i> Sign out</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     </div>
                 </li>
             </ul>
