@@ -1,0 +1,6 @@
+table{
+    width: 100%;
+}
+a.dropdown-item{
+    width: auto !important;
+}

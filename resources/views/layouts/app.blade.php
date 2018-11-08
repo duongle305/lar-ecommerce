@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title -->
-    <title>Neptune</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap4/css/bootstrap.min.css') }}">
@@ -18,9 +18,13 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/jscrollpane/jquery.jscrollpane.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/waves/waves.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/switchery/dist/switchery.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/toastr/toastr.min.css') }}">
+
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/core.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <!-- Page CSS -->
     @yield('pageCSS')
 </head>
@@ -55,6 +59,11 @@
 <script type="text/javascript" src="{{ asset('assets/vendors/jquery-fullscreen-plugin/jquery.fullscreen-min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/waves/waves.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/switchery/dist/switchery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/vendors/axios/axios.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/vendors/toastr/toastr.min.js') }}"></script>
+
+
 
 <!-- Core JS -->
 <script type="text/javascript" src="{{ asset('assets/js/app.js') }}"></script>
