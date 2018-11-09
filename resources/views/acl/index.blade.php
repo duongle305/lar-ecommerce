@@ -25,7 +25,15 @@
                     <div class="card-block">
                         <div class="tab-content">
                             <div id="tab1" class="tab-pane active">
-                                <h5 class="mb-2">Nhân viên</h5>
+                                <div class="row mb-2">
+                                    <div class="col-lg-6">
+                                        <h5 class="mb-1">Nhân viên</h5>
+                                    </div>
+                                    <div class="col-lg-6 text-xs-right">
+                                        <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_user">Thêm mới</button>
+                                        <button class="btn btn-primary" id="btn-reload-users" data-href="{{ route('acl.users') }}">Tải lại</button>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table id="table_users" class="table table-striped table-bordered" style="width: 100%;">
                                         <thead>
@@ -43,12 +51,13 @@
                             <div id="tab2" class="tab-pane">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <div class="col-lg-6">
                                                 <h5 class="mb-2">Vai trò</h5>
                                             </div>
                                             <div class="col-lg-6 text-xs-right">
                                                 <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_role">Thêm mới</button>
+                                                <button class="btn btn-primary" id="btn-reload-roles" data-href="{{ route('acl.roles') }}">Tải lại</button>
                                             </div>
                                         </div>
                                         <div class="table-responsive">
@@ -66,12 +75,13 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <div class="col-lg-6">
                                                 <h5 class="mb-2">Quyền</h5>
                                             </div>
                                             <div class="col-lg-6 text-xs-right">
                                                 <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_permission">Thêm mới</button>
+                                                <button class="btn btn-primary" id="btn-reload-permissions" data-href="{{ route('acl.permissions') }}">Tải lại</button>
                                             </div>
                                         </div>
                                         <div class="table-responsive">
@@ -194,130 +204,5 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
-
-    <script>
-        $(document).ready(()=>{
-            $('#table_users').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('acl.users') }}',
-                columns:[
-                    { data: 'DT_RowIndex',name: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name:'name'},
-                    { data: 'email', name:'email'},
-                    { data: 'role', name:'role'},
-                    { data: 'actions',name:'actions', class:'text-xs-center', orderable: false, searchable: false}
-                ],
-                oLanguage: {
-                    sLengthMenu: 'Hiển thị: _MENU_ dòng mỗi trang',
-                    sZeroRecords: 'Không tìm thấy dữ liệu',
-                    sInfo: 'Hiển thị từ _START_ đến _END_ trong tổng _TOTAL_ dòng',
-                    sInfoEmpty: 'Hiển thị từ 0 đến 0 trong tổng 0 dòng',
-                    sInfoFiltered: '(lọc từ tổng số _MAX_ dòng)',
-                    sSearch:'Tìm kiếm:'
-                }
-            });
-
-        });
-        $(document).ready(()=>{
-            $('#table_roles').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('acl.roles') }}',
-                columns:[
-                    { data: 'DT_RowIndex',name: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name:'name'},
-                    { data: 'display_name', name:'display_name'},
-                    { data: 'description', name:'description'},
-                    { data: 'actions',name:'actions', class:'text-xs-center', orderable: false, searchable: false}
-                ],
-                oLanguage: {
-                    sLengthMenu: 'Hiển thị: _MENU_ dòng mỗi trang',
-                    sZeroRecords: 'Không tìm thấy dữ liệu',
-                    sInfo: 'Hiển thị từ _START_ đến _END_ trong tổng _TOTAL_ dòng',
-                    sInfoEmpty: 'Hiển thị từ 0 đến 0 trong tổng 0 dòng',
-                    sInfoFiltered: '(lọc từ tổng số _MAX_ dòng)',
-                    sSearch:'Tìm kiếm:'
-                }
-            });
-            $('#modal_create_role').on('show.bs.modal', (e)=>{
-                $('#form_create_role').trigger('reset');
-            });
-            $('#form_create_role').submit((e)=>{
-                e.preventDefault();
-                let storeUrl = $(e.target).attr('action');
-                let formData = new FormData(e.target);
-                axios.post(storeUrl, formData).then(res=>{
-                    toastr.success(res.data.message,'Thông báo');
-                    $('#table_roles').DataTable().ajax.reload();
-                    $('#modal_create_role').modal('hide');
-                }).catch(er=>{
-                    let errors = er.response.data.errors;
-                    let message = '';
-                    for(let key in errors){
-                        message += errors[key][0]+"\n";
-                    }
-                    toastr.error(message,'Thông báo');
-                });
-            });
-            $('#modal_edit_role').on('show.bs.modal',(e)=>{
-                let id = $(e.relatedTarget).data('id');
-                let editUrl = $(e.relatedTarget).data('edit');
-                let roleId = $('#edit_role_id');
-                let roleName = $('#edit_role_name');
-                let roleDisplayName = $('#edit_role_display_name');
-                let roleDDescription = $('#edit_role_description');
-                $('#form_edit_role').trigger('reset');
-                axios.get(editUrl).then(res=>{
-                    let data = res.data;
-                    roleId.val(id);
-                    roleName.val(data.name);
-                    roleDisplayName.val(data.display_name);
-                    roleDDescription.val(data.description);
-                }).catch(er=>{
-                    toastr.error(er.response.message);
-                });
-            });
-            $('#form_edit_role').submit((e)=>{
-                e.preventDefault();
-                let updateUrl = $(e.target).attr('action');
-                let formData = new FormData(e.target);
-                axios.post(updateUrl, formData).then(res=>{
-                    toastr.success(res.data.message,'Thông báo');
-                    $('#table_roles').DataTable().ajax.reload();
-                    $('#modal_edit_role').modal('hide');
-                }).catch(er=>{
-                    let errors = er.response.data.errors;
-                    let message = '';
-                    for(let key in errors){
-                        message += errors[key][0]+"\n";
-                    }
-                    toastr.error(message,'Thông báo');
-                });
-
-            });
-        });
-        $(document).ready(()=>{
-            $('#table_permissions').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('acl.permissions') }}',
-                columns:[
-                    { data: 'DT_RowIndex',name: 'DT_RowIndex', orderable: false, searchable: false},
-                    { data: 'name', name:'name'},
-                    { data: 'display_name', name:'display_name'},
-                    { data: 'description', name:'description'},
-                    { data: 'actions',name:'actions', class:'text-xs-center', orderable: false, searchable: false}
-                ],
-                language: {
-                    lengthMenu: 'Hiển thị: _MENU_ dòng mỗi trang',
-                    zeroRecords: 'Không tìm thấy dữ liệu',
-                    info: 'Hiển thị từ _START_ đến _END_ trong tổng _TOTAL_ dòng',
-                    infoEmpty: 'Hiển thị từ 0 đến 0 trong tổng 0 dòng',
-                    infoFiltered: '(lọc từ tổng số _MAX_ dòng)',
-                    search:'Tìm kiếm:',
-                }
-            });
-        });
-    </script>
+    <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection
