@@ -25,8 +25,8 @@ class AclController extends Controller
                     return $user->role->display_name;
                 })
                 ->addColumn('actions',function($user){
-                    return '<div class="dropdown float-xs-right">
-                                <a class="btn btn-primary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
+                    return '<div class="dropdown dropup float-xs-right">
+                                <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
@@ -50,19 +50,22 @@ class AclController extends Controller
         try{
             return  DataTables::of(Role::all())
                 ->addColumn('actions',function($role){
-                    return '<div class="dropdown float-xs-right">
-                                <a class="btn btn-primary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
+                    return '<div class="dropdown dropup float-xs-right">
+                                <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
-                                    <a 
-                                        href="#" 
-                                        class="dropdown-item" 
-                                        data-id="'.$role->id.'" 
-                                        data-edit="'.route('acl.roles.edit',$role->id).'" 
-                                        data-toggle="modal" 
-                                        data-target="#modal_edit_role" >
+                                    <a href="#" 
+                                       class="dropdown-item" 
+                                       data-id="'.$role->id.'" 
+                                       data-edit="'.route('acl.roles.edit',$role->id).'" 
+                                       data-toggle="modal" 
+                                       data-target="#modal_edit_role" >
                                     <i class="ti-pencil"></i> Sửa</a>
+                                    <a href="#" 
+                                       class="dropdown-item delete" 
+                                       data-delete="'.route('acl.roles.edit',$role->id).'" >
+                                    <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
                 })
@@ -82,6 +85,15 @@ class AclController extends Controller
     public function editRole($id)
     {
         return Role::findOrFail($id);
+    }
+
+    public function deleteRole($id)
+    {
+        $role = Role::findOrFail($id);
+        if($role->delete())
+            return response()->json(['message'=>'Xóa vai trò'.$role->display_name.' thành công.'],200);
+        return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
+
     }
 
     public function storeRole(Request $request)
@@ -128,8 +140,8 @@ class AclController extends Controller
         try{
             return  DataTables::of(Permission::all())
                 ->addColumn('actions',function($permission){
-                    return '<div class="dropdown float-xs-right">
-                                <a class="btn btn-primary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
+                    return '<div class="dropdown dropup float-xs-right">
+                                <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
