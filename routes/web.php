@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function (){
             Route::post('update','AclController@updateRole')->name('acl.roles.update');
             Route::delete('delete/{id}','AclController@deleteRole')->name('acl.roles.delete');
         });
-        Route::get('permissions','AclController@allPermissions')->name('acl.permissions');
+        Route::prefix('permissions')->group(function (){
+            Route::get('','AclController@allPermissions')->name('acl.permissions');
+        });
+
     });
 });

@@ -161,4 +161,7 @@ class AclController extends Controller
             return response()->json([],200);
         }
     }
+    public function storePermission(Request $request){
+
+    }
 }

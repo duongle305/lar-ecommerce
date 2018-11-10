@@ -106,8 +106,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal edit role -->
+    <!-- Modal create role -->
     <div id="modal_create_role" class="modal animated bounceInDown" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -189,6 +188,47 @@
         </div>
     </div>
 
+    <!-- Modal create permission -->
+    <div id="modal_create_permission" class="modal animated bounceInDown" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="form_create_role" action="{{ route('acl.roles.store') }}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Tạo mới Quyền</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_role_name">Tên</label>
+                                    <input class="form-control" name="name" id="create_role_name">
+                                    <small class="form-text text-muted">Tên phải là chữ thường không dấu vd: <code>administrator</code></small>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_role_display_name">Tên hiển thị</label>
+                                    <input class="form-control" name="display_name" id="create_role_display_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create_role_description">Mô rả</label>
+                            <textarea class="form-control" name="description" id="create_role_description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><i class="ti-plus"></i> {{ __('Thêm mới') }}</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('pageJS')
@@ -206,3 +246,4 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection
+
