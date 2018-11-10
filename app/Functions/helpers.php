@@ -36,7 +36,7 @@ if(!function_exists('dgg_menu')){
                                         '.$childArrowSub.'
                                         <span class="s-text">'.$child->title.'</span>
                                     </a>
-                                    '.childMenu($child->children).'
+                                    '.childMenuItem($child->children).'
                                </li>';
             }
             $childHtml .='</ul>';

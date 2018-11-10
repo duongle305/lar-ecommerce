@@ -64,7 +64,7 @@ class AclController extends Controller
                                     <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
-                                       data-delete="'.route('acl.roles.edit',$role->id).'" >
+                                       data-delete="'.route('acl.roles.delete',$role->id).'" >
                                     <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
@@ -91,7 +91,7 @@ class AclController extends Controller
     {
         $role = Role::findOrFail($id);
         if($role->delete())
-            return response()->json(['message'=>'Xóa vai trò'.$role->display_name.' thành công.'],200);
+            return response()->json(['message'=>'Xóa vai trò <strong>'.$role->display_name.'</strong> thành công.'],200);
         return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
 
     }

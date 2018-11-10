@@ -269,3 +269,13 @@ $(document).ready(function(){
 	$('[data-toggle="popover"]').popover();
 
 });
+let Loading = {
+	show: ()=>{
+		$('.preloader').fadeIn();
+	},
+	close: ()=>{
+        setTimeout(()=>{
+            $('.preloader').fadeOut();
+		},500);
+	}
+};

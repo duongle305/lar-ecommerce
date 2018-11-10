@@ -36,7 +36,9 @@ $(document).ready(()=>{
     /* Reload table permissions */
     btnReloadRoles.click((e)=>{
         e.preventDefault();
+        Loading.show();
         tableRoles.DataTable().ajax.reload();
+        Loading.close();
     });
     /* Setting table roles */
     tableRoles.DataTable({
@@ -69,9 +71,11 @@ $(document).ready(()=>{
         let storeUrl = $(e.target).attr('action');
         let formData = new FormData(e.target);
         axios.post(storeUrl, formData).then(res=>{
+            Loading.show();
             toastr.success(res.data.message,'Thông báo');
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_create_role').modal('hide');
+            Loading.close();
         }).catch(er=>{
             let errors = er.response.data.errors;
             let message = '';
@@ -79,10 +83,12 @@ $(document).ready(()=>{
                 message += errors[key][0]+"\n";
             }
             toastr.error(message,'Thông báo');
+            Loading.close();
         });
     });
     /* Show form edit role */
     $('#modal_edit_role').on('show.bs.modal',(e)=>{
+        Loading.show();
         let id = $(e.relatedTarget).data('id');
         let editUrl = $(e.relatedTarget).data('edit');
         let roleId = $('#edit_role_id');
@@ -96,8 +102,10 @@ $(document).ready(()=>{
             roleName.val(data.name);
             roleDisplayName.val(data.display_name);
             roleDDescription.val(data.description);
+            $('.preloader').fadeOut();
         }).catch(er=>{
             toastr.error(er.response.message);
+            Loading.close();
         });
     });
     /* Submit update role */
@@ -106,9 +114,11 @@ $(document).ready(()=>{
         let updateUrl = $(e.target).attr('action');
         let formData = new FormData(e.target);
         axios.post(updateUrl, formData).then(res=>{
+            Loading.show();
             toastr.success(res.data.message,'Thông báo');
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_edit_role').modal('hide');
+            Loading.close();
         }).catch(er=>{
             let errors = er.response.data.errors;
             let message = '';
@@ -116,6 +126,7 @@ $(document).ready(()=>{
                 message += errors[key][0]+"\n";
             }
             toastr.error(message,'Thông báo');
+            Loading.close();
         });
 
     });
@@ -137,21 +148,27 @@ $(document).ready(()=>{
             buttonsStyling: false
         }).then(function(isConfirm) {
             if (isConfirm === true) {
-                swal({
-                    title: 'Deleted!',
-                    text: 'Your file has been deleted.',
-                    type: 'success',
-                    confirmButtonClass: 'btn btn-primary',
-                    buttonsStyling: false
-                });
-            } else if (isConfirm === false) {
-                swal({
-                    title: 'Cancelled',
-                    text: 'Your imaginary file is safe :)',
-                    type: 'error',
-                    confirmButtonClass: 'btn btn-primary btn-lg',
-                    buttonsStyling: false
-                });
+                axios.delete(href).then(res=>{
+                    Loading.show();
+                    swal({
+                        title: 'Deleted!',
+                        text: res.data.message,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    tableRoles.DataTable().ajax.reload();
+                    Loading.close();
+                }).catch(er=>{
+                    swal({
+                        title: 'Cancelled',
+                        text: er.response.statusMessage,
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    Loading.close();
+                })
             }
         })
     });
