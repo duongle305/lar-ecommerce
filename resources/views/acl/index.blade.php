@@ -30,12 +30,17 @@
                                         <h5 class="mb-1">Nhân viên</h5>
                                     </div>
                                     <div class="col-lg-6 text-xs-right">
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_user">Thêm mới</button>
-                                        <button class="btn btn-primary" id="btn-reload-users" data-href="{{ route('acl.users') }}">Tải lại</button>
+                                        <button class="btn btn-success" data-toggle="modal"
+                                                data-target="#modal_create_user">Thêm mới
+                                        </button>
+                                        <button class="btn btn-primary" id="btn-reload-users"
+                                                data-href="{{ route('acl.users') }}">Tải lại
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="table_users" class="table table-striped table-bordered" style="width: 100%;">
+                                    <table id="table_users" class="table table-striped table-bordered"
+                                           style="width: 100%;">
                                         <thead>
                                         <tr>
                                             <th>#</th>
@@ -56,12 +61,17 @@
                                                 <h5 class="mb-2">Vai trò</h5>
                                             </div>
                                             <div class="col-lg-6 text-xs-right">
-                                                <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_role">Thêm mới</button>
-                                                <button class="btn btn-primary" id="btn-reload-roles" data-href="{{ route('acl.roles') }}">Tải lại</button>
+                                                <button class="btn btn-success" data-toggle="modal"
+                                                        data-target="#modal_create_role">Thêm mới
+                                                </button>
+                                                <button class="btn btn-primary" id="btn-reload-roles"
+                                                        data-href="{{ route('acl.roles') }}">Tải lại
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="table-responsive">
-                                            <table id="table_roles" class="table table-striped table-bordered" style="width: 100%;">
+                                            <table id="table_roles" class="table table-striped table-bordered"
+                                                   style="width: 100%;">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -80,12 +90,17 @@
                                                 <h5 class="mb-2">Quyền</h5>
                                             </div>
                                             <div class="col-lg-6 text-xs-right">
-                                                <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_permission">Thêm mới</button>
-                                                <button class="btn btn-primary" id="btn-reload-permissions" data-href="{{ route('acl.permissions') }}">Tải lại</button>
+                                                <button class="btn btn-success" data-toggle="modal"
+                                                        data-target="#modal_create_permission">Thêm mới
+                                                </button>
+                                                <button class="btn btn-primary" id="btn-reload-permissions"
+                                                        data-href="{{ route('acl.permissions') }}">Tải lại
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="table-responsive">
-                                            <table id="table_permissions" class="table table-striped table-bordered" style="width: 100%;">
+                                            <table id="table_permissions" class="table table-striped table-bordered"
+                                                   style="width: 100%;">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -123,7 +138,8 @@
                                 <div class="form-group">
                                     <label for="create_role_name">Tên</label>
                                     <input class="form-control" name="name" id="create_role_name">
-                                    <small class="form-text text-muted">Tên phải là chữ thường không dấu vd: <code>administrator</code></small>
+                                    <small class="form-text text-muted">Tên phải là chữ thường không dấu vd: <code>administrator</code>
+                                    </small>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -135,12 +151,15 @@
                         </div>
                         <div class="form-group">
                             <label for="create_role_description">Mô rả</label>
-                            <textarea class="form-control" name="description" id="create_role_description" rows="3"></textarea>
+                            <textarea class="form-control" name="description" id="create_role_description"
+                                      rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary"><i class="ti-plus"></i> {{ __('Thêm mới') }}</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                        <button type="submit" class="btn btn-primary"><i class="ti-plus"></i> {{ __('Thêm mới') }}
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="ti-close"></i> {{ __('Đóng') }}</button>
                     </div>
                 </form>
             </div>
@@ -176,12 +195,15 @@
                         </div>
                         <div class="form-group">
                             <label for="edit_role_description">Mô rả</label>
-                            <textarea class="form-control" name="description" id="edit_role_description" rows="3"></textarea>
+                            <textarea class="form-control" name="description" id="edit_role_description"
+                                      rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Lưu thay đổi') }}</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                        <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Lưu thay đổi') }}
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="ti-close"></i> {{ __('Đóng') }}</button>
                     </div>
                 </form>
             </div>
@@ -190,7 +212,7 @@
 
     <!-- Modal create permission -->
     <div id="modal_create_permission" class="modal animated bounceInDown" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="form_create_role" action="{{ route('acl.roles.store') }}">
                     <div class="modal-header">
@@ -200,28 +222,104 @@
                         <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Tạo mới Quyền</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-6">
+                        <div class="row mb-20">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label for="create_role_name">Tên</label>
-                                    <input class="form-control" name="name" id="create_role_name">
-                                    <small class="form-text text-muted">Tên phải là chữ thường không dấu vd: <code>administrator</code></small>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="create_role_display_name">Tên hiển thị</label>
-                                    <input class="form-control" name="display_name" id="create_role_display_name">
+                                    <label class="custom-control custom-radio">
+                                        <input id="radio1" name="radio" type="radio" value="basic" class="custom-control-input" checked v-model="type">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Cơ bản</span>
+                                    </label>
+                                    <label class="custom-control custom-radio">
+                                        <input id="radio2" name="radio" type="radio" value="advance" class="custom-control-input" v-model="type">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Nâng cao</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="create_role_description">Mô rả</label>
-                            <textarea class="form-control" name="description" id="create_role_description" rows="3"></textarea>
+                        <!-- basic -->
+                        <div class="row" v-if="type === 'basic'">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_permission_name">Tên</label>
+                                    <input class="form-control" name="name" id="create_permission_name" readonly="readonly" :value="nameToSlug">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_permission_display_name">Tên hiển thị</label>
+                                    <input class="form-control" name="display_name" id="create_permission_display_name" v-model="name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" v-if="type === 'basic'">
+                            <label for="create_permission_description">Mô rả</label>
+                            <textarea class="form-control" name="description" id="create_permission_description" rows="3" v-model="description"></textarea>
+                        </div>
+                        <!-- end basic -->
+                        <!-- advance -->
+                        <div class="row" v-if="type === 'advance'">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Tên hiển thị</label>
+                                        <input type="text" class="form-control" id="create_permission_display_name" placeholder="Tên hiển thị" v-model="name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" value="create" class="custom-control-input" v-model="permissionTypes" checked>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Create</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" value="update" class="custom-control-input" v-model="permissionTypes">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Update</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" value="read" class="custom-control-input" v-model="permissionTypes">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Read</span>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" value="delete" class="custom-control-input" v-model="permissionTypes">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Delete</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <label for="exampleInputEmail1" v-if="nameInputs.length > 0">Các quyền sẽ được tạo: </label>
+                                <table class="table mb-md-0" v-if="nameInputs.length > 0">
+                                    <thead>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>Tên hiển thị</th>
+                                        <th>Mô tả</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(nameInput,index) in nameInputs">
+                                        <td>@{{ nameInput }}</td>
+                                        <td>@{{ displayNameInputs[index] }}</td>
+                                        <td>@{{ descriptionInputs[index] }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+                    <!-- end advance -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary"><i class="ti-plus"></i> {{ __('Thêm mới') }}</button>
+                        <button type="submit" class="btn btn-primary" @click="submit"><i class="ti-plus"></i> {{ __('Hoàn thành') }}</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
                     </div>
                 </form>
@@ -233,17 +331,25 @@
 
 @section('pageJS')
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.bootstrap4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/JSZip/jszip.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/pdfmake/build/pdfmake.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/pdfmake/build/vfs_fonts.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection
 

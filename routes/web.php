@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function (){
     Route::prefix('acl')->group(function(){
         Route::get('','AclController@index')->name('acl.index');
         Route::get('users','AclController@allUsers')->name('acl.users');
+
         Route::prefix('roles')->group(function(){
             Route::get('','AclController@allRoles')->name('acl.roles');
             Route::get('edit/{id}','AclController@editRole')->name('acl.roles.edit');
@@ -26,9 +27,10 @@ Route::middleware('auth')->group(function (){
             Route::post('update','AclController@updateRole')->name('acl.roles.update');
             Route::post('delete/{id}','AclController@deleteRole')->name('acl.roles.delete');
         });
+
         Route::prefix('permissions')->group(function (){
             Route::get('','AclController@allPermissions')->name('acl.permissions');
+            Route::post('store','AclController@storePermission')->name('acl.permissions.create');
         });
-
     });
 });
