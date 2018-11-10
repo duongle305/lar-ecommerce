@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function (){
         Route::prefix('permissions')->group(function (){
             Route::get('','AclController@allPermissions')->name('acl.permissions');
         });
+    });
 
+    Route::prefix('menus')->group(function(){
+        Route::get('','MenuController@index')->name('menus.index');
     });
 });

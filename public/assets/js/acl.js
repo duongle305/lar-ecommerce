@@ -67,11 +67,11 @@ $(document).ready(()=>{
     });
     /* Submit form create new role */
     $('#form_create_role').submit((e)=>{
+        Loading.show();
         e.preventDefault();
         let storeUrl = $(e.target).attr('action');
         let formData = new FormData(e.target);
         axios.post(storeUrl, formData).then(res=>{
-            Loading.show();
             toastr.success(res.data.message,'Thông báo');
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_create_role').modal('hide');
