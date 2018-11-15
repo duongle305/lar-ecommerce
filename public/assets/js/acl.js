@@ -36,7 +36,9 @@ $(document).ready(() => {
     /* Reload table permissions */
     btnReloadRoles.click((e) => {
         e.preventDefault();
+        Loading.show();
         tableRoles.DataTable().ajax.reload();
+        Loading.close();
     });
     /* Setting table roles */
     tableRoles.DataTable({
@@ -68,21 +70,25 @@ $(document).ready(() => {
         e.preventDefault();
         let storeUrl = $(e.target).attr('action');
         let formData = new FormData(e.target);
-        axios.post(storeUrl, formData).then(res => {
-            toastr.success(res.data.message, 'Thông báo');
+        axios.post(storeUrl, formData).then(res=>{
+            Loading.show();
+            toastr.success(res.data.message,'Thông báo');
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_create_role').modal('hide');
-        }).catch(er => {
+            Loading.close();
+        }).catch(er=>{
             let errors = er.response.data.errors;
             let message = '';
             for (let key in errors) {
                 message += errors[key][0] + "\n";
             }
-            toastr.error(message, 'Thông báo');
+            toastr.error(message,'Thông báo');
+            Loading.close();
         });
     });
     /* Show form edit role */
-    $('#modal_edit_role').on('show.bs.modal', (e) => {
+    $('#modal_edit_role').on('show.bs.modal',(e)=>{
+        Loading.show();
         let id = $(e.relatedTarget).data('id');
         let editUrl = $(e.relatedTarget).data('edit');
         let roleId = $('#edit_role_id');
@@ -96,8 +102,10 @@ $(document).ready(() => {
             roleName.val(data.name);
             roleDisplayName.val(data.display_name);
             roleDDescription.val(data.description);
-        }).catch(er => {
+            Loading.close();
+        }).catch(er=>{
             toastr.error(er.response.message);
+            Loading.close();
         });
     });
     /* Submit update role */
@@ -105,17 +113,20 @@ $(document).ready(() => {
         e.preventDefault();
         let updateUrl = $(e.target).attr('action');
         let formData = new FormData(e.target);
-        axios.post(updateUrl, formData).then(res => {
-            toastr.success(res.data.message, 'Thông báo');
+        axios.post(updateUrl, formData).then(res=>{
+            Loading.show();
+            toastr.success(res.data.message,'Thông báo');
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_edit_role').modal('hide');
-        }).catch(er => {
+            Loading.close();
+        }).catch(er=>{
             let errors = er.response.data.errors;
             let message = '';
             for (let key in errors) {
                 message += errors[key][0] + "\n";
             }
-            toastr.error(message, 'Thông báo');
+            toastr.error(message,'Thông báo');
+            Loading.close();
         });
 
     });
@@ -137,21 +148,27 @@ $(document).ready(() => {
             buttonsStyling: false
         }).then(function (isConfirm) {
             if (isConfirm === true) {
-                swal({
-                    title: 'Deleted!',
-                    text: 'Your file has been deleted.',
-                    type: 'success',
-                    confirmButtonClass: 'btn btn-primary',
-                    buttonsStyling: false
-                });
-            } else if (isConfirm === false) {
-                swal({
-                    title: 'Cancelled',
-                    text: 'Your imaginary file is safe :)',
-                    type: 'error',
-                    confirmButtonClass: 'btn btn-primary btn-lg',
-                    buttonsStyling: false
-                });
+                axios.delete(href).then(res=>{
+                    Loading.show();
+                    swal({
+                        title: 'Deleted!',
+                        text: res.data.message,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    tableRoles.DataTable().ajax.reload();
+                    Loading.close();
+                }).catch(er=>{
+                    swal({
+                        title: 'Cancelled',
+                        text: er.response.statusMessage,
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    Loading.close();
+                })
             }
         })
     });
@@ -214,7 +231,7 @@ $(document).ready(() => {
         },
         computed: {
             nameToSlug: function () {
-                return str_slug(this.name);
+                return Helpers.slug(this.name);
             }
         },
         methods: {
@@ -296,7 +313,7 @@ $(document).ready(() => {
                 return result.trim(' ');
             },
             toSlug: function (str) {
-                return str_slug(str);
+                return Helpers.slug(str);
             },
             resetAllData: function () {
                 this.name = '';
@@ -308,6 +325,7 @@ $(document).ready(() => {
             },
             submit:function (event) {
                 event.preventDefault();
+                let href = $(event.target).attr('href');
                 if(this.type === 'basic'){
                     if(this.name === '' || this.description === ''){
                         toastr.error('Nhập đầy đủ thông tin!', 'Thông báo');
@@ -325,26 +343,33 @@ $(document).ready(() => {
                 }
 
                 let permissions = [];
-                let index = 0;
-                for (let nameInput of  this.nameInputs){
-                    permissions.push({
-                        name: nameInput,
-                        display_name: this.displayNameInputs[index],
-                        description: this.descriptionInputs[index]
-                    });
-                    index++;
+                if(this.type === 'advance'){
+                    let index = 0;
+                    for (let nameInput of  this.nameInputs){
+                        permissions.push({
+                            name: nameInput,
+                            display_name: this.displayNameInputs[index],
+                            description: this.descriptionInputs[index]
+                        });
+                        index++;
+                    }
+                } else {
+                    permissions.push({name:Helpers.slug(this.name),display_name:this.name,description:this.description})
                 }
 
                 var formData = new FormData();
 
                 formData.append("permissions", JSON.stringify(permissions));
 
-                axios.post('', formData, {
-                    headers: {'X-CSRF-Token': $('input[name="_token"]').attr('value')}
-                }).then(rrespone => {
-                    swal("Thành công!", "Cập nhật thành công", "success");
-                    $('#modal_create_permission').modal("hide");
-                }).catch(e =>{});
+                axios.post(href, formData).then(response => {
+                    if(response.data.code === 1){
+                        toastr.success(response.data.message,'Thông báo');
+                        $('#modal_create_permission').modal("hide");
+                        $('#table_permissions').DataTable().ajax.reload();
+                    }
+                }).catch(e =>{
+                    console.log(e)
+                });
             }
         }
     });

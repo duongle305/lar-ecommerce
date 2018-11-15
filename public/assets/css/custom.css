@@ -4,3 +4,16 @@ table{
 a.dropdown-item{
     width: auto !important;
 }
+div.swal2-modal{
+    width: 400px !important;
+    margin-left: -200px !important;
+}
+div.swal2-modal h2{
+    font-size: 26px !important;
+}
+div.swal2-content{
+    font-size: 16px !important;
+}
+div.swal2-icon{
+    margin: 0 auto 0;
+}

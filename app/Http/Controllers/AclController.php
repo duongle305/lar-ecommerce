@@ -64,7 +64,7 @@ class AclController extends Controller
                                     <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
-                                       data-delete="'.route('acl.roles.edit',$role->id).'" >
+                                       data-delete="'.route('acl.roles.delete',$role->id).'" >
                                     <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
@@ -91,7 +91,7 @@ class AclController extends Controller
     {
         $role = Role::findOrFail($id);
         if($role->delete())
-            return response()->json(['message'=>'Xóa vai trò'.$role->display_name.' thành công.'],200);
+            return response()->json(['message'=>'Xóa vai trò <strong>'.$role->display_name.'</strong> thành công.'],200);
         return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
 
     }
@@ -162,6 +162,27 @@ class AclController extends Controller
         }
     }
     public function storePermission(Request $request){
+        $validator = Validator::make($request->all(),[
+            'permissions'=>'required',
+            'permissions.*.name' => 'required|string',
+            'permissions.*.display_name' => 'required|string',
+            'permissions.*.description' => 'required|string'
+        ],[],[
+            'permissions'=>'Danh sách quyền',
+            'permissions.*.name' => 'Tên',
+            'permissions.*.display_name' => 'Tên hiển thị',
+            'permissions.*.description' => 'Mô tả'
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
 
+        $permissions =json_decode($request->permissions);
+        foreach ($permissions as $permission){
+            Permission::create([
+                'name' => $permission->name,
+                'display_name' => $permission->display_name,
+                'description' => $permission->description
+            ]);
+        }
+        return response()->json(['code'=> 1,'message'=>'Tạo mới quyền thành công!'],200);
     }
 }

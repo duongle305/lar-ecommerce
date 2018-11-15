@@ -63,7 +63,6 @@
 <script type="text/javascript" src="{{ asset('assets/vendors/axios/axios.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/toastr/toastr.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/helper.js') }}"></script>
 
 
 

@@ -297,8 +297,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-8">
-                                <label for="exampleInputEmail1" v-if="nameInputs.length > 0">Các quyền sẽ được tạo: </label>
-                                <table class="table mb-md-0" v-if="nameInputs.length > 0">
+                                <label for="exampleInputEmail1">Các quyền sẽ được tạo: </label>
+                                <table class="table mb-md-0">
                                     <thead>
                                     <tr>
                                         <th>Tên</th>
@@ -319,7 +319,7 @@
                     </div>
                     <!-- end advance -->
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" @click="submit"><i class="ti-plus"></i> {{ __('Hoàn thành') }}</button>
+                        <button type="submit" class="btn btn-primary" @click="submit" href="{{ route('acl.permissions.create') }}"><i class="ti-plus"></i> {{ __('Hoàn thành') }}</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
                     </div>
                 </form>

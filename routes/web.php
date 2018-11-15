@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function (){
             Route::get('edit/{id}','AclController@editRole')->name('acl.roles.edit');
             Route::post('store','AclController@storeRole')->name('acl.roles.store');
             Route::post('update','AclController@updateRole')->name('acl.roles.update');
-            Route::post('delete/{id}','AclController@deleteRole')->name('acl.roles.delete');
+            Route::delete('delete/{id}','AclController@deleteRole')->name('acl.roles.delete');
         });
 
         Route::prefix('permissions')->group(function (){
