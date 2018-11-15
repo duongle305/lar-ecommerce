@@ -145,7 +145,18 @@ class AclController extends Controller
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
-                                    <a class="dropdown-item" data-id="'.$permission->id.'" href="#"><i class="ti-pencil"></i> Sửa</a>
+                                    <a href="#" 
+                                       class="dropdown-item" 
+                                       data-id="'.$permission->id.'" 
+                                       data-edit="'.route('acl.permissions.edit',$permission->id).'" 
+                                       data-toggle="modal" 
+                                       data-target="#modal_edit_permission" >
+                                        <i class="ti-pencil"></i> Sửa</a>
+                                    <a href="#" 
+                                       class="dropdown-item permission-delete" 
+                                       data-id="'.$permission->id.'" 
+                                       data-delete="'.route('acl.permissions.delete',$permission->id).'">
+                                        <i class="ti-close"></i> Xóa</a>
                                 </div>
                             </div>';
                 })
@@ -162,6 +173,60 @@ class AclController extends Controller
         }
     }
     public function storePermission(Request $request){
+        $validator = Validator::make($request->all(),[
+            'permissions'=>'required',
+            'permissions.*.name' => 'required|string',
+            'permissions.*.display_name' => 'required|string',
+            'permissions.*.description' => 'required|string'
+        ],[],[
+            'permissions'=>'Danh sách quyền',
+            'permissions.*.name' => 'Tên',
+            'permissions.*.display_name' => 'Tên hiển thị',
+            'permissions.*.description' => 'Mô tả'
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
 
+        $permissions =json_decode($request->permissions);
+        foreach ($permissions as $permission){
+            Permission::create([
+                'name' => $permission->name,
+                'display_name' => $permission->display_name,
+                'description' => $permission->description
+            ]);
+        }
+        return response()->json(['code'=> 1,'message'=>'Tạo mới quyền thành công!'],200);
+    }
+    public function editPermission($id){
+        return Permission::find($id);
+    }
+    public function updatePermission(Request $request){
+        $validator = Validator::make($request->all(),[
+            'edit_permission_id'=>'required|exists:permissions,id',
+            'edit_permission_display_name'=>'required|string',
+            'edit_permission_description'=>'nullable|string'
+        ],[],[
+            'edit_permission_id'=>'ID Quyền',
+            'edit_permission_display_name'=>'Tên hiển thị',
+            'edit_permission_description'=>'Mô tả'
+        ]);
+
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+        $permission = Permission::find($request->edit_permission_id);
+        $permission->update([
+            'name' => $request->edit_permission_name,
+            'display_name' => $request->edit_permission_display_name,
+            'description' => $request->edit_permission_description
+        ]);
+
+        return response()->json(['message'=> 'Cập nhật quyền thành công!',200]);
+    }
+    public function deletePermission($id){
+        $permission = Permission::find($id);
+        if($permission instanceof Permission){
+            $permission->delete();
+            return response()->json(['message'=>'Xóa quyền thành công!'],200);
+        }
+        return response()->json(['error'=>'Không tìm thấy dữ liệu phù hợp, không thể xóa!'],403);
     }
 }
