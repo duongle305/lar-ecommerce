@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('dashboard_active','active')
 @section('pageCSS')
+    <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
 @endsection
 
 @section('content')
@@ -27,17 +31,16 @@
                                     </div>
                                     <div class="col-lg-6 text-xs-right">
                                         <button class="btn btn-success" data-toggle="modal" data-target="#modal_create_user">Thêm mới</button>
-                                        <button class="btn btn-primary" id="btn-reload-users" data-href="{{ route('acl.users') }}">Tải lại</button>
+                                        <button class="btn btn-primary" id="btn-reload-menus" data-href="{{ route('menu-builder.menus') }}">Tải lại</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table id="table_users" class="table table-striped table-bordered" style="width: 100%;">
+                                    <table id="table_menus" class="table table-striped table-bordered" style="width: 100%;">
                                         <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Tên</th>
-                                            <th>E-mail</th>
-                                            <th>Vai trò</th>
+                                            <th>Ghi chú</th>
                                             <th>Actions</th>
                                         </tr>
                                         </thead>
@@ -55,4 +58,17 @@
 @endsection
 
 @section('pageJS')
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/JSZip/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/menu-builder.js') }}"></script>
 @endsection

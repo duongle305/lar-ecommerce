@@ -31,7 +31,8 @@ Route::middleware('auth')->group(function (){
         });
     });
 
-    Route::prefix('menus')->group(function(){
-        Route::get('','MenuController@index')->name('menus.index');
+    Route::prefix('menu-builders')->group(function(){
+        Route::get('','MenuController@index')->name('menu-builder.index');
+        Route::get('menus','MenuController@allMenus')->name('menu-builder.menus');
     });
 });
