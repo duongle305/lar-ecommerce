@@ -214,7 +214,7 @@
     <div id="modal_create_permission" class="modal animated bounceInDown" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="form_create_role" action="{{ route('acl.roles.store') }}">
+                <form id="form_create_permission" action="">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
@@ -326,6 +326,48 @@
             </div>
         </div>
     </div>
+    <!--Modal edit permission -->
+    <div id="modal_edit_permission" class="modal animated bounceInDown" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="form_edit_permission" action="{{ route('acl.permissions.update') }}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Cập nhật quyền</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="edit_permission_id" id="edit_permission_id">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_permission_name">Tên</label>
+                                    <input class="form-control" name="edit_permission_name" id="edit_permission_name" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_permission_display_name">Tên hiển thị</label>
+                                    <input class="form-control" name="edit_permission_display_name" id="edit_permission_display_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create_permission_description">Mô rả</label>
+                            <textarea class="form-control" name="edit_permission_description" id="edit_permission_description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <!-- end advance -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" @click="submit" href="{{ route('acl.permissions.create') }}"><i class="ti-plus"></i> {{ __('Hoàn thành') }}</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 @endsection
 

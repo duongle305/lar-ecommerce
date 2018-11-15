@@ -382,4 +382,51 @@ $(document).ready(() => {
         permission.resetAllData();
     });
 
+    $('#modal_edit_permission').on('shown.bs.modal',(event)=>{
+        Loading.show();
+        $('input[name=edit_permission_name]').val('');
+        $('input[name=edit_permission_display_name]').val('');
+        $('textarea[name=edit_permission_description]').val('');
+        axios.get($(event.relatedTarget).data('edit')).then(response=>{
+            $('input[name=edit_permission_id]').val(response.data.id);
+            $('input[name=edit_permission_name]').val(response.data.name);
+            $('input[name=edit_permission_display_name]').val(response.data.display_name);
+            $('textarea[name=edit_permission_description]').val(response.data.description);
+            Loading.close();
+        }).catch(error=>{
+            Loading.close();
+        })
+    });
+    /*change name while display name is change*/
+    $('#edit_permission_display_name').on('input',(event)=>{
+        let displayName = $(event.currentTarget).val();
+        $('input[name=edit_permission_name]').val(Helpers.slug(displayName));
+    });
+
+    $('#form_edit_permission').submit((event)=>{
+        event.preventDefault();
+        let url = $(event.target).attr('action');
+        if($('input[name=edit_permission_name]').val() === ''){
+            toastr.error('Tên hiển thị không dược để trống','Thông báo');
+            return false;
+        }
+        Loading.show();
+        let formData = new FormData(event.target);
+        axios.post(url,formData).then(response=>{
+            Loading.close();
+            toastr.success(response.data.message,'Thông báo');
+            $('#modal_edit_permission').modal("hide");
+            $('#table_permissions').DataTable().ajax.reload();
+        }).catch(error=>{
+            Loading.close();
+            let errors = error.response.data.errors;
+            let message = '';
+            for (let key in errors) {
+                message += errors[key][0] + "\n";
+            }
+            toastr.error(message,'Thông báo');
+        })
+    })
+
+    $('')
 });
