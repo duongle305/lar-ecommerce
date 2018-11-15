@@ -467,7 +467,7 @@ $(document).ready(() => {
                     Loading.close();
                     swal({
                         title: 'Cancelled',
-                        text: er.response.statusMessage,
+                        text: er.response.error,
                         type: 'error',
                         confirmButtonClass: 'btn btn-primary',
                         buttonsStyling: false
@@ -476,6 +476,5 @@ $(document).ready(() => {
             }
         })
     });
-
 
 });
