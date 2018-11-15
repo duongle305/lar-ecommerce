@@ -16,6 +16,7 @@ Route::post('login','Auth\LoginController@login')->name('login');
 Route::middleware('auth')->group(function (){
     Route::post('logout','Auth\LoginController@logout')->name('logout');
     Route::get('dashboard','DashboardController@index')->name('dashboard');
+
     Route::prefix('acl')->group(function(){
         Route::get('','AclController@index')->name('acl.index');
         Route::get('users','AclController@allUsers')->name('acl.users');
@@ -38,7 +39,12 @@ Route::middleware('auth')->group(function (){
     });
 
     Route::prefix('menu-builders')->group(function(){
-        Route::get('','MenuController@index')->name('menu-builder.index');
-        Route::get('menus','MenuController@allMenus')->name('menu-builder.menus');
+        Route::get('','MenuController@index')->name('menu-builders.index');
+        Route::prefix('menus')->group(function(){
+            Route::get('','MenuController@allMenus')->name('menu-builder.menus');
+            Route::post('store','MenuController@storeMenu')->name('menu-builders.menus.store');
+            Route::get('edit/{id}','MenuController@editMenu')->name('menu-builders.menus.edit');
+            Route::put('update','MenuController@updateMenu')->name('menu-builders.menus.update');
+        });
     });
 });
