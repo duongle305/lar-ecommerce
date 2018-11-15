@@ -66,12 +66,13 @@ $(document).ready(() => {
         $('#form_create_role').trigger('reset');
     });
     /* Submit form create new role */
-    $('#form_create_role').submit((e) => {
+
+    $('#form_create_role').submit((e)=>{
+        Loading.show();
         e.preventDefault();
         let storeUrl = $(e.target).attr('action');
         let formData = new FormData(e.target);
         axios.post(storeUrl, formData).then(res=>{
-            Loading.show();
             toastr.success(res.data.message,'Thông báo');
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_create_role').modal('hide');
@@ -206,6 +207,7 @@ $(document).ready(() => {
     });
 });
 $(document).ready(() => {
+    /* create vue instance for create permission*/
     let permission = new Vue({
         el: '#modal_create_permission',
         data: {
@@ -341,7 +343,7 @@ $(document).ready(() => {
                         return false;
                     }
                 }
-
+                Loading.show();
                 let permissions = [];
                 if(this.type === 'advance'){
                     let index = 0;
@@ -362,12 +364,14 @@ $(document).ready(() => {
                 formData.append("permissions", JSON.stringify(permissions));
 
                 axios.post(href, formData).then(response => {
+                    Loading.close();
                     if(response.data.code === 1){
                         toastr.success(response.data.message,'Thông báo');
                         $('#modal_create_permission').modal("hide");
                         $('#table_permissions').DataTable().ajax.reload();
                     }
                 }).catch(e =>{
+                    Loading.close();
                     console.log(e)
                 });
             }

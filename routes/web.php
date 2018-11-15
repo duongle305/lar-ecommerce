@@ -31,6 +31,12 @@ Route::middleware('auth')->group(function (){
         Route::prefix('permissions')->group(function (){
             Route::get('','AclController@allPermissions')->name('acl.permissions');
             Route::post('store','AclController@storePermission')->name('acl.permissions.create');
+            Route::get('edit/{id}','AclController@editPermission')->name('acl.permissions.edit');
         });
+    });
+
+    Route::prefix('menu-builders')->group(function(){
+        Route::get('','MenuController@index')->name('menu-builder.index');
+        Route::get('menus','MenuController@allMenus')->name('menu-builder.menus');
     });
 });

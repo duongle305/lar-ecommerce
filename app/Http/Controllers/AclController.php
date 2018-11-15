@@ -145,7 +145,13 @@ class AclController extends Controller
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
-                                    <a class="dropdown-item" data-id="'.$permission->id.'" href="#"><i class="ti-pencil"></i> Sửa</a>
+                                    <a href="#" 
+                                       class="dropdown-item" 
+                                       data-id="'.$permission->id.'" 
+                                       data-edit="'.route('acl.permissions.edit',$permission->id).'" 
+                                       data-toggle="modal" 
+                                       data-target="#modal_edit_permission" >
+                                    <i class="ti-pencil"></i> Sửa</a>
                                 </div>
                             </div>';
                 })
