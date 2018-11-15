@@ -42,7 +42,7 @@
                                             <th>Tên</th>
                                             <th>E-mail</th>
                                             <th>Vai trò</th>
-                                            <th>Actions</th>
+                                            <th style="width: 60px;">Actions</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -68,7 +68,7 @@
                                                     <th>Tên</th>
                                                     <th>Tên hiển thị</th>
                                                     <th>Mô tả</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 60px;">Actions</th>
                                                 </tr>
                                                 </thead>
                                             </table>
@@ -92,7 +92,7 @@
                                                     <th>Tên</th>
                                                     <th>Tên hiển thị</th>
                                                     <th>Mô tả</th>
-                                                    <th>Actions</th>
+                                                    <th style="width: 60px;">Actions</th>
                                                 </tr>
                                                 </thead>
                                             </table>
@@ -121,20 +121,20 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Tên</label>
+                                    <label for="create_role_name">Tên <span class="text-danger">*</span></label>
                                     <input class="form-control" name="name" id="create_role_name">
                                     <small class="form-text text-muted">Tên phải là chữ thường không dấu vd: <code>administrator</code></small>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="create_role_display_name">Tên hiển thị</label>
+                                    <label for="create_role_display_name">Tên hiển thị <span class="text-danger">*</span></label>
                                     <input class="form-control" name="display_name" id="create_role_display_name">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="create_role_description">Mô rả</label>
+                            <label for="create_role_description">Mô tả</label>
                             <textarea class="form-control" name="description" id="create_role_description" rows="3"></textarea>
                         </div>
                     </div>
@@ -163,19 +163,19 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="edit_role_name">Tên</label>
+                                    <label for="edit_role_name">Tên <span class="text-danger">*</span></label>
                                     <input class="form-control bg-faded" id="edit_role_name" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="edit_role_display_name">Tên hiển thị</label>
+                                    <label for="edit_role_display_name">Tên hiển thị <span class="text-danger">*</span></label>
                                     <input class="form-control" name="display_name" id="edit_role_display_name">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="edit_role_description">Mô rả</label>
+                            <label for="edit_role_description">Mô tả</label>
                             <textarea class="form-control" name="description" id="edit_role_description" rows="3"></textarea>
                         </div>
                     </div>

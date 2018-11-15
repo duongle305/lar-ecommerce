@@ -76,13 +76,19 @@ $(document).ready(()=>{
             $('#table_roles').DataTable().ajax.reload();
             $('#modal_create_role').modal('hide');
             Loading.close();
-        }).catch(er=>{
-            let errors = er.response.data.errors;
-            let message = '';
-            for(let key in errors){
-                message += errors[key][0]+"\n";
+        }).catch(err=>{
+            let resp = err.response;
+            if(resp.status = 403){
+                let errors = resp.data.errors;
+                let message = '';
+                for(let key in errors){
+                    message += errors[key][0]+"\n";
+                }
+                toastr.error(message,'Thông báo');
             }
-            toastr.error(message,'Thông báo');
+            if(resp.status === 500){
+                toastr.error(resp.data.message,'Thông báo');
+            }
             Loading.close();
         });
     });
@@ -102,7 +108,7 @@ $(document).ready(()=>{
             roleName.val(data.name);
             roleDisplayName.val(data.display_name);
             roleDDescription.val(data.description);
-            $('.preloader').fadeOut();
+            Loading.close();
         }).catch(er=>{
             toastr.error(er.response.message);
             Loading.close();
@@ -148,8 +154,7 @@ $(document).ready(()=>{
             buttonsStyling: false
         }).then(function(isConfirm) {
             if (isConfirm === true) {
-                axios.delete(href).then(res=>{
-                    Loading.show();
+                axios.delete(href).then(res=>{ư
                     swal({
                         title: 'Deleted!',
                         text: res.data.message,
@@ -158,7 +163,6 @@ $(document).ready(()=>{
                         buttonsStyling: false
                     });
                     tableRoles.DataTable().ajax.reload();
-                    Loading.close();
                 }).catch(er=>{
                     swal({
                         title: 'Cancelled',
@@ -181,7 +185,9 @@ $(document).ready(()=>{
     /* Reload table permissions */
     btnReloadPermissions.click((e)=>{
         e.preventDefault();
+        Loading.show();
         tablePermissions.DataTable().ajax.reload();
+        Loading.close();
     });
     /* Setting table permissions */
     tablePermissions.DataTable({
