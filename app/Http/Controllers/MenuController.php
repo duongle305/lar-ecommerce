@@ -23,6 +23,9 @@ class MenuController extends Controller
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
+                                    <a href="'.route('menu-builders.menu-items.index',$menu->id).'" 
+                                       class="dropdown-item">
+                                    <i class="ti-menu"></i> Builder</a>
                                     <a href="#" 
                                        class="dropdown-item" 
                                        data-id="'.$menu->id.'" 
@@ -95,5 +98,18 @@ class MenuController extends Controller
         if($menu->delete())
             return response()->json(['message'=>'Xóa menu thành công.'],200);
         return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
+    }
+
+    public function menuItem($id){
+
+        return view('menu-builders.menu-item');
+    }
+
+    public function storeMenuItem(Request $request)
+    {
+        
+    }
+    public function nestableMenuItem($id){
+        $menu = Menu::find($id);
     }
 }

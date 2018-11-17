@@ -19,7 +19,7 @@ $(document).ready(()=>{
             url: href,
             error: function (xhr, error, thrown) {
                 if(xhr.status === 500){
-                    let resp = JSON.parse(xhr.responseText);
+                    let resp = xhr.responseJSON;
                     toastr.error(resp.message,'Thông báo');
                     tableMenus.DataTable().ajax.reload();
                 }

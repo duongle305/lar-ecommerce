@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/nestable/nestable.css') }}">
 @endsection
 
 @section('content')
@@ -15,10 +16,10 @@
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs float-xs-left">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tab1">Danh mục</a>
+                                <a class="nav-link active" data-toggle="tab" href="#tab1">Menu</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tab2">Profile</a>
+                                <a class="nav-link" data-toggle="tab" href="#tab2">Menu Builder</a>
                             </li>
                         </ul>
                     </div>
@@ -27,7 +28,7 @@
                             <div id="tab1" class="tab-pane active">
                                 <div class="row mb-2">
                                     <div class="col-lg-6">
-                                        <h5 class="mb-1">Danh mục</h5>
+                                        <h5 class="mb-1">Menu</h5>
                                     </div>
                                     <div class="col-lg-6 text-xs-right">
                                         <button class="btn btn-primary" id="btn-reload-menus" data-href="{{ route('menu-builder.menus') }}">Tải lại</button>
@@ -66,6 +67,22 @@
                                 </div>
                             </div>
                             <div id="tab2" class="tab-pane">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form id="form_create_menu_item" action="{{ route('menu-builders.menu-items.store') }}">
+
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="dd" id="menu-builders"> <ol class="dd-list">
+                                        <li class="dd-item dd3-item" data-id="13">
+                                            <div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">Item 13</div>
+                                        </li>
+                                        <li class="dd-item dd3-item" data-id="14">
+                                            <div class="dd-handle dd3-handle">Drag</div><div class="dd3-content">Item 14</div>
+                                        </li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,5 +135,6 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/nestable/jquery.nestable.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/menu-builder.js') }}"></script>
 @endsection

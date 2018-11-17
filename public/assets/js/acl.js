@@ -5,13 +5,24 @@ $(document).ready(() => {
     /* Reload table users */
     btnReloadUsers.click((e) => {
         e.preventDefault();
+        Loading.show();
         tableUsers.DataTable().ajax.reload();
+        Loading.close();
     });
     /* Setting table users */
     tableUsers.DataTable({
         processing: true,
         serverSide: true,
-        ajax: href,
+        ajax: {
+            url:href,
+            error: function (xhr, error, thrown) {
+                if(xhr.status === 500){
+                    let resp = xhr.responseJSON;
+                    toastr.error(resp.message,'Thông báo');
+                    tableUsers.DataTable().ajax.reload();
+                }
+            }
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'name', name: 'name'},
@@ -44,7 +55,16 @@ $(document).ready(() => {
     tableRoles.DataTable({
         processing: true,
         serverSide: true,
-        ajax: href,
+        ajax: {
+            url:href,
+            error: function (xhr, error, thrown) {
+                if(xhr.status === 500){
+                    let resp = xhr.responseJSON;
+                    toastr.error(resp.message,'Thông báo');
+                    tableRoles.DataTable().ajax.reload();
+                }
+            }
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'name', name: 'name'},
@@ -165,9 +185,8 @@ $(document).ready(() => {
                     });
                     tableRoles.DataTable().ajax.reload();
                 }).catch(er=>{
-                    console.log(er.response);
                     swal({
-                        title: 'Cancelled',
+                        title: 'Thông báo',
                         text: er.response.message,
                         type: 'error',
                         confirmButtonClass: 'btn btn-primary',
@@ -194,7 +213,16 @@ $(document).ready(() => {
     tablePermissions.DataTable({
         processing: true,
         serverSide: true,
-        ajax: href,
+        ajax: {
+            url:href,
+            error: function (xhr, error, thrown) {
+                if(xhr.status === 500){
+                    let resp = xhr.responseJSON;
+                    toastr.error(resp.message,'Thông báo');
+                    tablePermissions.DataTable().ajax.reload();
+                }
+            }
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'name', name: 'name'},
@@ -453,9 +481,7 @@ $(document).ready(() => {
             buttonsStyling: false
         }).then(function (isConfirm) {
             if (isConfirm === true) {
-                Loading.show();
                 axios.delete(href).then(res=>{
-                    Loading.close();
                     swal({
                         title: 'Deleted!',
                         text: res.data.message,
@@ -465,10 +491,9 @@ $(document).ready(() => {
                     });
                     $('#table_permissions').DataTable().ajax.reload();
                 }).catch(er=>{
-                    Loading.close();
                     swal({
-                        title: 'Cancelled',
-                        text: er.response.error,
+                        title: 'Thông báo',
+                        text: er.response.message,
                         type: 'error',
                         confirmButtonClass: 'btn btn-primary',
                         buttonsStyling: false
