@@ -330,6 +330,7 @@ $(document).ready(() => {
                 this.nameInputs = [];
                 this.displayNameInputs = [];
                 this.descriptionInputs = [];
+                this.description = '';
             },
             submit:function (event) {
                 event.preventDefault();
@@ -433,7 +434,7 @@ $(document).ready(() => {
             toastr.error(message,'Thông báo');
         })
     });
-    /*permission delete comfirm & excute*/
+    /*permission delete confirm & execute*/
     $(document).on('click','.permission-delete',event=>{
         event.preventDefault();
         let href = $(event.target).data('delete');
