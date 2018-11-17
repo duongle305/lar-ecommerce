@@ -330,6 +330,7 @@ $(document).ready(() => {
                 this.nameInputs = [];
                 this.displayNameInputs = [];
                 this.descriptionInputs = [];
+                this.description = '';
             },
             submit:function (event) {
                 event.preventDefault();
@@ -408,7 +409,7 @@ $(document).ready(() => {
         let displayName = $(event.currentTarget).val();
         $('input[name=edit_permission_name]').val(Helpers.slug(displayName));
     });
-
+    /* edit permission submit*/
     $('#form_edit_permission').submit((event)=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
@@ -432,7 +433,49 @@ $(document).ready(() => {
             }
             toastr.error(message,'Thông báo');
         })
-    })
+    });
+    /*permission delete confirm & execute*/
+    $(document).on('click','.permission-delete',event=>{
+        event.preventDefault();
+        let href = $(event.target).data('delete');
 
-    $('')
+        swal({
+            title: 'Are you sure?',
+            text: "Bạn sẽ không thể khôi phục lại điều này !",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            confirmButtonClass: 'btn btn-primary mr-1',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
+                Loading.show();
+                axios.delete(href).then(res=>{
+                    Loading.close();
+                    swal({
+                        title: 'Deleted!',
+                        text: res.data.message,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    $('#table_permissions').DataTable().ajax.reload();
+                }).catch(er=>{
+                    Loading.close();
+                    swal({
+                        title: 'Cancelled',
+                        text: er.response.error,
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                })
+            }
+        })
+    });
+
 });
