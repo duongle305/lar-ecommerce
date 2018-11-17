@@ -4,7 +4,7 @@ $(document).ready(()=>{
     let href = btnReloadMenus.data('href');
     let formCreateMenu = $('#form_create_menu');
     let modalEditMenu = $('#modal_edit_menu');
-    let formEditMenu =  $('#form_edit_menu');
+    let formEditMenu = $('#form_edit_menu');
     /* Reload table menus */
     btnReloadMenus.click((e)=>{
         e.preventDefault();
@@ -70,7 +70,7 @@ $(document).ready(()=>{
 
     modalEditMenu.on('show.bs.modal',(e)=>{
         Loading.show();
-        formEditMenu.trigger('reset');
+        $('#form_edit_menu').trigger('reset');
         let menuId = $('#edit_menu_id');
         let menuName = $('#edit_menu_name');
         let menuNote = $('#edit_menu_note');
@@ -95,8 +95,10 @@ $(document).ready(()=>{
         e.preventDefault();
         let action = $(e.target).attr('action');
         let formData = new FormData(e.target);
-        axios.put(action, formData).then(resp=>{
-            console.log(resp);
+        axios.post(action, formData).then(resp=>{
+            toastr.success(resp.data.message,'Thông báo');
+            tableMenus.DataTable().ajax.reload();
+            modalEditMenu.modal('hide');
             Loading.close();
         }).catch(err=>{
             let resp = err.response;
@@ -115,4 +117,43 @@ $(document).ready(()=>{
         });
     });
 
+    $(document).on('click', '.delete', (e) => {
+        e.preventDefault();
+        let href = $(e.target).data('delete');
+        swal({
+            title: 'Are you sure?',
+            text: "Bạn sẽ không thể khôi phục lại điều này !",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            confirmButtonClass: 'btn btn-primary mr-1',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
+                axios.delete(href).then(res=>{
+                    swal({
+                        title: 'Deleted!',
+                        text: res.data.message,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    tableMenus.DataTable().ajax.reload();
+                }).catch(er=>{
+                    swal({
+                        title: 'Cancelled',
+                        text: er.response.message,
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    Loading.close();
+                })
+            }
+        })
+    });
 });

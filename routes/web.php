@@ -44,7 +44,8 @@ Route::middleware('auth')->group(function (){
             Route::get('','MenuController@allMenus')->name('menu-builder.menus');
             Route::post('store','MenuController@storeMenu')->name('menu-builders.menus.store');
             Route::get('edit/{id}','MenuController@editMenu')->name('menu-builders.menus.edit');
-            Route::put('update','MenuController@updateMenu')->name('menu-builders.menus.update');
+            Route::post('update','MenuController@updateMenu')->name('menu-builders.menus.update');
+            Route::delete('delete/{id}','MenuController@deleteMenu')->name('menu-builders.menus.delete');
         });
     });
 });

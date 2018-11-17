@@ -132,7 +132,7 @@ class AclController extends Controller
             'display_name'=>$request->display_name,
             'description'=>$request->description
         ]);
-        return response()->json(['message'=>'Lưu thay đổi thành công !'],200);
+        return response()->json(['message'=>'Cập nhật vai trò thành công.'],200);
     }
 
     public function allPermissions()
@@ -194,7 +194,7 @@ class AclController extends Controller
                 'description' => $permission->description
             ]);
         }
-        return response()->json(['code'=> 1,'message'=>'Tạo mới quyền thành công!'],200);
+        return response()->json(['code'=> 1,'message'=>'Tạo mới quyền thành công'],200);
     }
     public function editPermission($id){
         return Permission::find($id);

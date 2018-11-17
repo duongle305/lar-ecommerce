@@ -30,6 +30,11 @@ class MenuController extends Controller
                                        data-toggle="modal" 
                                        data-target="#modal_edit_menu" >
                                     <i class="ti-pencil"></i> Sửa</a>
+                                    <a href="#" 
+                                       class="dropdown-item delete" 
+                                       data-id="'.$menu->id.'" 
+                                       data-delete="'.route('menu-builders.menus.delete',$menu->id).'" >
+                                    <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
                 })
@@ -56,7 +61,7 @@ class MenuController extends Controller
         if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
         $all = $request->only(['name','note']);
         Menu::create($all);
-        return response()->json(['message'=>'Thêm mới menu thành công !'],200);
+        return response()->json(['message'=>'Thêm mới menu thành công.'],200);
     }
 
     public function editMenu($id)
@@ -66,7 +71,29 @@ class MenuController extends Controller
 
     public function updateMenu(Request $request)
     {
-        return $request->all();
+        $validator = Validator::make($request->all(),[
+            'menu_id'=>'required|exists:menus,id',
+            'name'=>'required|string',
+            'note'=>'nullable|string|max:255',
+        ],[
+            'menu_id.required'=>'Đã xảy ra lỗi trong quá trình xử lý.',
+            'menu_id.exists'=>'Đã xảy ra lỗi trong quá trình xử lý.'
+        ],[
+            'menu_id'=>'menu',
+            'name'=>'tên',
+            'note'=>'ghi chú'
+        ]);
+        $menu = Menu::find($request->menu_id);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+        $menu->update($request->only(['name','note']));
+        return response()->json(['message'=>'Cập nhật menu thành công.'],200);
     }
-        
+
+    public function deleteMenu($id)
+    {
+        $menu = Menu::findOrFail($id);
+        if($menu->delete())
+            return response()->json(['message'=>'Xóa menu thành công.'],200);
+        return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
+    }
 }

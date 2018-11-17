@@ -155,7 +155,7 @@ $(document).ready(() => {
             buttonsStyling: false
         }).then(function (isConfirm) {
             if (isConfirm === true) {
-                axios.delete(href).then(res=>{ư
+                axios.delete(href).then(res=>{
                     swal({
                         title: 'Deleted!',
                         text: res.data.message,
@@ -165,9 +165,10 @@ $(document).ready(() => {
                     });
                     tableRoles.DataTable().ajax.reload();
                 }).catch(er=>{
+                    console.log(er.response);
                     swal({
                         title: 'Cancelled',
-                        text: er.response.statusMessage,
+                        text: er.response.message,
                         type: 'error',
                         confirmButtonClass: 'btn btn-primary',
                         buttonsStyling: false
@@ -177,7 +178,6 @@ $(document).ready(() => {
             }
         })
     });
-
 });
 $(document).ready(() => {
     let btnReloadPermissions = $('#btn-reload-permissions');
