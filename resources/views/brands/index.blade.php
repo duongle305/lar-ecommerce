@@ -70,7 +70,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
-                    <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Sửa</h5>
+                    <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Cập nhật thương hiệu</h5>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="edit_brand_id" id="edit_brand_id">
