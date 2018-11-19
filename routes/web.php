@@ -58,6 +58,8 @@ Route::middleware('auth')->group(function (){
     Route::prefix('brands')->group(function (){
         Route::get('','BrandController@index')->name('brands.index');
         Route::get('json-get-all-brands','BrandController@allBrands')->name('brands.all-brands');
-        Route::delete('delete/{id}','BrandController@delete')->name('brands.delete');
+        Route::get('edit/{id}','BrandController@edit')->name('brands.edit');
+        Route::post('update','BrandController@update')->name('brands.update');
+        Route::delete('delete/{id}','BrandController@destroy')->name('brands.delete');
     });
 });
