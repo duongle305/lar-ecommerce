@@ -137,4 +137,49 @@ $(document).ready(function () {
             }
         })
     });
+
+    $('#modal_create_brand').on('show.bs.modal',(event)=>{
+        let createBrandSlug = $('input[name=create_brand_slug]');
+        let createBrandName = $('input[name=create_brand_name]');
+        let createBrandNote = $('textarea[name=create_brand_note]');
+        let createBrandLogo = $('input[name=create_brand_logo]');
+        let drEvent = createBrandLogo.dropify().data('dropify');
+
+        createBrandName.val('');
+        createBrandSlug.val('');
+        createBrandLogo.val(null);
+        createBrandNote.val('');
+        drEvent.resetPreview();
+        drEvent.clearElement();
+    });
+
+    $('#create_brand_name').on('input',(event)=>{
+        let displayName = $(event.currentTarget).val();
+        $('input[name=create_brand_slug]').val(Helpers.slug(displayName));
+    });
+
+    $('#form_create_brand').submit((event)=>{
+        event.preventDefault();
+        Loading.show();
+        let url = $(event.target).attr('action');
+        let formData = new FormData(event.target);
+        axios.post(url, formData).then(res=>{
+            toastr.success(res.data.message,'Thông báo');
+            $('#table_brands').DataTable().ajax.reload();
+            $('#modal_create_brand').modal('hide');
+            Loading.close();
+        }).catch(er=>{
+            if(parseInt(er.response.status) === 500){
+                toastr.error(er.response.data.error,'Thông báo');
+            } else{
+                let errors = er.response.data.errors;
+                let message = '';
+                for (let key in errors) {
+                    message += errors[key][0] + "\n";
+                }
+                toastr.error(message,'Thông báo');
+            }
+            Loading.close();
+        });
+    });
 });

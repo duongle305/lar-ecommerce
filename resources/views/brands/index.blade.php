@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="col-lg-6 text-xs-right">
                                     <button class="btn btn-success" data-toggle="modal"
-                                            data-target="#modal_create_permission">Thêm mới
+                                            data-target="#modal_create_brand">Thêm mới
                                     </button>
                                     <button class="btn btn-primary" id="btn-reload-brands"
                                             data-href="{{ route('brands.all-brands') }}">Tải lại
@@ -99,6 +99,49 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Lưu thay đổi') }}</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal create brand -->
+<div id="modal_create_brand" class="modal animated bounceInDown" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="form_create_brand" action="{{ route('brands.store') }}">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Tạo mới thương hiệu</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="create_brand_slug">Tên <span class="text-danger">*</span></label>
+                                <input class="form-control bg-faded" id="create_brand_slug" name="create_brand_slug" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="create_brand_name">Tên hiển thị <span class="text-danger">*</span></label>
+                                <input class="form-control" name="create_brand_name" id="create_brand_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_brand_note">Ghi chú</label>
+                        <textarea class="form-control" name="create_brand_note" id="create_brand_note" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_brand_logo">Logo</label>
+                        <input type="file" id="create_brand_logo" name="create_brand_logo" class="dropify">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Hoàn thành') }}</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
                 </div>
             </form>

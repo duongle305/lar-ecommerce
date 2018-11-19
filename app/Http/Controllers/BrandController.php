@@ -79,7 +79,33 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'create_brand_slug'=>'required|string|unique:brands,slug',
+            'create_brand_name'=>'required|string|unique:brands,name',
+            'create_brand_note'=>'nullable|string',
+            'create_brand_logo' => 'nullable|file'
+        ],[],[
+            'create_brand_slug'=>'tên',
+            'create_brand_name'=>'tên hiển thị',
+            'create_brand_note'=>'mô tả',
+            'create_brand_logo' => 'Logo'
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
 
+        $brand = Brand::create([
+            'name' => $request->create_brand_name,
+            'slug' => $request->create_brand_slug,
+            'note' => $request->create_brand_note,
+        ]);
+
+        if($request->hasFile('create_brand_logo')){
+            $logo = $request->file('create_brand_logo');
+            $logoName = time().'-'.$logo->getClientOriginalName();
+            $logo->move(storage_path('app/public/uploads/brand_logo'),$logoName);
+            $brand->logo = $logoName;
+            $brand->save();
+        }
+        return response()->json(['message' => "Tạo mới thương hiệu <b>{$brand->name}</b> thành công!"],200);
     }
 
     /**
