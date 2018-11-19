@@ -16,8 +16,8 @@ $(document).ready(function () {
         },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-            {data: 'name', name: 'name'},
             {data: 'slug', name: 'slug'},
+            {data: 'name', name: 'name'},
             {data: 'logo', name: 'logo'},
             {data: 'note', name: 'note'},
             {data: 'actions', name: 'actions', class: 'text-xs-center', orderable: false, searchable: false}
