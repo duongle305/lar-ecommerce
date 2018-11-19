@@ -15,6 +15,7 @@ Route::post('login','Auth\LoginController@login')->name('login');
 
 Route::middleware('auth')->group(function (){
     Route::post('logout','Auth\LoginController@logout')->name('logout');
+
     Route::get('dashboard','DashboardController@index')->name('dashboard');
 
     Route::prefix('acl')->group(function(){
@@ -52,5 +53,11 @@ Route::middleware('auth')->group(function (){
             Route::get('/nestable-menu-builder/{id}','MenuController@nestableMenuItem')->name('menu-builders.menu-items.nestable');
             Route::post('store','MenuController@storeMenuItem')->name('menu-builders.menu-items.store');
         });
+    });
+
+    Route::prefix('brands')->group(function (){
+        Route::get('','BrandController@index')->name('brands.index');
+        Route::get('json-get-all-brands','BrandController@allBrands')->name('brands.all-brands');
+        Route::delete('delete/{id}','BrandController@delete')->name('brands.delete');
     });
 });
