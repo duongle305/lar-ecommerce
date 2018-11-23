@@ -83,7 +83,7 @@ class BrandController extends Controller
             'create_brand_slug'=>'required|string|unique:brands,slug',
             'create_brand_name'=>'required|string|unique:brands,name',
             'create_brand_note'=>'nullable|string',
-            'create_brand_logo' => 'nullable|file'
+            'create_brand_logo' => 'nullable|file|mimes:jpeg,jpg,png,gif'
         ],[],[
             'create_brand_slug'=>'tên',
             'create_brand_name'=>'tên hiển thị',
@@ -151,7 +151,7 @@ class BrandController extends Controller
             'edit_brand_slug'=>'required|string',
             'edit_brand_name'=>'required|string',
             'edit_brand_note'=>'nullable|string',
-            'edit_brand_logo' => 'nullable|file'
+            'edit_brand_logo' => 'nullable|file|mimes:jpeg,jpg,png,gif'
         ],[],[
             'edit_brand_slug'=>'tên',
             'edit_brand_name'=>'tên hiển thị',

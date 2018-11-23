@@ -153,6 +153,7 @@ $(document).ready(function () {
         drEvent.clearElement();
     });
 
+    /*bind name to slug when typing*/
     $('#create_brand_name').on('input',(event)=>{
         let displayName = $(event.currentTarget).val();
         $('input[name=create_brand_slug]').val(Helpers.slug(displayName));

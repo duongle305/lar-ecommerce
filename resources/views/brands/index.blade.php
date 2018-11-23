@@ -19,9 +19,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tab1">Danh mục thương hiệu</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tab2">Profile</a>
-                        </li>
                     </ul>
                 </div>
                 <div class="card-block">
@@ -52,8 +49,6 @@
                                 </tr>
                                 </thead>
                             </table>
-                        </div>
-                        <div id="tab2" class="tab-pane">
                         </div>
                     </div>
                 </div>
@@ -94,7 +89,7 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_brand_logo">Logo</label>
-                        <input type="file" id="edit_brand_logo" name="edit_brand_logo" class="dropify" data-default-file="http://lar-ecommerce.local/storage/uploads/brand_logo/default_logo.png">
+                        <input type="file" id="edit_brand_logo" name="edit_brand_logo" class="dropify" data-default-file="http://lar-ecommerce.local/storage/uploads/brand_logo/default_logo.png" accept="image/*">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -137,7 +132,7 @@
                     </div>
                     <div class="form-group">
                         <label for="create_brand_logo">Logo</label>
-                        <input type="file" id="create_brand_logo" name="create_brand_logo" class="dropify">
+                        <input type="file" id="create_brand_logo" name="create_brand_logo" class="dropify" accept="image/*">
                     </div>
                 </div>
                 <div class="modal-footer">
