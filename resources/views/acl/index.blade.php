@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css') }}">
 @endsection
 
 @section('content')
@@ -121,6 +123,131 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal create user -->
+    <div id="modal_create_user" class="modal animated bounceInDown" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="form_create_user" action="{{ route('acl.users.store') }}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Thêm mới nhân viên</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Thông tin bắt buộc</h6>
+                        <div class="row mt-20">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_user_name">Họ & Tên <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="create_user_name" id="create_user_name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_user_email">Email <span class="text-danger">*</span></label>
+                                    <input class="form-control" name="create_user_email" id="create_user_email">
+                                    <small class="form-text text-muted">Email phải không trùng với những email đã được sử dụng bởi các nhân viện khác
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_role_name">Giới tính <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="create_user_gender" name="create_user_gender">
+                                        <option value="M">Nam</option>
+                                        <option value="F">Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="create_role_display_name">Ngày sinh</label>
+                                    <input class="form-control" placeholder="mm/dd/yyyy" id="create_user_birthday" name="create_user_birthday">
+                                </div>
+                            </div>
+                        </div>
+                        <h6>Thông tin thêm</h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="create_user_check_add_address" name="create_user_check_add_address">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Thêm địa chỉ</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row add-address">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="province" class="col-md-12">Tỉnh/Thành phố</label>
+                                    <select data-placeholder="Chọn Tỉnh/Thành phố"  name="create_user_province" id="create_user_province" title="Chọn Tỉnh/Thành phố"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="district" class="col-md-12">Quận/Huyện</label>
+                                    <select data-placeholder="Chọn Quận/Huyện" title="Chọn Quận/Huyện" name="create_user_district" id="create_user_district"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="ward" class="col-md-12">Phường/Xã</label>
+                                    <select data-placeholder="Chọn Phường/Xã" title="Chọn Phường/Xã" name="create_user_ward" id="create_user_ward"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row add-address">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="house_street">Số nhà, tên đường</label>
+                                    <textarea class="form-control" id="create_user_house_street" name="create_user_house_street" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-muted m-b-30 font-13">Mật khẩu mặc định cho tài khoản này là <b>"password"</b></p>
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="create_user_check_change_pass" name="create_user_check_change_pass">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Đổi mật khẩu</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row add-pass">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="create_role_name">Mật khẩu</label>
+                                    <input class="form-control" type="password" name="create_user_password" id="create_user_password">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="create_role_name">Nhập lại mật khẩu</label>
+                                    <input class="form-control" type="password" name="create_user_confirm_password" id="create_user_confirm_password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><i class="ti-plus"></i> {{ __('Hoàn thành') }}
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                                class="ti-close"></i> {{ __('Đóng') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal create role -->
     <div id="modal_create_role" class="modal animated bounceInDown" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -384,12 +511,12 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/JSZip/jszip.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/pdfmake/build/pdfmake.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/pdfmake/build/vfs_fonts.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
-    <script type="text/javascript"
-            src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection
 

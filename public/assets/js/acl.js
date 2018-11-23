@@ -504,3 +504,223 @@ $(document).ready(() => {
     });
 
 });
+$(document).ready(()=>{
+    let isInputAddress = false;
+    let isCustomPassword = false;
+    let provinceSelected = null;
+    let districtSelected = null;
+    let wardSelected = null;
+    let province = $('select[name=create_user_province]');
+    let district = $('select[name=create_user_district]');
+    let ward = $('select[name=create_user_ward]');
+    let checkAddAddress = $('input[name=create_user_check_add_address]');
+    let checkChangePass = $('input[name=create_user_check_change_pass]');
+    let modalCreateUser = $('#modal_create_user');
+    let createUserName = $('#create_user_name');
+    let createUserEmail = $('#create_user_email');
+    let createUserBirthday = $('#create_user_birthday');
+    let createUserGender = $('#create_user_gender');
+
+    modalCreateUser.on('show.bs.modal',(event)=>{
+        $('.add-address').hide();
+        $('.add-pass').hide();
+        isInputAddress = false;
+        provinceSelected = null;
+        districtSelected = null;
+        wardSelected = null;
+        province.val(null).trigger('change');
+        district.val(null).trigger('change');
+        ward.val(null).trigger('change');
+        createUserName.val('');
+        createUserEmail.val('');
+        createUserBirthday.val('');
+        createUserGender.val('M');
+        checkAddAddress.attr('checked',false);
+        checkChangePass.attr('checked',false);
+    });
+
+    checkAddAddress.change(event=>{
+        if($(event.target).is(':checked')){
+            isInputAddress = true;
+            $('.add-address').show();
+        }else {
+            isInputAddress = false;
+            $('.add-address').hide();
+        }
+    });
+
+    checkChangePass.change(event=>{
+        if($(event.target).is(':checked')){
+            isCustomPassword = true;
+            $('.add-pass').show();
+        }else {
+            isCustomPassword = false;
+            $('.add-pass').hide();
+        }
+    });
+
+    province.select2({
+        ajax: {
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url : '/acl/users/get-provinces',
+            dataType: 'json',
+            delay : 250,
+            method:'POST',
+            data : function(params){
+                return {
+                    keyword : params.term,
+                    page : params.page
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: $.map(data.data, function (item) {
+                        return {
+                            text: `${item.type} ${item.name}`,
+                            id: item.id
+                        }
+                    }),
+                    pagination: {
+                        more : (params.page  * 10) < data.total
+                    }
+                };
+            },
+            cache: true
+        },
+        templateResult : function (repo) {
+            if(repo.loading) return repo.text;
+            var markup = repo.text;
+            return markup;
+        },
+        templateSelection : function(repo) {
+            return repo.text;
+        },
+        escapeMarkup : function(markup){ return markup; }
+    });
+    province.on('select2:select',(event)=>{
+        provinceSelected = event.params.data.id;
+        districtSelected = null;
+        wardSelected = null;
+        district.val(null).trigger('change');
+        ward.val(null).trigger('change');
+    });
+    district.select2({
+        ajax: {
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url : '/acl/users/get-districts',
+            dataType: 'json',
+            delay : 250,
+            method:'POST',
+            data : function(params){
+                return {
+                    province: provinceSelected,
+                    keyword : params.term,
+                    page : params.page
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: $.map(data.data, function (item) {
+                        return {
+                            text: `${item.type} ${item.name}`,
+                            id: item.id
+                        }
+                    }),
+                    pagination: {
+                        more : (params.page  * 10) < data.total
+                    }
+                };
+            },
+            cache: true
+        },
+        templateResult : function (repo) {
+            if(repo.loading) return repo.text;
+            var markup = repo.text;
+            return markup;
+        },
+        templateSelection : function(repo) {
+            return repo.text;
+        },
+        escapeMarkup : function(markup){ return markup; }
+    });
+    district.on('select2:select',(event)=>{
+        districtSelected = event.params.data.id;
+        wardSelected = null;
+        ward.val(null).trigger('change');
+    });
+    ward.select2({
+        ajax: {
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url : '/acl/users/get-wards',
+            dataType: 'json',
+            delay : 250,
+            method:'POST',
+            data : function(params){
+                return {
+                    district: districtSelected,
+                    keyword : params.term,
+                    page : params.page
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: $.map(data.data, function (item) {
+                        return {
+                            text: `${item.type} ${item.name}`,
+                            id: item.id
+                        }
+                    }),
+                    pagination: {
+                        more : (params.page  * 10) < data.total
+                    }
+                };
+            },
+            cache: true
+        },
+        templateResult : function (repo) {
+            if(repo.loading) return repo.text;
+            var markup = repo.text;
+            return markup;
+        },
+        templateSelection : function(repo) {
+            return repo.text;
+        },
+        escapeMarkup : function(markup){ return markup; }
+    });
+    createUserBirthday.datepicker({
+        autoclose: true,
+        format: "dd/mm/yyyy",
+    });
+    $('#form_create_user').submit(event=>{
+        event.preventDefault();
+        let url = $(event.target).attr('action');
+        let formData = new FormData(event.target);
+        if(isInputAddress && province.select2('data').length > 0 && district.select2('data').length > 0 && ward.select2('data').length > 0){
+            formData.append('province_text',province.select2('data')[0].text);
+            formData.append('district_text',district.select2('data')[0].text);
+            formData.append('ward_text',ward.select2('data')[0].text);
+        }
+        Loading.show();
+        axios.post(url,formData).then(response=>{
+            Loading.close();
+            if(response.data.code === 1){
+                toastr.success(response.data.message,'Thông báo');
+                $('#table_users').DataTable().ajax.reload();
+                modalCreateUser.modal("hide");
+            }
+        }).catch(error=>{
+            Loading.close();
+            if(error.response.status === 403){
+                let errors = error.response.data.errors;
+                let message = '';
+                for (let key in errors){
+                    message+=errors[key]+'<br>';
+                }
+                toastr.error(message,'Thông báo');
+            }
+        })
+    })
+});

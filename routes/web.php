@@ -20,7 +20,13 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('acl')->group(function(){
         Route::get('','AclController@index')->name('acl.index');
-        Route::get('users','AclController@allUsers')->name('acl.users');
+        Route::prefix('users')->group(function (){
+            Route::get('','AclController@allUsers')->name('acl.users');
+            Route::post('get-provinces','AclController@getProvinces')->name('acl.users.get-provinces');
+            Route::post('get-districts','AclController@getDistricts')->name('acl.users.get-districts');
+            Route::post('get-wards','AclController@getWards')->name('acl.users.get-wards');
+            Route::post('store','AclController@storeUser')->name('acl.users.store');
+        });
 
         Route::prefix('roles')->group(function(){
             Route::get('','AclController@allRoles')->name('acl.roles');

@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\District;
 use App\Permission;
+use App\Province;
 use App\Role;
 use App\User;
+use App\Ward;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use function PHPSTORM_META\elementType;
 use Yajra\DataTables\DataTables;
 
 class AclController extends Controller
@@ -44,6 +50,95 @@ class AclController extends Controller
             return [];
         }
     }
+
+    public function getProvinces(Request $request){
+        $provinces = Province::
+            where('name','like',"%{$request->keyword}%")
+            ->paginate(10);
+        return response()->json($provinces,200);
+    }
+
+    public function getDistricts(Request $request){
+        $provinceId= $request->province;
+        $keyWord = $request->keyword;
+        $districts = District::
+            where('province_id',$provinceId)
+            ->where('name','like',"%{$keyWord}%")
+            ->paginate(10);
+        return response()->json($districts,200);
+    }
+
+    public function getWards(Request $request){
+        $districtId =$request->district;
+        $keyWord = $request->keyword;
+        $wards = Ward::
+            where('district_id',$districtId)
+            ->where('name','like',"%{$keyWord}%")
+            ->paginate(10);
+        return response()->json($wards,200);
+    }
+
+    public function storeUser(Request $request){
+        $validator = Validator::make($request->all(),[
+            'create_user_name'=>'required|string',
+            'create_user_email'=>'required|email|unique:users,email',
+            'create_user_gender'=>'required|string',
+            'create_user_birthday' =>'nullable',
+        ],[],[
+            'create_user_name'=>'Tên',
+            'create_user_email'=>'Email',
+            'create_user_gender'=>'Giới tính',
+            'create_user_birthday' => 'Ngày sinh'
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+        $user = new User();
+        $user->name = $request->create_user_name;
+        $user->email = $request->create_user_email;
+        $user->gender = $request->create_user_gender;
+        if($request->create_user_birthday){
+            $user->birthday = Carbon::createFromFormat('d/m/Y', $request->create_user_birthday)->toDateString();
+        }
+
+        if($request->create_user_check_add_address){
+            $validator = Validator::make($request->all(),[
+                'create_user_province'=>'required|exists:provinces,id',
+                'create_user_district'=>'required|exists:districts,id',
+                'create_user_ward'=>'required|exists:wards,id',
+                'create_user_house_street' =>'required|string',
+            ],[],[
+                'create_user_province'=>'Tỉnh/Thành phố',
+                'create_user_district'=>'Quận/Huyện',
+                'create_user_ward'=>'Phường/Xã',
+                'create_user_house_street' => 'Số nhà, tên đường'
+            ]);
+            if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+            $user->address = $request->create_user_house_street.', '.$request->ward_text.', '.$request->district_text.', '.$request->province_text;
+        }
+
+        if($request->create_user_check_change_pass){
+            $validator = Validator::make($request->all(),[
+                'create_user_password'=>'required|min:6|same:create_user_confirm_password',
+                'create_user_confirm_password'=>'required|min:6',
+            ],[],[
+                'create_user_password'=>'Mật khẩu',
+                'create_user_confirm_password'=>'Nhập lại mật khẩu',
+            ]);
+            if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+            $user->password = Hash::make($request->create_user_password);
+
+        } else{
+            $user->password = Hash::make('password');
+        }
+        $user->role_id = 2;
+        $user->state = 'ACTIVE';
+        $user->save();
+
+        return response()->json(['code' => 1,'message'=>'Tạo mới nhân viên thành công!'],200);
+    }
+
 
     public function allRoles()
     {
