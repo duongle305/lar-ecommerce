@@ -21,8 +21,6 @@ class CreateProductsTable extends Migration
             $table->string('code');
             $table->decimal('price');
             $table->unsignedInteger('quantity')->default(0);
-            $table->unsignedInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands');
             $table->enum('status',['ACTIVE','INACTIVE']);
