@@ -47,6 +47,9 @@ class CustomerController extends Controller
                                 </div>
                             </div>';
                 })
+                ->addColumn('phone',function ($customer){
+                    return ($customer->phone) ? $customer->phone : 'N/A';
+                })
                 ->addColumn('avatar',function ($customer){
                     return '<div class="text-center"><img style="width: 60px;height: 60px;" class="rounded" src="'.asset('storage/uploads/customer_avatar/'.$customer->avatar).'"/></div>';
 
