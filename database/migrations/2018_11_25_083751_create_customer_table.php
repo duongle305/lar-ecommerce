@@ -19,11 +19,16 @@ class CreateCustomerTable extends Migration
             $table->string('email')->nullable();
             $table->string('password')->nullable();
             $table->string('address')->nullable();
+            $table->string('another_address')->nullable();
             $table->string('phone')->nullable();
             $table->enum('state',['ACTIVE','INACTIVE'])->default('INACTIVE');
             $table->date('birthday')->nullable();
             $table->string('avatar')->default('user_default.png');
-//            $table->string('');
+            $table->enum('gender',['M','F'])->default('M');
+            $table->string('company')->nullable();
+            $table->string('country')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }
