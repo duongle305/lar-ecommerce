@@ -69,4 +69,8 @@ Route::middleware('auth')->group(function (){
         Route::delete('delete/{id}','BrandController@destroy')->name('brands.delete');
         Route::post('store','BrandController@store')->name('brands.store');
     });
+
+    Route::prefix('customers')->group(function (){
+        Route::get('','CustomerController@index')->name('customers.index');
+    });
 });
