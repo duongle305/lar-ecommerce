@@ -50,7 +50,7 @@ $(document).ready(function () {
         let editBrandNote = $('textarea[name=edit_brand_note]');
         let editBrandLogo = $('input[name=edit_brand_logo]');
         let inputShowImg = $('.dropify-render img')[0];
-
+        let removeBtn = $('.dropify-clear')[0];
         editBrandID.val('');
         editBrandName.val('');
         editBrandSlug.val('');
@@ -64,13 +64,20 @@ $(document).ready(function () {
             editBrandSlug.val(response.data.slug);
             editBrandNote.val(response.data.note);
             $(inputShowImg).attr('src', response.data.logo_url);
+            $(removeBtn).hide();
             Loading.close();
         }).catch(error => {
-            console.log(error);
-            // toastr.error(error.response.message);
             Loading.close();
         })
     });
+
+    $('input[name=edit_brand_logo]').change(event=>{
+        let removeBtn = $('.dropify-clear')[0];
+        if($(event.target)[0].files.length > 0){
+            $(removeBtn).show();
+        } else $(removeBtn).hide();
+    });
+
     /*submit form edit brand*/
     $('#form_edit_brand').submit((e) => {
         e.preventDefault();

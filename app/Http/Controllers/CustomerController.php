@@ -36,13 +36,13 @@ class CustomerController extends Controller
                                     <a href="#" 
                                        class="dropdown-item" 
                                        data-id="'.$customer->id.'" 
-                                       data-edit="'.route('brands.edit',$customer->id).'" 
+                                       data-edit="" 
                                        data-toggle="modal" 
                                        data-target="#modal_edit_brand" >
                                     <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
-                                       data-delete="'.route('brands.delete',$customer->id).'" >
+                                       data-delete="" >
                                     <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
