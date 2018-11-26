@@ -69,4 +69,13 @@ Route::middleware('auth')->group(function (){
         Route::delete('delete/{id}','BrandController@destroy')->name('brands.delete');
         Route::post('store','BrandController@store')->name('brands.store');
     });
+
+    Route::prefix('customers')->group(function (){
+        Route::get('','CustomerController@index')->name('customers.index');
+        Route::get('all-customers','CustomerController@allCustomers')->name('customers.all-customers');
+        Route::post('store','CustomerController@store')->name('customers.store');
+        Route::post('get-provinces','CustomerController@getProvinces')->name('customers.get-provinces');
+        Route::post('get-districts','CustomerController@getDistricts')->name('customers.get-districts');
+        Route::post('get-wards','CustomerController@getWards')->name('customers.get-wards');
+    });
 });
