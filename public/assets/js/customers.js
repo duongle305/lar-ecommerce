@@ -193,6 +193,8 @@ $(document).ready(function () {
     modalCreateCustomer.on('show.bs.modal',event=>{
         $('.add-address').hide();
         $('.add-pass').hide();
+        isChangeassword = false;
+        isAddAddress = false;
         provinceSelected = null;
         districtSelected = null;
         wardSelected = null;
@@ -212,6 +214,7 @@ $(document).ready(function () {
 
     createCustomerCheckAddAddress.change(event=>{
        if($(event.target).is(':checked')){
+           isAddAddress = true;
            $('.add-address').show();
        } else {
            $('.add-address').hide();
@@ -220,6 +223,7 @@ $(document).ready(function () {
 
     createCustomerCheckChangePass.change(event=>{
         if($(event.target).is(':checked')){
+            isChangeassword = true;
             $('.add-pass').show();
         } else {
             $('.add-pass').hide();
@@ -231,14 +235,24 @@ $(document).ready(function () {
         Loading.show();
         let url = $(event.target).attr('action');
         let formData = new FormData(event.target);
+        if(isAddAddress &&
+            createCustomerProvince.select2('data').length >0 &&
+            createCustomerDistrict.select2('data').length > 0 &&
+            createCustomerWard.select2('data').length > 0
+        ){
+            formData.append('province_text',createCustomerProvince.select2('data')[0].text);
+            formData.append('district_text',createCustomerDistrict.select2('data')[0].text);
+            formData.append('ward_text',createCustomerWard.select2('data')[0].text);
+        }
         axios.post(url,formData).then(response=>{
             Loading.close();
             if(response.data.code === 1){
+                $('#table_customers').DataTable().ajax.reload();
                 toastr.success(response.data.message,'Thông báo');
-
             }
         }).catch(error=>{
             Loading.close();
+            $('#table_customers').DataTable().ajax.reload();
             if(error.response.status == 403){
                 let html = '';
                 let errors = error.response.data.errors;

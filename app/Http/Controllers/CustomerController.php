@@ -6,6 +6,7 @@ use App\Customer;
 use App\District;
 use App\Province;
 use App\Ward;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -35,7 +36,7 @@ class CustomerController extends Controller
                                     <a href="#" 
                                        class="dropdown-item" 
                                        data-id="'.$customer->id.'" 
-                                       data-edit="'.route('s.edit',$customer->id).'" 
+                                       data-edit="'.route('brands.edit',$customer->id).'" 
                                        data-toggle="modal" 
                                        data-target="#modal_edit_brand" >
                                     <i class="ti-pencil"></i> Sửa</a>
@@ -47,7 +48,7 @@ class CustomerController extends Controller
                             </div>';
                 })
                 ->addColumn('avatar',function ($customer){
-                    return '<div class="text-center"><img style="width: 60px;height: 60px;" class="rounded" src="'.asset('storage/uploads/customer_avatar/'.$customer->logo).'"/></div>';
+                    return '<div class="text-center"><img style="width: 60px;height: 60px;" class="rounded" src="'.asset('storage/uploads/customer_avatar/'.$customer->avatar).'"/></div>';
 
                 })
                 ->addIndexColumn()
@@ -107,16 +108,24 @@ class CustomerController extends Controller
     {
         $validate = Validator::make($request->all(),[
             'create_customer_name' => 'required|string',
-            'create_customer_email' => 'required|email|unique: customer,email',
+            'create_customer_email' => 'required|email|unique:customers,email',
             'create_customer_gender' => 'required|string',
             'create_customer_birthday' => 'string|nullable'
         ],[],[
-            'create_customer_name' => 'Tên',
+            'create_customer_name' => 'Họ & Tên',
             'create_customer_email' => 'Email',
             'create_customer_gender' => 'Giới tính',
             'create_customer_birthday' => 'Ngày sinh'
         ]);
         if($validate->fails()) return response()->json(['code'=>0,'errors'=>$validate->errors()],403);
+
+        $customer = new Customer();
+        $customer->name = $request->create_customer_name;
+        $customer->email = $request->create_customer_email;
+        $customer->gender = $request->create_customer_gender;
+        (!empty($request->create_customer_birthday)) ?
+            $customer->birthday = Carbon::createFromFormat('d/m/Y', $request->create_customer_birthday)->toDateString() :
+            $customer->birthday = null;
 
         if($request->create_customer_check_add_address){
             $validate = Validator::make($request->all(),[
@@ -132,7 +141,24 @@ class CustomerController extends Controller
             ]);
 
             if($validate->fails()) return response()->json(['code'=>0,'errors'=>$validate->errors()],403);
+
+            $customer->address = "{$request->create_customer_house_street}, {$request->ward_text}, {$request->district_text}, {$request->province_text}";
         }
+
+        if($request->create_customer_check_change_pass){
+            $validate = Validator::make($request->all(),[
+                'create_customer_password' => 'required|string|min:6',
+                'create_customer_confirm_password' => 'required|string|min:6|same:create_customer_password'
+            ],[],[
+                'create_customer_password' => 'Mật khẩu',
+                'create_customer_confirm_password' => 'Nhập lại mật khẩu'
+            ]);
+            if($validate->fails()) return response()->json(['code'=>0,'errors'=>$validate->errors()],403);
+            $customer->password = \Hash::make($request->create_customer_password);
+        } else $customer->password = \Hash::make('password');
+
+        $customer->save();
+        return response()->json(['code'=>1,'message'=>'Thêm mới khách hàng thành công!'],200);
     }
 
     /**
