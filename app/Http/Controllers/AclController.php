@@ -71,8 +71,7 @@ class AclController extends Controller
     public function getWards(Request $request){
         $districtId =$request->district;
         $keyWord = $request->keyword;
-        $wards = Ward::
-            where('district_id',$districtId)
+        $wards = Ward::where('district_id',$districtId)
             ->where('name','like',"%{$keyWord}%")
             ->paginate(10);
         return response()->json($wards,200);
