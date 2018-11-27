@@ -36,6 +36,8 @@
                                             <div class="form-group">
                                                 <label for="name">Tên <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" id="name" class="form-control" placeholder="Tên">
+                                                <small class="form-text text-muted">Tên phải là chữ thường không dấu vd: <code>master</code>
+                                                </small>
                                             </div>
                                             <div class="form-group">
                                                 <label for="note">Ghi chú</label>

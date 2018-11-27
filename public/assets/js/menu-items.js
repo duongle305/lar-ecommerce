@@ -34,7 +34,88 @@ $(document).ready(()=>{
         html+= '</ol>';
         return html;
     }
-    axios.get('nestable-menu-builder/'+menuId).then(resp=>{
+    function loadMenu(){
+        return axios.get('nestable-menu-builder/'+menuId).then(resp=>{
+            return resp;
+        })
+    }
+    loadMenu().then(function(resp){
         $('#menu-items').html(parseNestable(resp.data));
-    }).catch(err=>{});
+    }).catch(err=>{
+        let resp = err.response;
+        if(resp.status === 403){
+            let errors = resp.data.errors;
+            let message = '';
+            for(let key in errors){
+                message += errors[key][0]+"\n";
+            }
+            toastr.error(message,'Thông báo');
+        }
+        if(resp.status === 500){
+            toastr.error(resp.data.message,'Thông báo');
+        }
+    });
+    $('#btn-reset-create-menu').click(function(){
+        $('#form_create_menu_item').trigger('reset');
+    });
+    $('#link_type').on('change',function(event){
+        let ipRoute = $('#route');
+        let ipParameters = $('#parameters');
+        let ipUrl = $('#url');
+        let linkType = $(event.target).val();
+        ipRoute.val('');
+        ipParameters.val('');
+        ipUrl.val('');
+        if(linkType === 'route'){
+            ipRoute.parent().slideDown();
+            ipParameters.parent().slideDown();
+            ipUrl.parent().slideUp();
+        }else{
+            ipRoute.parent().slideUp();
+            ipParameters.parent().slideUp();
+            ipUrl.parent().slideDown();
+        }
+    });
+    $('#form_create_menu_item').submit(function(e){
+        e.preventDefault();
+        Loading.show();
+        let url = $(e.target).attr('action');
+        let formData = new FormData(e.target);
+        axios.post(url,formData).then(resp=>{
+            Loading.close();
+            $(e.target).trigger('reset');
+            toastr.success(resp.data.message,'Thông báo');
+            loadMenu().then(function(resp){
+                $('#menu-items').html(parseNestable(resp.data));
+            }).catch(err=>{
+                let resp = err.response;
+                if(resp.status === 403){
+                    let errors = resp.data.errors;
+                    let message = '';
+                    for(let key in errors){
+                        message += errors[key][0]+"\n";
+                    }
+                    toastr.error(message,'Thông báo');
+                }
+                if(resp.status === 500){
+                    toastr.error(resp.data.message,'Thông báo');
+                }
+            });
+        }).catch(err=>{
+            let resp = err.response;
+            if(resp.status == 403){
+                let errors = resp.data.errors;
+                let message = '';
+                for(let key in errors){
+                    message += errors[key][0]+"\n";
+                }
+                toastr.error(message,'Thông báo');
+            }
+            if(resp.status === 500){
+                toastr.error(resp.data.message,'Thông báo');
+            }
+            Loading.close();
+        });
+    });
+
 });

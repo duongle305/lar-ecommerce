@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use function PHPSTORM_META\elementType;
 use Yajra\DataTables\DataTables;
 
 class AclController extends Controller

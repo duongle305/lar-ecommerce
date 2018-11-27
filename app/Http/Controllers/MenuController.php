@@ -106,10 +106,42 @@ class MenuController extends Controller
         return view('menu-builders.menu-item');
     }
 
+    private function validateStoreMenuItem(Request $request){
+        $rules = [
+            'menu_id'=>'required|exists:menus,id',
+            'title'=>'required|string',
+            'icon_class'=>'nullable|string',
+            'target'=>'required|in:_self,_blank',
+        ];
+        if($request->link_type == 'route'){
+            $rules['route'] = 'required|string';
+            $rules['parameters'] = ' nullable|string';
+        }else{
+            $rules['url'] = 'required|string';
+        }
+        $validator = Validator::make($request->all(),$rules,[],[
+            'icon_class'=>'font icon class',
+        ]);
+        return $validator;
+    }
     public function storeMenuItem(Request $request)
     {
-        
+        $validator = $this->validateStoreMenuItem($request);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+        MenuItem::create([
+            'menu_id'=>$request->menu_id,
+            'title'=>$request->title,
+            'slug'=>str_slug($request->title),
+            'icon_class'=>$request->icon_class,
+            'url'=>$request->url,
+            'route'=>$request->route,
+            'parameters'=>$request->parameters,
+            'target'=>$request->target,
+        ]);
+        return response()->json(['message'=>'Thêm mới thành công.'],200);
     }
+
+
     public function nestable($id){
         $menu = Menu::select('id')->findOrFail($id);
         return response()->json($menu->menuItem(),200);
