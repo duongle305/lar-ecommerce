@@ -4,6 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Menu
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Menu newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Menu newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Menu query()
+ * @mixin \Eloquent
+ */
 class Menu extends Model
 {
     protected $fillable = ['name','note'];
@@ -14,6 +22,6 @@ class Menu extends Model
             ->where('parent_id',NULL)
             ->with(['children'])
             ->orderBy('orders')
-            ->get();
+            ->get(['id','title','slug','icon_class','url','route','parameters','target','parent_id']);
     }
 }

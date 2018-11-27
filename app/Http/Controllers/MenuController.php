@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\MenuItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -16,7 +17,7 @@ class MenuController extends Controller
     public function allMenus()
     {
         try{
-            return DataTables::of(Menu::all())
+            return DataTables::of(Menu::select(['id','name','note'])->get())
                 ->addColumn('actions',function($menu){
                     return '<div class="dropdown dropup">
                                 <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
@@ -109,7 +110,28 @@ class MenuController extends Controller
     {
         
     }
-    public function nestableMenuItem($id){
-        $menu = Menu::find($id);
+    public function nestable($id){
+        $menu = Menu::select('id')->findOrFail($id);
+        return response()->json($menu->menuItem(),200);
+    }
+
+    public function nestableUpdate(Request $request)
+    {
+        $items = $request->items;
+        $this->prepareNestable($items);
+        return response()->json(['message'=>'Cập nhập menu item thành công.'],200);
+    }
+    private function prepareNestable($items, $parentId = null, $index = 0){
+        foreach ($items as $item){
+            $item = (object) $item;
+            $index++;
+            $menuItem = MenuItem::select(['id'])->find($item->id);
+            $menuItem->update([
+                'parent_id'=>$parentId,
+                'orders'=>$index,
+            ]);
+            if(isset($item->children))
+                $this->prepareNestable($item->children,$item->id,$index);
+        }
     }
 }

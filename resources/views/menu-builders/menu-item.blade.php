@@ -21,12 +21,15 @@
                             <div id="tab1" class="tab-pane active">
                                 <div class="row">
                                     <div class="col-lg-6">
+                                        <form action="{{ route('menu-builders.menu-items.store') }}">
+                                            <div class="form-group">
 
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="dd" id="nestable2">
-                                            <ol class="dd-list">
-                                            </ol>
+                                        <input type="hidden" id="menu_id" value="{{ request()->route('id') }}">
+                                        <div class="dd" id="menu-items">
                                         </div>
                                     </div>
                                 </div>
@@ -41,4 +44,5 @@
 
 @section('pageJS')
     <script type="text/javascript" src="{{ asset('assets/vendors/nestable/jquery.nestable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/menu-items.js') }}"></script>
 @endsection

@@ -53,8 +53,8 @@ class BrandController extends Controller
                 })
                 ->addColumn('logo',function ($brand){
                     return $brand->logo ?
-                        '<div class="text-center"><img style="width: 60px;height: 60px;" class="rounded" src="'.asset('storage/uploads/brand_logo/'.$brand->logo).'"/></div>' :
-                        '<div class="text-center"><img style="width: 60px;height: 60px;" class="rounded" src="'.asset('storage/uploads/brand_logo/default_logo.png').'"/></div>';
+                        '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset('storage/uploads/brand_logo/'.$brand->logo).'"/></div>' :
+                        '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset('storage/uploads/brand_logo/default_logo.png').'"/></div>';
                 })
                 ->addIndexColumn()
                 ->removeColumn('created_at')
@@ -71,6 +71,15 @@ class BrandController extends Controller
 
     }
 
+    private function uploadLogo(Request $request, $key){
+        if($request->hasFile($key)){
+            $logo = $request->file($key);
+            $logoName = time().'-'.$logo->getClientOriginalName();
+            $logo->move(storage_path('app/public/uploads/brand_logo'),$logoName);
+            return $logoName;
+        }
+        return 'default_logo.png';
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -83,7 +92,7 @@ class BrandController extends Controller
             'create_brand_slug'=>'required|string|unique:brands,slug',
             'create_brand_name'=>'required|string|unique:brands,name',
             'create_brand_note'=>'nullable|string',
-            'create_brand_logo' => 'nullable|file|mimes:jpeg,jpg,png,gif'
+            'create_brand_logo' => 'required|file|mimes:jpeg,jpg,png,gif'
         ],[],[
             'create_brand_slug'=>'tên',
             'create_brand_name'=>'tên hiển thị',
@@ -96,15 +105,9 @@ class BrandController extends Controller
             'name' => $request->create_brand_name,
             'slug' => $request->create_brand_slug,
             'note' => $request->create_brand_note,
+            'logo' => $this->uploadLogo($request,'create_brand_logo'),
         ]);
 
-        if($request->hasFile('create_brand_logo')){
-            $logo = $request->file('create_brand_logo');
-            $logoName = time().'-'.$logo->getClientOriginalName();
-            $logo->move(storage_path('app/public/uploads/brand_logo'),$logoName);
-            $brand->logo = $logoName;
-            $brand->save();
-        }
         return response()->json(['message' => "Tạo mới thương hiệu <b>{$brand->name}</b> thành công!"],200);
     }
 

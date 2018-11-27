@@ -4,6 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\District
+ *
+ * @property-read \App\Province $province
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Ward[] $wards
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\District newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\District newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\District query()
+ * @mixin \Eloquent
+ */
 class District extends Model
 {
     protected $table='districts';
@@ -11,7 +21,7 @@ class District extends Model
     public $timestamps =true;
 
     public function wards(){
-        return $this->hasMany('App\Wards');
+        return $this->hasMany('App\Ward');
     }
     
     public function province(){

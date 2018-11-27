@@ -2,7 +2,7 @@
 use App\Menu;
 if(!function_exists('dgg_menu')){
     function dgg_menu($name){
-        $menus = optional(Menu::where('name', $name)->first())->menuItem();
+        $menus = optional(Menu::where('name', $name)->select(['id'])->first())->menuItem();
         $html = '';
         if($menus){
             foreach ($menus as $item){

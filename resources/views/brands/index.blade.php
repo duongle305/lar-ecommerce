@@ -89,7 +89,7 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_brand_logo">Logo</label>
-                        <input type="file" id="edit_brand_logo" name="edit_brand_logo" class="dropify" data-default-file="http://lar-ecommerce.local/storage/uploads/brand_logo/default_logo.png" accept="image/*">
+                        <input type="file" id="edit_brand_logo" name="edit_brand_logo" class="dropify" data-default-file="{{ asset('storage/uploads/brand_logo/default_logo.png') }}" accept="image/*">
                     </div>
                 </div>
                 <div class="modal-footer">

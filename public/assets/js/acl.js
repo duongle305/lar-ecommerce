@@ -99,7 +99,7 @@ $(document).ready(() => {
             Loading.close();
         }).catch(err=>{
             let resp = err.response;
-            if(resp.status = 403){
+            if(resp.status == 403){
                 let errors = resp.data.errors;
                 let message = '';
                 for(let key in errors){

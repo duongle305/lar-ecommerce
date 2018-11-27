@@ -146,16 +146,8 @@ $(document).ready(function () {
     });
 
     $('#modal_create_brand').on('show.bs.modal',(event)=>{
-        let createBrandSlug = $('input[name=create_brand_slug]');
-        let createBrandName = $('input[name=create_brand_name]');
-        let createBrandNote = $('textarea[name=create_brand_note]');
-        let createBrandLogo = $('input[name=create_brand_logo]');
+        $('#form_create_brand').trigger('reset');
         let drEvent = createBrandLogo.dropify().data('dropify');
-
-        createBrandName.val('');
-        createBrandSlug.val('');
-        createBrandLogo.val(null);
-        createBrandNote.val('');
         drEvent.resetPreview();
         drEvent.clearElement();
     });
@@ -176,17 +168,20 @@ $(document).ready(function () {
             $('#table_brands').DataTable().ajax.reload();
             $('#modal_create_brand').modal('hide');
             Loading.close();
-        }).catch(er=>{
-            if(parseInt(er.response.status) === 500){
-                toastr.error(er.response.data.error,'Thông báo');
-            } else{
-                let errors = er.response.data.errors;
+        }).catch(err=>{
+            let resp = err.response;
+            if(resp.status == 403){
+                let errors = resp.data.errors;
                 let message = '';
-                for (let key in errors) {
-                    message += errors[key][0] + "\n";
+                for(let key in errors){
+                    message += errors[key][0]+"\n";
                 }
                 toastr.error(message,'Thông báo');
             }
+            if(resp.status === 500){
+                toastr.error(resp.data.message,'Thông báo');
+            }
+            Loading.close();
             Loading.close();
         });
     });

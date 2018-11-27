@@ -4,6 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\MenuItem
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\MenuItem[] $children
+ * @property-read \App\MenuItem $parent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MenuItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MenuItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\MenuItem query()
+ * @mixin \Eloquent
+ */
 class MenuItem extends Model
 {
     protected $fillable = ['menu_id','title','slug','icon_class','url','route','parameters','target','parent_id','orders'];
