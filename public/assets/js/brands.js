@@ -147,7 +147,7 @@ $(document).ready(function () {
 
     $('#modal_create_brand').on('show.bs.modal',(event)=>{
         $('#form_create_brand').trigger('reset');
-        let drEvent = createBrandLogo.dropify().data('dropify');
+        let drEvent = $('input[name=create_brand_logo]').dropify().data('dropify');
         drEvent.resetPreview();
         drEvent.clearElement();
     });

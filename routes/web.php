@@ -79,4 +79,8 @@ Route::middleware('auth')->group(function (){
         Route::post('get-districts','CustomerController@getDistricts')->name('customers.get-districts');
         Route::post('get-wards','CustomerController@getWards')->name('customers.get-wards');
     });
+
+    Route::prefix('products')->group(function (){
+        Route::get('','ProductController@index')->name('products.index');
+    });
 });

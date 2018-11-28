@@ -1,7 +1,6 @@
 $(document).ready(function () {
     let tableCustomers = $('#table_customers');
     let btnReloadCustomers = $('#btn-reload-customers');
-
     tableCustomers.DataTable({
         processing: true,
         serverSide: true,
@@ -31,14 +30,21 @@ $(document).ready(function () {
             sInfoFiltered: '(lọc từ tổng số _MAX_ dòng)',
             sSearch: 'Tìm kiếm:'
         }
+    });
+    btnReloadCustomers.click(event=>{
+        event.preventDefault();
+        tableCustomers.DataTable().ajax.reload();
     })
 });
 $(document).ready(function () {
+    $('.dropify').dropify();
     let isAddAddress = false;
     let isChangeassword = false;
+    let isAddAvatar = false;
     let provinceSelected = null;
     let districtSelected = null;
     let wardSelected = null;
+    let createCustomerCheckAddAvatar = $('input[name=create_customer_check_add_avatar]');
     let modalCreateCustomer = $('#modal_create_customer');
     let createCustomerName = $('input[name=create_customer_name]');
     let createCustomerEmail = $('input[name=create_customer_email]');
@@ -193,13 +199,16 @@ $(document).ready(function () {
     modalCreateCustomer.on('show.bs.modal',event=>{
         $('.add-address').hide();
         $('.add-pass').hide();
+        $('.add-avatar').hide();
         isChangeassword = false;
         isAddAddress = false;
+        isAddAvatar = false;
         provinceSelected = null;
         districtSelected = null;
         wardSelected = null;
         createCustomerCheckAddAddress.attr('checked',false);
         createCustomerCheckChangePass.attr('checked',false);
+        createCustomerCheckAddAvatar.attr('checked',false);
         createCustomerName.val('');
         createCustomerEmail.val('');
         createCustomerGender.val('M');
@@ -218,6 +227,14 @@ $(document).ready(function () {
            $('.add-address').show();
        } else {
            $('.add-address').hide();
+       }
+    });
+    createCustomerCheckAddAvatar.change(event=>{
+       if($(event.target).is(':checked')){
+           isAddAvatar = true;
+           $('.add-avatar').show();
+       } else {
+           $('.add-avatar').hide();
        }
     });
 
@@ -249,6 +266,7 @@ $(document).ready(function () {
             if(response.data.code === 1){
                 $('#table_customers').DataTable().ajax.reload();
                 toastr.success(response.data.message,'Thông báo');
+                modalCreateCustomer.modal('hide');
             }
         }).catch(error=>{
             Loading.close();

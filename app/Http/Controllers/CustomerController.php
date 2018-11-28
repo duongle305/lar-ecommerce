@@ -38,8 +38,8 @@ class CustomerController extends Controller
                                        data-id="'.$customer->id.'" 
                                        data-edit="" 
                                        data-toggle="modal" 
-                                       data-target="#modal_edit_brand" >
-                                    <i class="ti-pencil"></i> Sửa</a>
+                                       data-target="#modal_view_info" >
+                                    <i class="ti-info"></i> Thông tin</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
                                        data-delete="" >
@@ -160,6 +160,22 @@ class CustomerController extends Controller
             $customer->password = \Hash::make($request->create_customer_password);
         } else $customer->password = \Hash::make('password');
 
+        if($request->create_customer_check_add_avatar){
+            $validate = Validator::make($request->all(),[
+                'create_customer_avatar' => 'required|mimes:jpg,jpeg,png,gif|max:5120',
+            ],[],[
+                'create_customer_avatar' => 'Ảnh đại diện',
+            ]);
+            if($validate->fails()) return response()->json(['code'=>0,'errors'=>$validate->errors()],403);
+            $time = time();
+            $customerName = str_slug($request->create_customer_name);
+            $avatar = $request->file('create_customer_avatar');
+            $newName = "{$time}-{$customerName}.{$avatar->getClientOriginalExtension()}";
+            $avatar->move(storage_path('app/public/uploads/customer_avatar'),$newName);
+            $customer->avatar = $newName;
+        }
+
+        $customer->state = 'ACTIVE';
         $customer->save();
         return response()->json(['code'=>1,'message'=>'Thêm mới khách hàng thành công!'],200);
     }

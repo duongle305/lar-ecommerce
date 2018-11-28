@@ -172,6 +172,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="create_customer_check_add_avatar" name="create_customer_check_add_avatar">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Thêm ảnh đại diện</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row add-avatar">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="create_role_name">Ảnh đại diện</label>
+                                    <input type="file" id="create_customer_avatar" name="create_customer_avatar" class="dropify" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary"><i class="ti-plus"></i> {{ __('Hoàn thành') }}</button>
