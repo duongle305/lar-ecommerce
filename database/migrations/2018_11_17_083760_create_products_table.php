@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->unsignedInteger('quantity')->default(0);
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands');
-            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
+            $table->enum('state',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->text('attitudes')->nullable();
             $table->timestamps();
         });
