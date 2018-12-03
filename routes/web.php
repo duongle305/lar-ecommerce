@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function (){
         Route::post('get-provinces','CustomerController@getProvinces')->name('customers.get-provinces');
         Route::post('get-districts','CustomerController@getDistricts')->name('customers.get-districts');
         Route::post('get-wards','CustomerController@getWards')->name('customers.get-wards');
+        Route::get('show/{id}','CustomerController@show')->name('customers.show');
     });
 
     Route::prefix('products')->group(function (){

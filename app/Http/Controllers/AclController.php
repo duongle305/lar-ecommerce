@@ -130,6 +130,23 @@ class AclController extends Controller
         } else{
             $user->password = Hash::make('password');
         }
+
+        if($request->create_user_check_avatar){
+            $validator = Validator::make($request->all(),[
+                'create_user_avatar' => 'required|mimes:jpg,jpeg,png,gif|max:5120',
+            ],[],[
+                'create_user_avatar' => 'Ảnh đại diện',
+            ]);
+            if($validator->fails()) return response()->json(['code'=>0,'errors'=>$validator->errors()],403);
+
+            $time = time();
+            $userName = str_slug($request->create_user_name);
+            $avatar = $request->file('create_user_avatar');
+            $newName = "{$time}-{$userName}.{$avatar->getClientOriginalExtension()}";
+            $avatar->move(storage_path('app/public/uploads/user_avatar'),$newName);
+            $user->avatar = $newName;
+        }
+
         $user->role_id = 2;
         $user->state = 'ACTIVE';
         $user->save();

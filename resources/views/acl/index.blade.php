@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/dropify/dist/css/dropify.min.css') }}">
 @endsection
 
 @section('content')
@@ -233,6 +234,25 @@
                                 <div class="form-group">
                                     <label for="create_role_name">Nhập lại mật khẩu</label>
                                     <input class="form-control" type="password" name="create_user_confirm_password" id="create_user_confirm_password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="create_user_check_avatar" name="create_user_check_avatar">
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Thêm ảnh đại diện</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row add-avatar">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="create_role_name">Ảnh đại diện</label>
+                                    <input type="file" id="create_user_avatar" name="create_user_avatar" class="dropify" accept="image/*">
                                 </div>
                             </div>
                         </div>
@@ -517,6 +537,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/jquery-validation/dist/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/dropify/dist/js/dropify.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection
 
