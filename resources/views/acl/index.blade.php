@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/dropify/dist/css/dropify.min.css') }}">
 @endsection
 
@@ -167,7 +166,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="create_role_display_name">Ngày sinh</label>
-                                    <input class="form-control" placeholder="mm/dd/yyyy" id="create_user_birthday" name="create_user_birthday">
+                                    <input class="form-control" data-mask="99/99/9999" placeholder="mm/dd/yyyy" id="create_user_birthday" name="create_user_birthday">
                                 </div>
                             </div>
                         </div>
@@ -536,7 +535,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/jquery-validation/dist/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/dropify/dist/js/dropify.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection
