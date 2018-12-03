@@ -49,6 +49,7 @@
                                             <th>Tên</th>
                                             <th>E-mail</th>
                                             <th>Vai trò</th>
+                                            <th>Avatar</th>
                                             <th style="width: 60px;">Actions</th>
                                         </tr>
                                         </thead>

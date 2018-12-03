@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('phone',15)->nullable();
             $table->enum('gender',['M','F'])->default('M');
             $table->text('address')->nullable();
-            $table->string('avatar')->nullable()->default('default_user.png');
+            $table->string('avatar')->nullable()->default('user_default.png');
             $table->enum('state',['ACTIVE','INACTIVE'])->default('INACTIVE');
             $table->foreign('role_id')->references('id')->on('roles');
             $table->rememberToken();

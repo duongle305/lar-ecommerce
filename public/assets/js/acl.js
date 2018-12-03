@@ -28,6 +28,7 @@ $(document).ready(() => {
             {data: 'name', name: 'name'},
             {data: 'email', name: 'email'},
             {data: 'role', name: 'role'},
+            {data: 'avatar', name: 'avatar'},
             {data: 'actions', name: 'actions', class: 'text-xs-center', orderable: false, searchable: false}
         ],
         oLanguage: {
