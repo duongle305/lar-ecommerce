@@ -200,6 +200,24 @@
             </div>
         </div>
     </div>
+    <!-- modal view customer -->
+    <div id="modal_view_customer" class="modal animated bounceInDown" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Thông tin khách hàng</h5>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('pageJS')

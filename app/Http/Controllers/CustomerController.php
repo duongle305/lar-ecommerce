@@ -35,15 +35,10 @@ class CustomerController extends Controller
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
                                     <a href="#" 
                                        class="dropdown-item" 
-                                       data-id="'.$customer->id.'" 
-                                       data-edit="" 
+                                       data-view="'.route('customers.show',$customer->id).'" 
                                        data-toggle="modal" 
-                                       data-target="#modal_view_info" >
+                                       data-target="#modal_view_customer" >
                                     <i class="ti-info"></i> Thông tin</a>
-                                    <a href="#" 
-                                       class="dropdown-item delete" 
-                                       data-delete="" >
-                                    <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
                 })
@@ -188,7 +183,12 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $customer  = Customer::find($id);
+
+        if($customer instanceof Customer){
+            return response()->json(['code'=>1,'data'=>$customer,],200);
+        }
+        return response()->json(['code'=>0,'error'=>'Có lỗi xảy ra, liên hệ System Admin'],200);
     }
 
     /**

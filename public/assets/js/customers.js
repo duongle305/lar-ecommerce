@@ -272,6 +272,7 @@ $(document).ready(function () {
             Loading.close();
             $('#table_customers').DataTable().ajax.reload();
             if(error.response.status == 403){
+                toastr.clear();
                 let html = '';
                 let errors = error.response.data.errors;
                 for (let key in errors){
@@ -283,4 +284,21 @@ $(document).ready(function () {
         })
 
     });
+});
+$(document).ready(function () {
+    let modalViewCustomer = $('#modal_view_customer');
+    modalViewCustomer.on('show.bs.modal',event=>{
+        let url = $(event.relatedTarget).data('view');
+
+        axios.get(url).then(response=>{
+            if(response.data.code === 1){
+
+            } else {
+                toastr.error(response.data.error,'Thông báo');
+            }
+        }).catch(error=>{
+            toastr.error(error.response.data.message,'Thông báo');
+            return false;
+        })
+    })
 });

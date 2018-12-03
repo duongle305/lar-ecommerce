@@ -507,6 +507,7 @@ $(document).ready(() => {
 $(document).ready(()=>{
     let isInputAddress = false;
     let isCustomPassword = false;
+    let isChangeAvatar = false;
     let provinceSelected = null;
     let districtSelected = null;
     let wardSelected = null;
@@ -520,10 +521,14 @@ $(document).ready(()=>{
     let createUserEmail = $('#create_user_email');
     let createUserBirthday = $('#create_user_birthday');
     let createUserGender = $('#create_user_gender');
+    let checkChangeAvatar = $('input[name=create_user_check_avatar]');
+    let createUserAvatar = $('input[name=create_user_avatar]');
+
 
     modalCreateUser.on('show.bs.modal',(event)=>{
         $('.add-address').hide();
         $('.add-pass').hide();
+        $('.add-avatar').hide();
         isInputAddress = false;
         provinceSelected = null;
         districtSelected = null;
@@ -531,12 +536,14 @@ $(document).ready(()=>{
         province.val(null).trigger('change');
         district.val(null).trigger('change');
         ward.val(null).trigger('change');
+        createUserAvatar.dropify();
         createUserName.val('');
         createUserEmail.val('');
         createUserBirthday.val('');
         createUserGender.val('M');
         checkAddAddress.attr('checked',false);
         checkChangePass.attr('checked',false);
+        checkChangeAvatar.attr('checked',false);
     });
 
     checkAddAddress.change(event=>{
@@ -556,6 +563,16 @@ $(document).ready(()=>{
         }else {
             isCustomPassword = false;
             $('.add-pass').hide();
+        }
+    });
+
+    checkChangeAvatar.change(event=>{
+        if($(event.target).is(':checked')){
+            isChangeAvatar = true;
+            $('.add-avatar').show();
+        } else {
+            isChangeAvatar = false;
+            $('.add-avatar').hide();
         }
     });
 
@@ -714,6 +731,7 @@ $(document).ready(()=>{
         }).catch(error=>{
             Loading.close();
             if(error.response.status === 403){
+                toastr.clear();
                 let errors = error.response.data.errors;
                 let message = '';
                 for (let key in errors){

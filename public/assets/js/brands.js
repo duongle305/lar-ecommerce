@@ -182,7 +182,6 @@ $(document).ready(function () {
                 toastr.error(resp.data.message,'Thông báo');
             }
             Loading.close();
-            Loading.close();
         });
     });
 });
