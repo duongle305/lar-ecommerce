@@ -10,7 +10,7 @@ if(!function_exists('dgg_menu')){
                 $arrowSub = (count($item->children) > 0) ? '<span class="s-caret"><i class="fa fa-angle-down"></i></span>' : '';
                 $iconClass = $item->icon_class ? '<span class="s-icon"><i class="'.$item->icon_class.'"></i></span>':'';
                 $href = $item->route ? route($item->route) : $item->url;
-
+                if((count($item->children) > 0)) $href = 'javascript:void();';
                 $html .= '<li '.$withSub.'>
                         <a href="'.$href.'" class="waves-effect waves-light">
                             '.$arrowSub.$iconClass.'

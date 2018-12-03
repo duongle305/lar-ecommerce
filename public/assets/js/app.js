@@ -300,5 +300,20 @@ let Helpers = {
         slug = '@' + slug + '@';
         slug = slug.replace(/\@\-|\-\@|\@/gi, '');
         return slug;
-    }
+    },
+
 };
+function feedback(err){
+    let resp = err.response;
+    if(resp.status === 403){
+        let errors = resp.data.errors;
+        let message = '';
+        for(let key in errors){
+            message += errors[key][0]+"\n";
+        }
+        toastr.error(message,'Thông báo');
+    }
+    if(resp.status === 500){
+        toastr.error(resp.data.message,'Thông báo');
+    }
+}
