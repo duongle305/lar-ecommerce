@@ -59,6 +59,9 @@ Route::middleware('auth')->group(function (){
             Route::get('nestable-menu-builder/{id}','MenuController@nestable')->name('menu-builders.menu-items.nestable.index');
             Route::put('nestable-menu-builder/update','MenuController@nestableUpdate')->name('menu-builders.menu-items.nestable.update');
             Route::post('store','MenuController@storeMenuItem')->name('menu-builders.menu-items.store');
+            Route::get('edit/{id}','MenuController@editMenuItem')->name('menu-builders.menu-items.edit');
+            Route::post('update','MenuController@updateMenuItem')->name('menu-builders.menu-items.update');
+            Route::delete('delete/{id}','MenuController@deleteMenuItem')->name('menu-builders.menu-items.delete');
         });
     });
 

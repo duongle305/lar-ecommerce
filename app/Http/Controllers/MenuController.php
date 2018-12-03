@@ -141,6 +141,67 @@ class MenuController extends Controller
         return response()->json(['message'=>'Thêm mới thành công.'],200);
     }
 
+    public function editMenuItem($id)
+    {
+        $menuItem = MenuItem::find($id);
+        if($menuItem instanceof MenuItem){
+            return response()->json($menuItem, 200);
+        }
+        return response()->json(['errors'=>['not-found'=>['Không tìm thấy thông tin yêu cầu.']]],403);
+    }
+    private function validateUpdateMenuItem(Request $request){
+        $rules = [
+            'edit_menu_item_id'=>'required|exists:menu_items,id',
+            'edit_title'=>'required|string',
+            'edit_icon_class'=>'nullable|string',
+            'edit_target'=>'required|in:_self,_blank',
+        ];
+        if($request->edit_link_type == 'route'){
+            $rules['edit_route'] = 'required|string';
+            $rules['edit_parameters'] = ' nullable|string';
+        }else{
+            $rules['edit_url'] = 'required|string';
+        }
+        $validator = Validator::make($request->all(),$rules,[],[
+            'edit_menu_item_id'=>'menu item',
+            'edit_title'=>'title',
+            'edit_target'=>'target',
+            'edit_route'=>'route',
+            'edit_parameters'=>'parameters',
+            'edit_url'=>'url',
+            'edit_icon_class'=>'font icon class',
+        ]);
+        return $validator;
+    }
+    public function updateMenuItem(Request $request)
+    {
+        $validator = $this->validateUpdateMenuItem($request);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+        $menuItem = MenuItem::find($request->edit_menu_item_id);
+        if($menuItem instanceof MenuItem){
+            $menuItem->update([
+                'title'=>$request->edit_title,
+                'slug'=>str_slug($request->edit_title),
+                'icon_class'=>$request->edit_icon_class,
+                'url'=>$request->edit_url,
+                'route'=>$request->edit_route,
+                'paramters'=>$request->edit_parameters,
+                'target'=>$request->edit_target,
+            ]);
+            return response()->json(['message'=>'Cập nhật thông tin menu item thành công.'],200);
+        }
+        return response()->json(['errors'=>['not-found'=>['Không thể xử lý yêu cầu, vui lòng thử lại sau.']]],403);
+    }
+    public function deleteMenuItem($id)
+    {
+        $menuItem = MenuItem::find($id);
+        if($menuItem instanceof MenuItem){
+            $menuItem->delete();
+            return response()->json(['message'=>'Xóa menu item thành công.'],200);
+        }
+        return response()->json(['errors'=>['not-found'=>['Không thể xử lý yêu cầu, vui lòng thử lại sau.']]],403);
+    }
+
 
     public function nestable($id){
         $menu = Menu::select('id')->findOrFail($id);

@@ -17,3 +17,6 @@ div.swal2-content{
 div.swal2-icon{
     margin: 0 auto 0;
 }
+div.dd{
+    max-width: 100%;
+}
