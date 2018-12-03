@@ -121,19 +121,19 @@
                         <div class="row add-address">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="province" class="col-md-12">Tỉnh/Thành phố</label>
+                                    <label for="create_customer_province" class="col-md-12">Tỉnh/Thành phố</label>
                                     <select data-placeholder="Chọn Tỉnh/Thành phố"  name="create_customer_province" id="create_customer_province" title="Chọn Tỉnh/Thành phố"></select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="district" class="col-md-12">Quận/Huyện</label>
+                                    <label for="create_customer_district" class="col-md-12">Quận/Huyện</label>
                                     <select data-placeholder="Chọn Quận/Huyện" title="Chọn Quận/Huyện" name="create_customer_district" id="create_customer_district"></select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="ward" class="col-md-12">Phường/Xã</label>
+                                    <label for="create_customer_ward" class="col-md-12">Phường/Xã</label>
                                     <select data-placeholder="Chọn Phường/Xã" title="Chọn Phường/Xã" name="create_customer_ward" id="create_customer_ward"></select>
                                 </div>
                             </div>
@@ -161,13 +161,13 @@
                         <div class="row add-pass">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Mật khẩu</label>
+                                    <label for="create_customer_password">Mật khẩu</label>
                                     <input class="form-control" type="password" name="create_customer_password" id="create_user_password">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Nhập lại mật khẩu</label>
+                                    <label for="create_customer_confirm_password">Nhập lại mật khẩu</label>
                                     <input class="form-control" type="password" name="create_customer_confirm_password" id="create_user_confirm_password">
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
                         <div class="row add-avatar">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="create_role_name">Ảnh đại diện</label>
+                                    <label for="create_customer_avatar">Ảnh đại diện</label>
                                     <input type="file" id="create_customer_avatar" name="create_customer_avatar" class="dropify" accept="image/*">
                                 </div>
                             </div>

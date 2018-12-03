@@ -505,6 +505,8 @@ $(document).ready(() => {
 
 });
 $(document).ready(()=>{
+
+    /* create user*/
     let isInputAddress = false;
     let isCustomPassword = false;
     let isChangeAvatar = false;
@@ -707,10 +709,6 @@ $(document).ready(()=>{
         },
         escapeMarkup : function(markup){ return markup; }
     });
-    // createUserBirthday.datepicker({
-    //     autoclose: true,
-    //     format: "dd/mm/yyyy",
-    // });
     $('#form_create_user').submit(event=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
