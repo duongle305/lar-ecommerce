@@ -211,6 +211,66 @@
                     <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Thông tin khách hàng</h5>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3" id="view_info_avatar">
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row" style="width: 200px;">Họ & tên</th>
+                                    <td id="view_info_name"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Email</th>
+                                    <td id="view_info_email"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Địa chỉ</th>
+                                    <td id="view_info_address"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Điện thoại</th>
+                                    <td id="view_info_phone"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Ngày sinh</th>
+                                    <td id="view_info_birthday"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Công ty</th>
+                                    <td id="view_info_company"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Quốc gia</th>
+                                    <td id="view_info_country"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Zip code</th>
+                                    <td id="view_info_zip_code"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row container-fluid">
+                        <div class="co-md-12">
+                            <div class="h5">Các đơn hàng đã đặt</div>
+                            <table id="table_customer_orders" class="table table-striped table-bordered" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>A</th>
+                                    <th>B</th>
+                                    <th>C</th>
+                                    <th>D</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
