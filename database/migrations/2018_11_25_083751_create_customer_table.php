@@ -23,7 +23,7 @@ class CreateCustomerTable extends Migration
             $table->string('phone')->nullable();
             $table->enum('state',['ACTIVE','INACTIVE'])->default('INACTIVE');
             $table->date('birthday')->nullable();
-            $table->string('avatar')->default('user_default.png');
+            $table->string('avatar')->default('customer_default.png');
             $table->enum('gender',['M','F'])->default('M');
             $table->string('company')->nullable();
             $table->string('country')->nullable();

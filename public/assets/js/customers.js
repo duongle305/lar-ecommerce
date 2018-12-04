@@ -289,14 +289,45 @@ $(document).ready(function () {
     let modalViewCustomer = $('#modal_view_customer');
     modalViewCustomer.on('show.bs.modal',event=>{
         let url = $(event.relatedTarget).data('view');
+        let viewInfoName = $('#view_info_name');
+        let viewInfoEmail = $('#view_info_email');
+        let viewInfoAddress = $('#view_info_address');
+        let viewInfoPhone = $('#view_info_phone');
+        let viewInfoBirthday = $('#view_info_birthday');
+        let viewInfoCompany = $('#view_info_company');
+        let viewInfoCountry = $('#view_info_country');
+        let viewInfoZip_code = $('#view_info_zip_code');
+        let viewInfoAvatar = $('#view_info_avatar');
 
+        viewInfoName.text('');
+        viewInfoEmail.text('');
+        viewInfoAddress.text('');
+        viewInfoPhone.text('');
+        viewInfoBirthday.text('');
+        viewInfoCompany.text('');
+        viewInfoCountry.text('');
+        viewInfoZip_code.text('');
+        viewInfoAvatar.html('');
+
+        Loading.show();
         axios.get(url).then(response=>{
             if(response.data.code === 1){
-
+                let data = response.data.data;
+                viewInfoName.text(data.name);
+                viewInfoEmail.text(data.email);
+                viewInfoAddress.text(data.address);
+                viewInfoPhone.text(data.phone);
+                viewInfoBirthday.text(data.birthday);
+                viewInfoCompany.text(data.company);
+                viewInfoCountry.text(data.country);
+                viewInfoZip_code.text(data.zip_code);
+                viewInfoAvatar.html(data.avatar);
             } else {
                 toastr.error(response.data.error,'Thông báo');
             }
+            Loading.close();
         }).catch(error=>{
+            Loading.close();
             toastr.error(error.response.data.message,'Thông báo');
             return false;
         })

@@ -121,19 +121,19 @@
                         <div class="row add-address">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="province" class="col-md-12">Tỉnh/Thành phố</label>
+                                    <label for="create_customer_province" class="col-md-12">Tỉnh/Thành phố</label>
                                     <select data-placeholder="Chọn Tỉnh/Thành phố"  name="create_customer_province" id="create_customer_province" title="Chọn Tỉnh/Thành phố"></select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="district" class="col-md-12">Quận/Huyện</label>
+                                    <label for="create_customer_district" class="col-md-12">Quận/Huyện</label>
                                     <select data-placeholder="Chọn Quận/Huyện" title="Chọn Quận/Huyện" name="create_customer_district" id="create_customer_district"></select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="ward" class="col-md-12">Phường/Xã</label>
+                                    <label for="create_customer_ward" class="col-md-12">Phường/Xã</label>
                                     <select data-placeholder="Chọn Phường/Xã" title="Chọn Phường/Xã" name="create_customer_ward" id="create_customer_ward"></select>
                                 </div>
                             </div>
@@ -161,13 +161,13 @@
                         <div class="row add-pass">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Mật khẩu</label>
+                                    <label for="create_customer_password">Mật khẩu</label>
                                     <input class="form-control" type="password" name="create_customer_password" id="create_user_password">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Nhập lại mật khẩu</label>
+                                    <label for="create_customer_confirm_password">Nhập lại mật khẩu</label>
                                     <input class="form-control" type="password" name="create_customer_confirm_password" id="create_user_confirm_password">
                                 </div>
                             </div>
@@ -186,7 +186,7 @@
                         <div class="row add-avatar">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="create_role_name">Ảnh đại diện</label>
+                                    <label for="create_customer_avatar">Ảnh đại diện</label>
                                     <input type="file" id="create_customer_avatar" name="create_customer_avatar" class="dropify" accept="image/*">
                                 </div>
                             </div>
@@ -211,6 +211,66 @@
                     <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Thông tin khách hàng</h5>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3" id="view_info_avatar">
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row" style="width: 200px;">Họ & tên</th>
+                                    <td id="view_info_name"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Email</th>
+                                    <td id="view_info_email"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Địa chỉ</th>
+                                    <td id="view_info_address"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Điện thoại</th>
+                                    <td id="view_info_phone"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Ngày sinh</th>
+                                    <td id="view_info_birthday"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Công ty</th>
+                                    <td id="view_info_company"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Quốc gia</th>
+                                    <td id="view_info_country"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Zip code</th>
+                                    <td id="view_info_zip_code"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row container-fluid">
+                        <div class="co-md-12">
+                            <div class="h5">Các đơn hàng đã đặt</div>
+                            <table id="table_customer_orders" class="table table-striped table-bordered" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>A</th>
+                                    <th>B</th>
+                                    <th>C</th>
+                                    <th>D</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
@@ -244,6 +304,5 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/dropify/dist/js/dropify.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
-
     <script type="text/javascript" src="{{ asset('assets/js/customers.js') }}"></script>
 @endsection

@@ -186,6 +186,16 @@ class CustomerController extends Controller
         $customer  = Customer::find($id);
 
         if($customer instanceof Customer){
+            $customer->birthday ?
+                $customer->birthday = date('d/m/Y',strtotime($customer->birthday)) :
+                $customer->birthday = 'N/A';
+            $customer->address ?? $customer->address = 'N/A';
+            $customer->phone ?? $customer->phone = 'N/A';
+            $customer->company ?? $customer->company = 'N/A';
+            $customer->country ?? $customer->country = 'N/A';
+            $customer->zip_code ?? $customer->zip_code = 'N/A';
+            $customer->avatar ? $customer->avatar = '<img src="http://lar-ecommerce.local/storage/uploads/customer_avatar/'.$customer->avatar.'" class="img-fluid img-thumbnail" alt="">' :
+                $customer->avatar = '<img src="http://lar-ecommerce.local/storage/uploads/customer_avatar/customer_default.png" class="img-fluid img-thumbnail" alt="">';
             return response()->json(['code'=>1,'data'=>$customer,],200);
         }
         return response()->json(['code'=>0,'error'=>'Có lỗi xảy ra, liên hệ System Admin'],200);

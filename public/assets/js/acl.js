@@ -28,6 +28,7 @@ $(document).ready(() => {
             {data: 'name', name: 'name'},
             {data: 'email', name: 'email'},
             {data: 'role', name: 'role'},
+            {data: 'avatar', name: 'avatar'},
             {data: 'actions', name: 'actions', class: 'text-xs-center', orderable: false, searchable: false}
         ],
         oLanguage: {
@@ -505,6 +506,8 @@ $(document).ready(() => {
 
 });
 $(document).ready(()=>{
+
+    /* create user*/
     let isInputAddress = false;
     let isCustomPassword = false;
     let isChangeAvatar = false;
@@ -706,10 +709,6 @@ $(document).ready(()=>{
             return repo.text;
         },
         escapeMarkup : function(markup){ return markup; }
-    });
-    createUserBirthday.datepicker({
-        autoclose: true,
-        format: "dd/mm/yyyy",
     });
     $('#form_create_user').submit(event=>{
         event.preventDefault();

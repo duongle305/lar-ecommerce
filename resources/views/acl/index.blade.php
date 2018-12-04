@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/dropify/dist/css/dropify.min.css') }}">
 @endsection
 
@@ -52,6 +51,7 @@
                                             <th>Tên</th>
                                             <th>E-mail</th>
                                             <th>Vai trò</th>
+                                            <th>Avatar</th>
                                             <th style="width: 60px;">Actions</th>
                                         </tr>
                                         </thead>
@@ -163,7 +163,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Giới tính <span class="text-danger">*</span></label>
+                                    <label for="create_user_gender">Giới tính <span class="text-danger">*</span></label>
                                     <select class="form-control" id="create_user_gender" name="create_user_gender">
                                         <option value="M">Nam</option>
                                         <option value="F">Nữ</option>
@@ -172,8 +172,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="create_role_display_name">Ngày sinh</label>
-                                    <input class="form-control" placeholder="mm/dd/yyyy" id="create_user_birthday" name="create_user_birthday">
+                                    <label for="create_user_birthday">Ngày sinh</label>
+                                    <input class="form-control" data-mask="99/99/9999" placeholder="mm/dd/yyyy" id="create_user_birthday" name="create_user_birthday">
                                 </div>
                             </div>
                         </div>
@@ -192,19 +192,19 @@
                         <div class="row add-address">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="province" class="col-md-12">Tỉnh/Thành phố</label>
+                                    <label for="create_user_province" class="col-md-12">Tỉnh/Thành phố</label>
                                     <select data-placeholder="Chọn Tỉnh/Thành phố"  name="create_user_province" id="create_user_province" title="Chọn Tỉnh/Thành phố"></select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="district" class="col-md-12">Quận/Huyện</label>
+                                    <label for="create_user_district" class="col-md-12">Quận/Huyện</label>
                                     <select data-placeholder="Chọn Quận/Huyện" title="Chọn Quận/Huyện" name="create_user_district" id="create_user_district"></select>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="ward" class="col-md-12">Phường/Xã</label>
+                                    <label for="create_user_ward" class="col-md-12">Phường/Xã</label>
                                     <select data-placeholder="Chọn Phường/Xã" title="Chọn Phường/Xã" name="create_user_ward" id="create_user_ward"></select>
                                 </div>
                             </div>
@@ -212,7 +212,7 @@
                         <div class="row add-address">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="house_street">Số nhà, tên đường</label>
+                                    <label for="create_user_house_street">Số nhà, tên đường</label>
                                     <textarea class="form-control" id="create_user_house_street" name="create_user_house_street" rows="3"></textarea>
                                 </div>
                             </div>
@@ -232,13 +232,13 @@
                         <div class="row add-pass">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Mật khẩu</label>
+                                    <label for="create_user_password">Mật khẩu</label>
                                     <input class="form-control" type="password" name="create_user_password" id="create_user_password">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="create_role_name">Nhập lại mật khẩu</label>
+                                    <label for="create_user_confirm_password">Nhập lại mật khẩu</label>
                                     <input class="form-control" type="password" name="create_user_confirm_password" id="create_user_confirm_password">
                                 </div>
                             </div>
@@ -257,7 +257,7 @@
                         <div class="row add-avatar">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="create_role_name">Ảnh đại diện</label>
+                                    <label for="create_user_avatar">Ảnh đại diện</label>
                                     <input type="file" id="create_user_avatar" name="create_user_avatar" class="dropify" accept="image/*">
                                 </div>
                             </div>
@@ -518,8 +518,6 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
 @section('pageJS')
@@ -542,7 +540,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/jquery-validation/dist/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/dropify/dist/js/dropify.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/acl.js') }}"></script>
 @endsection

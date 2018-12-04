@@ -16,7 +16,7 @@ class CreateDistrictsTable extends Migration
         Schema::create('districts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('slug_name')->nullable();
+            $table->string('slug')->nullable();
             $table->string('type')->nullable();
             $table->unsignedInteger('province_id');
             $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');

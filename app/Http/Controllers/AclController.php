@@ -41,11 +41,14 @@ class AclController extends Controller
                                 </div>
                             </div>';
                 })
+                ->addColumn('avatar',function ($user){
+                    return '<div class="text-center"><img style="width: 60px;height: 60px;" class="rounded" src="'.asset('storage/uploads/user_avatar/'.$user->avatar).'"/></div>';
+                })
                 ->removeColumn('role_id')
                 ->addIndexColumn()
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
-                ->rawColumns(['actions'])
+                ->rawColumns(['actions','avatar'])
                 ->make(true);
         }catch (\Exception $e){
             return [];
