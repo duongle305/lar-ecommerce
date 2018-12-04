@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['name','slug','parent_id','note','order'];
+    protected $fillable = ['title','slug','parent_id','note','orders'];
     protected $hidden = ['created_at','updated_at'];
 
     public function parent()
@@ -18,11 +18,11 @@ class Category extends Model
     {
         return $this->hasMany('App\Category','parent_id');
     }
-    public function tree()
+    public static function tree()
     {
-        return $this->where('parent_id',NULL)
+        return static::where('parent_id',NULL)
             ->with(['children'])
             ->orderBy('orders')
-            ->get(['id','name','slug','note']);
+            ->get(['id','title','slug','note']);
     }
 }
