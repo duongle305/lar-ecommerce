@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
+use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
@@ -13,6 +16,10 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+    }
+
     public function index()
     {
         return view('products.index');
@@ -64,6 +71,65 @@ class ProductController extends Controller
             return response()->json([],200);
         }
     }
+
+    public function getBrand(Request $request){
+        $keyword = $request->keyword;
+        $brands = Brand::where('name','like',"%{$keyword}%")
+            ->orWhere('note','like',"%{$keyword}")
+            ->orWhere('state','like',"%{$keyword}")
+            ->select(['id','name'])->paginate(10);
+        return response()->json($brands,200);
+    }
+
+    public function getCategories(Request $request){
+       $keyword = $request->keyword;
+       $categories = Category::whereNotNull('parent_id')
+            ->where(function ($query) use($keyword){
+                $query->where('title','like',"%{$keyword}%")
+                ->orWhere('note','like',"%{$keyword}%");
+            })
+           ->select(['id','title'])
+           ->paginate(10);
+
+       $categories->getCollection()->transform(function ($category){
+           $tmp = Category::where('parent_id','=',$category->id)->first();
+           if(!$tmp instanceof Category){
+               return $category;
+           }
+       });
+       return response()->json($categories,200);
+
+    }
+
+
+    public function uploadImage(Request $request){
+        $imageData = $this->uploadSingleImage($request,'description_image','product_description_image');
+        return response()->json($imageData,200);
+    }
+
+    private function uploadSingleImage(Request $request,$fileName,$path){
+
+        if($request->hasFile($fileName)){
+            $image = $request->file($fileName);
+            $newName = time().'-'.$image->getClientOriginalName();
+
+            if(File::exists(storage_path('app/public/uploads/'.$path.'/'.$newName)))
+                $newName = rand(100,999).$newName;
+
+            $image->move(storage_path('app/public/uploads/'.$path),$newName);
+            return ['image_url'=>asset('storage/uploads/'.$path.'/'.$newName),'image_name'=>$newName];
+        }
+    }
+
+    public function deleteImage(Request $request){
+
+    }
+
+    private function deleteSingleImage($folder,$imageName){
+        if(File::exists(storage_path('app/public/uploads/'.$folder.'/'.$imageName)))
+            File::delete(storage_path('app/public/uploads/'.$folder.'/'.$imageName));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -72,7 +138,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

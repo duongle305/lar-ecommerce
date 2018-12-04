@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{ asset('assets/vendors/dropify/dist/css/dropify.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendors/summernote/dist/summernote-bs4.css') }}">
+<link rel="stylesheet" href="{{asset('assets/vendors/select2/dist/css/select2.min.css')}}">
 
 @endsection
 
@@ -61,7 +62,8 @@
                                     <h5 class="mb-2">Thêm mới Sản phẩm</h5>
                                 </div>
                             </div>
-                            <form id="form_create_customer" action="">
+                            <form id="form_create_customer" action="{{ route('products.store') }}" method="post">
+                                @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -80,35 +82,76 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="create_product_brand">Thương hiệu</label>
-                                            <input type="number" min="0" class="form-control" id="create_product_brand" name="create_product_brand" placeholder="Thương hiệu">
+                                            <select class="form-control" id="create_product_brand" name="create_product_brand" data-placeholder="Thương hiệu"></select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="create_product_category">Loại sản phẩm</label>
-                                            <input type="number" min="0" class="form-control" id="create_product_category" name="create_product_category" placeholder="Loại sản phẩm">
+                                            <select class="form-control" id="create_product_category" name="create_product_category" data-placeholder="Loại sản phẩm"></select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="create_product_price">Giá</label>
-                                            <input type="number" min="0" class="form-control" id="create_product_price" name="create_product_price" placeholder="Giá sản phẩm">
+                                            <label for="create_product_price">Giá (VNĐ)</label>
+                                            <input type="text" value="0" class="form-control" id="create_product_price" name="create_product_price" placeholder="Giá sản phẩm" data-a-sep="." data-a-dec=",">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="create_product_discount">Khuyến mãi (%)</label>
-                                            <input type="number" min="0" class="form-control" id="create_product_discount" name="create_product_discount" placeholder="Khuyến mãi">
+                                            <input type="number" min="0" class="form-control" id="create_product_discount" name="create_product_discount" placeholder="Khuyến mãi" value="0">
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-12 mt-20 mb-20"><h5>Thông số kĩ thuật</h5></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <input type="text" id="create_product_attribute_name" class="form-control"  placeholder="Tên">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <input type="text" id="create_product_attribute_value" class="form-control"  placeholder="Thông tin">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <button type="button" id="add_attribute_btn" class="btn btn-success" ><i class="ti-plus"></i> {{ __('Thêm') }}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <table class="table mb-md-0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Tên</th>
+                                                    <th>Thông tin</th>
+                                                    <th class="text-center">!!!</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="table_attribute_body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="create_product_note">Ghi chú sản phẩm</label>
-                                            <div id="create_product_note" class="note-editable panel-body" contenteditable="true"></div>
+                                            <textarea id="create_product_note" name="create_product_note" class="note-editable panel-body" contenteditable="true"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +159,15 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="create_product_description">Mô tả sản phẩm</label>
-                                            <div id="create_product_description" class="note-editable panel-body" contenteditable="true"></div>
+                                            <textarea id="create_product_description" name="create_product_description" class="note-editable panel-body" contenteditable="true" data-url="{{ route('products.upload-image') }}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group modal-footer">
+                                            <button type="button" class="btn btn-info reload"><i class="ti-reload reload"></i> {{ __('Reset') }}</button>
+                                            <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Hoàn thành') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -146,5 +197,9 @@
 <script type="text/javascript" src="{{ asset('assets/vendors/dropify/dist/js/dropify.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/summernote/dist/summernote-bs4.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/vendors/autoNumeric/autoNumeric-min.js') }}"></script>
+
+
 <script type="text/javascript" src="{{ asset('assets/js/products.js') }}"></script>
 @endsection

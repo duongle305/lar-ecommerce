@@ -100,5 +100,10 @@ Route::middleware('auth')->group(function (){
         Route::get('edit','ProductController@edit')->name('products.edit');
         Route::delete('delete','ProductController@destroy')->name('products.delete');
         Route::get('create','ProductController@create')->name('products.create');
+        Route::post('get-brand','ProductController@getBrand')->name('products.get-brand');
+        Route::post('get-categories','ProductController@getCategories')->name('products.get-categories');
+        Route::post('upload-image','ProductController@uploadImage')->name('products.upload-image');
+        Route::post('store','ProductController@store')->name('products.store');
+        Route::post('delete-image','ProductController@deleteImage')->name('products.delete-image');
     });
 });
