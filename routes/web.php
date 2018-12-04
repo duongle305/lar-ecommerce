@@ -66,6 +66,15 @@ Route::middleware('auth')->group(function (){
         });
     });
 
+    Route::prefix('categories')->group(function(){
+        Route::get('','CategoryController@index')->name('categories.index');
+        Route::get('nestable','CategoryController@nestable')->name('categories.nestable');
+        Route::post('store','CategoryController@store')->name('categories.store');
+        Route::get('edit/{id}','CategoryController@edit')->name('categories.edit');
+        Route::post('update','CategoryController@update')->name('categories.update');
+        Route::delete('delete/{id}','CategoryController@delete')->name('categories.delete');
+    });
+
     Route::prefix('brands')->group(function (){
         Route::get('','BrandController@index')->name('brands.index');
         Route::get('json-get-all-brands','BrandController@allBrands')->name('brands.all-brands');

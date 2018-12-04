@@ -27,4 +27,5 @@ class MenuItem extends Model
     {
         return $this->hasMany('App\MenuItem','parent_id');
     }
+
 }
