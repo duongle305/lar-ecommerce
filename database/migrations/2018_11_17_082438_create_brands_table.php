@@ -19,6 +19,7 @@ class CreateBrandsTable extends Migration
             $table->string('slug',255);
             $table->string('logo',255);
             $table->text('note')->nullable();
+            $table->tinyInteger('state')->default(0);
             $table->timestamps();
         });
     }
