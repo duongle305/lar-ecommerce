@@ -96,5 +96,9 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('products')->group(function (){
         Route::get('','ProductController@index')->name('products.index');
+        Route::get('all-products','ProductController@allProducts')->name('products.all');
+        Route::get('edit','ProductController@edit')->name('products.edit');
+        Route::delete('delete','ProductController@destroy')->name('products.delete');
+        Route::get('create','ProductController@create')->name('products.create');
     });
 });
