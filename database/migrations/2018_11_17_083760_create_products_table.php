@@ -18,14 +18,14 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->longText('description')->nullable();
+            $table->text('note')->nullable();
             $table->string('code');
             $table->decimal('price',10,0)->default(0);
             $table->float('discount',2,1)->default(0);
             $table->unsignedInteger('quantity')->default(0);
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands');
-            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
-            $table->text('attitudes')->nullable();
+            $table->enum('state',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
     }

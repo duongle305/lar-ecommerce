@@ -33,9 +33,11 @@
                                         <h5 class="mb-1">Nhân viên</h5>
                                     </div>
                                     <div class="col-lg-6 text-xs-right">
+                                        @if(auth()->user()->hasPermission('create_acl'))
                                         <button class="btn btn-success" data-toggle="modal"
                                                 data-target="#modal_create_user">Thêm mới
                                         </button>
+                                        @endif
                                         <button class="btn btn-primary" id="btn-reload-users"
                                                 data-href="{{ route('acl.users') }}">Tải lại
                                         </button>
@@ -64,9 +66,11 @@
                                                 <h5 class="mb-2">Vai trò</h5>
                                             </div>
                                             <div class="col-lg-6 text-xs-right">
+                                                @if(auth()->user()->hasPermission('create_acl'))
                                                 <button class="btn btn-success" data-toggle="modal"
                                                         data-target="#modal_create_role">Thêm mới
                                                 </button>
+                                                @endif
                                                 <button class="btn btn-primary" id="btn-reload-roles"
                                                         data-href="{{ route('acl.roles') }}">Tải lại
                                                 </button>
@@ -93,9 +97,11 @@
                                                 <h5 class="mb-2">Quyền</h5>
                                             </div>
                                             <div class="col-lg-6 text-xs-right">
+                                                @if(auth()->user()->hasPermission('create_acl'))
                                                 <button class="btn btn-success" data-toggle="modal"
                                                         data-target="#modal_create_permission">Thêm mới
                                                 </button>
+                                                @endif
                                                 <button class="btn btn-primary" id="btn-reload-permissions"
                                                         data-href="{{ route('acl.permissions') }}">Tải lại
                                                 </button>

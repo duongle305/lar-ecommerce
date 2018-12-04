@@ -16,8 +16,10 @@ use Yajra\DataTables\DataTables;
 
 class AclController extends Controller
 {
+
     public function index()
     {
+        if(!auth()->user()->hasPermission('read_acl')) return redirect()->back();
         return view('acl.index');
     }
 
@@ -160,22 +162,30 @@ class AclController extends Controller
         try{
             return  DataTables::of(Role::all())
                 ->addColumn('actions',function($role){
-                    return '<div class="dropdown dropup float-xs-right">
-                                <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
-                                    <i class="ti-menu"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right animated flipInX">
-                                    <a href="#" 
+                    $actions = '';
+                    if(auth()->user()->hasPermission('update_acl'))
+                        $actions.= '<a href="'.route('acl.roles.assign',$role->id).'" 
+                                       class="dropdown-item">
+                                    <i class="ti-lock"></i> Phân quyền</a>
+                                    <a href="javascript:void()" 
                                        class="dropdown-item" 
                                        data-id="'.$role->id.'" 
                                        data-edit="'.route('acl.roles.edit',$role->id).'" 
                                        data-toggle="modal" 
                                        data-target="#modal_edit_role" >
                                     <i class="ti-pencil"></i> Sửa</a>
-                                    <a href="#" 
+                                    ';
+                    if(auth()->user()->hasPermission('delete_acl'))
+                        $actions.= '<a href="javascript:void()" 
                                        class="dropdown-item delete" 
                                        data-delete="'.route('acl.roles.delete',$role->id).'" >
-                                    <i class="ti-trash"></i> Xóa</a>
+                                    <i class="ti-trash"></i> Xóa</a>';
+                    return '<div class="dropdown dropup float-xs-right">
+                                <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
+                                    <i class="ti-menu"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right animated flipInX">
+                                   '.$actions.'
                                 </div>
                             </div>';
                 })
@@ -192,6 +202,11 @@ class AclController extends Controller
         }
     }
 
+    public function assignPermission($id)
+    {
+        $role = Role::find($id);
+        return view('acl.assign-permission',compact(['role']));
+    }
     public function editRole($id)
     {
         return Role::findOrFail($id);
