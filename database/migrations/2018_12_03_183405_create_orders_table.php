@@ -18,6 +18,13 @@ class CreateOrdersTable extends Migration
             $table->string('name');
             $table->text('note')->nullable();
         });
+        Schema::create('order_status_switches', function(Blueprint $table){
+            $table->unsignedInteger('current_status_id');
+            $table->unsignedInteger('next_status_id');
+            $table->foreign('current_status_id')->references('id')->on('order_statues')->onDelete('cascade');
+            $table->foreign('next_status_id')->references('id')->on('order_statues')->onDelete('cascade');
+            $table->primary(['current_status_id','next_status_id']);
+        });
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('customer_id');
