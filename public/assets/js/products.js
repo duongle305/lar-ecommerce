@@ -34,10 +34,21 @@ $(document).ready(function () {
             sSearch: 'Tìm kiếm:'
         }
     });
-    btnReloadBrands.click((event) => {
+    btnReloadProducts.on('click',(event) => {
         event.preventDefault();
         Loading.show();
-        tableBrands.DataTable().ajax.reload();
+        tableProducts.DataTable().ajax.reload();
         Loading.close();
+    });
+});
+
+$(document).ready(function () {
+    $('#create_product_note').summernote({
+        height: 100,
+        placeholder: 'Ghi chú sản phẩm',
+    });
+    $('#create_product_description').summernote({
+        height: 200,
+        placeholder: 'Mô tả sản phẩm',
     });
 });
