@@ -12,6 +12,7 @@ $(document).ready(function(){
         for(let item of items){
             html+=`
                 <li class="dd-item dd3-item" data-id="${item.id}">
+                    ${item.children&&item.children.length > 0 ? '<button data-action="collapse" type="button" style="display: block;">Collapse</button><button data-action="expand" type="button" style="display: none;">Expand</button>':''}
                     <div class="dd-handle dd3-handle"></div>
                     <div class="dd3-content">
                         <div style="display: flex; justify-content: space-between;">
@@ -37,6 +38,7 @@ $(document).ready(function(){
     loadCategories().then(function(resp){
         $('#categories').html(parseNestable(resp.data));
     }).catch(feedback);
+
     /* create new category */
     $('#form_create_category').submit(function(e){
         e.preventDefault();
