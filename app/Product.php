@@ -7,19 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 'products';
+    public $timestamps= true;
     protected $fillable = [
         'title',
         'slug',
+        'thumbnail',
         'description',
+        'note',
         'code',
         'price',
         'discount',
         'quantity',
-        'state',
         'brand_id',
-        'attitudes'
+        'state',
     ];
-    public $timestamps= true;
 
     public function categories(){
         return $this->belongsToMany('App\Category','category_product');

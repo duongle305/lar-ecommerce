@@ -30,22 +30,24 @@
                                     <h5 class="mb-2">Danh mục Sản phẩm</h5>
                                 </div>
                                 <div class="col-lg-6 text-xs-right">
-                                    <button class="btn btn-success" data-toggle="modal"
-                                            data-target="#modal_create_product">Thêm mới
-                                    </button>
+                                    <a class="btn btn-success" href="{{ route('products.create') }}">Thêm mới
+                                    </a>
                                     <button class="btn btn-primary" id="btn-reload-products"
-                                            data-href="">Tải lại
+                                            data-href="{{ route('products.all') }}">Tải lại
                                     </button>
                                 </div>
                             </div>
-                            <table id="table_customers" class="table table-striped table-bordered" style="width: 100%;">
+                            <table id="table_products" class="table table-striped table-bordered" style="width: 100%;">
                                 <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Code</th>
                                     <th>Tên</th>
                                     <th>Trạng thái</th>
+                                    <th>Thương hiệu</th>
                                     <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Ảnh</th>
                                     <th style="width: 60px;">Actions</th>
                                 </tr>
                                 </thead>
