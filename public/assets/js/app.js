@@ -304,6 +304,7 @@ let Helpers = {
 
 };
 function feedback(err){
+	Loading.close();
     let resp = err.response;
     if(resp.status === 403){
         let errors = resp.data.errors;

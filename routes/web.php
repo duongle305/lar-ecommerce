@@ -65,10 +65,10 @@ Route::middleware('auth')->group(function (){
             Route::delete('delete/{id}','MenuController@deleteMenuItem')->name('menu-builders.menu-items.delete');
         });
     });
-
     Route::prefix('categories')->group(function(){
         Route::get('','CategoryController@index')->name('categories.index');
         Route::get('nestable','CategoryController@nestable')->name('categories.nestable');
+        Route::put('nestable/update','CategoryController@updateNestable')->name('categories.update-nestable');
         Route::post('store','CategoryController@store')->name('categories.store');
         Route::get('edit/{id}','CategoryController@edit')->name('categories.edit');
         Route::post('update','CategoryController@update')->name('categories.update');

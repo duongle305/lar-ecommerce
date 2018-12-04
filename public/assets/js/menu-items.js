@@ -135,7 +135,6 @@ $(document).ready(()=>{
         }).catch(feedback)
     });
     $(document).on('click','.delete', function(e){
-        console.log(e);
         let menuItemId =  $(e.target).data('id');
         if(menuItemId === undefined) menuItemId = $(e.target).parent().data('id');
         swal({
