@@ -263,15 +263,10 @@ $(document).ready(function () {
         },
         callbacks: {
             onAllComplete: function(succeeded,failed) {
-                Loading.close();
-                swal({
-                    title: 'Thành công!',
-                    text: 'Thêm sản phẩm thành công',
-                    type: 'success',
-                    confirmButtonClass: 'btn btn-primary btn-lg',
-                    buttonsStyling: false
-                });
+                toastr.clear();
+                toastr.success('Thêm sản phẩm thành công','Thông báo');
                 location.reload();
+                Loading.close();
             },
         },
         thumbnails: {
@@ -314,6 +309,7 @@ $(document).ready(function () {
 
             })
         }
+        $('.dropify-clear').click();
         manualUploader.reset();
         Loading.close();
     });

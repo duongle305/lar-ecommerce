@@ -261,7 +261,7 @@
             <span class="qq-upload-drop-area-text-selector"></span>
         </div>
         <div class="qq-upload-button-selector qq-upload-button">
-            <div>Upload a file</div>
+            <div>Thêm ảnh</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
                     <span>Processing dropped files...</span>
@@ -278,9 +278,9 @@
                 <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
                 <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
                 <span class="qq-upload-size-selector qq-upload-size"></span>
-                <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
-                <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
-                <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Hủy</button>
+                <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Thử lại</button>
+                <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Xóa</button>
                 <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
             </li>
         </ul>
@@ -288,15 +288,15 @@
         <dialog class="qq-alert-dialog-selector">
             <div class="qq-dialog-message-selector"></div>
             <div class="qq-dialog-buttons">
-                <button type="button" class="qq-cancel-button-selector">Close</button>
+                <button type="button" class="qq-cancel-button-selector">Đóng</button>
             </div>
         </dialog>
 
         <dialog class="qq-confirm-dialog-selector">
             <div class="qq-dialog-message-selector"></div>
             <div class="qq-dialog-buttons">
-                <button type="button" class="qq-cancel-button-selector">No</button>
-                <button type="button" class="qq-ok-button-selector">Yes</button>
+                <button type="button" class="qq-cancel-button-selector">Không</button>
+                <button type="button" class="qq-ok-button-selector">Có</button>
             </div>
         </dialog>
 
@@ -304,7 +304,7 @@
             <div class="qq-dialog-message-selector"></div>
             <input type="text">
             <div class="qq-dialog-buttons">
-                <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                <button type="button" class="qq-cancel-button-selector">Hủy</button>
                 <button type="button" class="qq-ok-button-selector">Ok</button>
             </div>
         </dialog>

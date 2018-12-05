@@ -54,6 +54,10 @@ class ProductController extends Controller
                                        data-change="'.route('products.change-state',$product->id).'" >
                                         <i class="ti-reload"></i> '.$state.'</a>
                                     <a href="#" 
+                                       class="dropdown-item view" 
+                                       data-view="'.route('products.show',$product->id).'" >
+                                        <i class="ti-eye"></i> Xem</a>
+                                    <a href="#" 
                                        class="dropdown-item" 
                                        data-id="'.$product->id.'" 
                                        data-edit="'.route('products.edit',$product->id).'" 
