@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('note')->nullable();
+            $table->timestamps();
         });
         Schema::create('order_status_switches', function(Blueprint $table){
             $table->unsignedInteger('current_status_id');

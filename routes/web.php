@@ -101,4 +101,9 @@ Route::middleware('auth')->group(function (){
         Route::delete('delete','ProductController@destroy')->name('products.delete');
         Route::get('create','ProductController@create')->name('products.create');
     });
+
+    Route::prefix('orders')->group(function(){
+        Route::get('','OrderController@index')->name('orders.index');
+        Route::get('all','OrderController@allOrders')->name('orders.orders');
+    });
 });

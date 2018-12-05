@@ -4,10 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Product
+ *
+ * @property-read \App\Brand $brand
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Category[] $categories
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Product newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Product query()
+ * @mixin \Eloquent
+ */
 class Product extends Model
 {
-    protected $table = 'products';
-    public $timestamps= true;
     protected $fillable = [
         'title',
         'slug',
@@ -27,6 +35,6 @@ class Product extends Model
     }
 
     public function brand(){
-        return $this->belongsTo('APp/Brand','brand_id','id');
+        return $this->belongsTo('App\Brand','brand_id','id');
     }
 }
