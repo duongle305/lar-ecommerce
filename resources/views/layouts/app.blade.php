@@ -21,12 +21,12 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/toastr/toastr.min.css') }}">
 
+    @yield('pageCSS')
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/core.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <!-- Page CSS -->
-    @yield('pageCSS')
 </head>
 <body class="fixed-sidebar fixed-header skin-6 material-design">
 <div class="wrapper">
