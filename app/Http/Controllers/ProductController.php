@@ -43,22 +43,27 @@ class ProductController extends Controller
         try{
             return  DataTables::of(Product::all())
                 ->addColumn('actions',function($product){
+                    $state = ($product->state == 'ACTIVE') ? 'Không hiển thị' : 'Hiển thị';
                     return '<div class="dropdown dropup float-xs-right">
                                 <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
                                     <a href="#" 
+                                       class="dropdown-item change-state" 
+                                       data-change="'.route('products.change-state',$product->id).'" >
+                                        <i class="ti-reload"></i> '.$state.'</a>
+                                    <a href="#" 
                                        class="dropdown-item" 
                                        data-id="'.$product->id.'" 
                                        data-edit="'.route('products.edit',$product->id).'" 
                                        data-toggle="modal" 
                                        data-target="#modal_edit_brand" >
-                                    <i class="ti-pencil"></i> Sửa</a>
+                                        <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
                                        data-delete="'.route('products.delete',$product->id).'" >
-                                    <i class="ti-trash"></i> Xóa</a>
+                                        <i class="ti-trash"></i> Xóa</a>
                                 </div>
                             </div>';
                 })
@@ -161,6 +166,21 @@ class ProductController extends Controller
             File::delete(storage_path('app/public/uploads/'.$folder.'/'.$imageName));
     }
 
+
+    public function changeState($id){
+        $product = Product::find($id);
+        if($product instanceof Product){
+            if($product->state == 'ACTIVE') {
+                $product->state = 'INACTIVE';
+                $product->save();
+            } else{
+                $product->state = 'ACTIVE';
+                $product->save();
+            }
+            return response()->json(['code'=>1,'message'=>'Thay đổi trạng thái thành công!'],200);
+        }
+        return response()->json(['code'=>0,'error'=>'Có lỗi xảy ra, liên hệ System admin'],403);
+    }
     /**
      * Store a newly created resource in storage.
      *

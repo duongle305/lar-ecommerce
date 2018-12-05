@@ -273,8 +273,6 @@ $(document).ready(function () {
         Loading.close();
     });
 
-
-
     formCreateCustomer.submit(event=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
@@ -322,4 +320,24 @@ $(document).ready(function () {
             }
         })
     });
+
+    $(document).on('click','.change-state',event=>{
+        event.preventDefault();
+        let url = $(event.target).data('change');
+        Loading.show();
+        axios.get(url).then(response=>{
+            if(response.data.code === 1){
+                $('#table_products').DataTable().ajax.reload();
+                toastr.clear();
+                toastr.success(response.data.message,'Thông báo');
+                Loading.close();
+            }
+        }).catch(error=>{
+            Loading.close();
+            if(error.response.status === 403){
+                toastr.clear();
+                toastr.error(error.response.data.error,'Thông báo')
+            }
+        })
+    })
 });

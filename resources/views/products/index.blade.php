@@ -194,7 +194,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label for="edit_brand_logo">Ảnh nhỏ</label>
+                                            <label for="edit_brand_logo">Ảnh Thumbnail</label>
                                             <input type="file" id="create_product_thumbnail" name="create_product_thumbnail" class="dropify" accept="image/*">
                                         </div>
                                     </div>
