@@ -107,6 +107,8 @@ Route::middleware('auth')->group(function (){
         Route::post('delete-image','ProductController@deleteImage')->name('products.delete-image');
         Route::get('change-state/{id}','ProductController@changeState')->name('products.change-state');
         Route::get('show/{id}','ProductController@show')->name('products.show');
+        Route::get('edit/{id}','ProductController@edit')->name('products.edit');
+        Route::get('json-edit/{$id}','ProductController@jsonEdit')->name('products.json-edit');
     });
 
     Route::prefix('orders')->group(function(){

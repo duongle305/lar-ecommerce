@@ -57,12 +57,8 @@ class ProductController extends Controller
                                        class="dropdown-item view" 
                                        data-view="'.route('products.show',$product->id).'" >
                                         <i class="ti-eye"></i> Xem</a>
-                                    <a href="#" 
-                                       class="dropdown-item" 
-                                       data-id="'.$product->id.'" 
-                                       data-edit="'.route('products.edit',$product->id).'" 
-                                       data-toggle="modal" 
-                                       data-target="#modal_edit_brand" >
+                                    <a href="'.route('products.edit',$product->id).'" 
+                                       class="dropdown-item" >
                                         <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
@@ -325,7 +321,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+
+    }
+
+    public function jsonEdit($id){
+
     }
 
     /**

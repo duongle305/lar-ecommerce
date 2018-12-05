@@ -83,7 +83,7 @@
                                     <h5 class="mb-2">Thêm mới Sản phẩm</h5>
                                 </div>
                             </div>
-                            <form id="form_create_customer" action="{{ route('products.store') }}" method="post" id="qq-form">
+                            <form id="form_create_product" action="{{ route('products.store') }}" method="post">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-12">

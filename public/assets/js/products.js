@@ -58,7 +58,7 @@ $(document).ready(function () {
     let createProductCode = $('input[name=create_product_code]');
     let createProductCheckAutoCode = $('input[name=create_product_check_auto_code]');
     let addAttributeBtn = $('#add_attribute_btn');
-    let formCreateCustomer = $('#form_create_customer');
+    let formCreateProduct = $('#form_create_product');
 
     function uploadImage(files,input){
         let url = createProductDescription.data('url');
@@ -314,7 +314,7 @@ $(document).ready(function () {
         Loading.close();
     });
 
-    formCreateCustomer.submit(event=>{
+    formCreateProduct.submit(event=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
         let imageBtn = document.getElementsByClassName('qq-upload-cancel');
