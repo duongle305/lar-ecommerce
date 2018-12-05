@@ -2,7 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Customer
@@ -12,8 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer query()
  * @mixin \Eloquent
  */
-class Customer extends Model
+class Customer extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
     protected $fillable = [
         'name',
         'email',
@@ -29,4 +32,14 @@ class Customer extends Model
         'zip_code'];
 
     protected $hidden = ['password','remember_token'];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }
