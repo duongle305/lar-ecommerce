@@ -199,7 +199,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="my-uploader"></div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="edit_brand_logo">Hình sản phẩm</label>
+                                            <div id="my-uploader"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group modal-footer">
