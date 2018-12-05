@@ -82,19 +82,29 @@
                                     <h5 class="mb-2">Thêm mới Sản phẩm</h5>
                                 </div>
                             </div>
-                            <form id="form_create_customer" action="{{ route('products.store') }}" method="post" id="qq-form">
+                            <form id="form_create_product" action="{{ route('products.store') }}" method="post">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="create_product_code">Mã sản phẩm</label>
+                                            <label class="custom-control custom-checkbox ml-20">
+                                                <input type="checkbox" class="custom-control-input" id="create_product_check_auto_code" name="create_product_check_auto_code">
+                                                <span class="custom-control-indicator"></span>
+                                                <span class="custom-control-description">Tự động tạo mã</span>
+                                            </label>
+                                            <div class="form-group add-code">
+                                                <input type="text" class="form-control" id="create_product_code" name="create_product_code" placeholder="Mã sản phẩm">
+                                                <p class="text-muted m-b-30 font-13 mt-20">Mã phải là một chuỗi kí tự có độ dài tối thiểu 10, bao gồm chữ in hoa và số</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="create_product_name">Tên sản phẩm</label>
                                             <input type="text" class="form-control" id="create_product_name" name="create_product_name" placeholder="Tên sản phẩm">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="create_product_slug">Tên slug</label>
-                                            <input type="text" class="form-control" id="create_product_slug" name="create_product_slug" placeholder="Tên slug" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -191,15 +201,13 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="edit_brand_logo">Ảnh Thumbnail</label>
                                             <input type="file" id="create_product_thumbnail" name="create_product_thumbnail" class="dropify" accept="image/*">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="edit_brand_logo">Hình sản phẩm</label>
                                             <div id="my-uploader"></div>
@@ -252,7 +260,7 @@
             <span class="qq-upload-drop-area-text-selector"></span>
         </div>
         <div class="qq-upload-button-selector qq-upload-button">
-            <div>Upload a file</div>
+            <div>Thêm ảnh</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
                     <span>Processing dropped files...</span>
@@ -269,9 +277,9 @@
                 <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
                 <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
                 <span class="qq-upload-size-selector qq-upload-size"></span>
-                <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
-                <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
-                <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Hủy</button>
+                <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Thử lại</button>
+                <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Xóa</button>
                 <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
             </li>
         </ul>
@@ -279,15 +287,15 @@
         <dialog class="qq-alert-dialog-selector">
             <div class="qq-dialog-message-selector"></div>
             <div class="qq-dialog-buttons">
-                <button type="button" class="qq-cancel-button-selector">Close</button>
+                <button type="button" class="qq-cancel-button-selector">Đóng</button>
             </div>
         </dialog>
 
         <dialog class="qq-confirm-dialog-selector">
             <div class="qq-dialog-message-selector"></div>
             <div class="qq-dialog-buttons">
-                <button type="button" class="qq-cancel-button-selector">No</button>
-                <button type="button" class="qq-ok-button-selector">Yes</button>
+                <button type="button" class="qq-cancel-button-selector">Không</button>
+                <button type="button" class="qq-ok-button-selector">Có</button>
             </div>
         </dialog>
 
@@ -295,7 +303,7 @@
             <div class="qq-dialog-message-selector"></div>
             <input type="text">
             <div class="qq-dialog-buttons">
-                <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                <button type="button" class="qq-cancel-button-selector">Hủy</button>
                 <button type="button" class="qq-ok-button-selector">Ok</button>
             </div>
         </dialog>

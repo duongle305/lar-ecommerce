@@ -55,8 +55,11 @@ $(document).ready(function () {
     let createProductDescription = $('textarea[name=create_product_description]');
     let createProductAttributeValue = $('input[id=create_product_attribute_value]');
     let createProductAttributeName = $('input[id=create_product_attribute_name]');
+    let createProductCode = $('input[name=create_product_code]');
+    let createProductCheckAutoCode = $('input[name=create_product_check_auto_code]');
+    let createProductQuantity = $('input[name=create_product_quantity]');
     let addAttributeBtn = $('#add_attribute_btn');
-    let formCreateCustomer = $('#form_create_customer');
+    let formCreateProduct = $('#form_create_product');
 
     function uploadImage(files,input){
         let url = createProductDescription.data('url');
@@ -64,8 +67,8 @@ $(document).ready(function () {
         formData.append('image_type','0');
         formData.append("description_image", files[0]);
         axios.post(url, formData).then(res=>{
+            descriptionImg.push(res.data.image_name);
             input.summernote('editor.insertImage',res.data.image_url);
-            descriptionImg.push(res,data.image_name);
         }).catch(error=>{
         });
     }
@@ -82,6 +85,22 @@ $(document).ready(function () {
         $('#table_attribute_body').html(html);
     }
 
+    createProductCheckAutoCode.attr('checked',true);
+
+    $('.add-code').hide();
+
+    createProductCheckAutoCode.change(event=>{
+        if($(event.target).is(':checked')){
+            $('.add-code').hide();
+        } else {
+            $('.add-code').show();
+        }
+    });
+
+    createProductCode.on('input',(event)=>{
+        createProductCode.val(createProductCode.val().toUpperCase());
+    });
+
     createProductPrice.autoNumeric('init', {mDec: '0'});
 
     $('.dropify').dropify();
@@ -94,7 +113,17 @@ $(document).ready(function () {
                 uploadImage(files,createProductNote);
             },
             onMediaDelete : function(target) {
-                console.log(target[0].src);
+                let tmp = target[0].src.split('/');
+                var fileName = tmp[tmp.length - 1];
+
+                let formData = new FormData();
+                formData.append('images',JSON.stringify([fileName]));
+                formData.append('type','0');
+                axios.post('/products/delete-image',formData).then(response=>{
+                    if(response.data.code === 1)
+                        console.log(response.data.message);
+                }).catch(error=>{
+                })
             }
         }
     });
@@ -107,7 +136,17 @@ $(document).ready(function () {
                 uploadImage(files,createProductDescription);
             },
             onMediaDelete : function(target) {
-                console.log(target[0].src);
+                let tmp = target[0].src.split('/');
+                var fileName = tmp[tmp.length - 1];
+
+                let formData = new FormData();
+                formData.append('images',JSON.stringify([fileName]));
+                formData.append('type','0');
+                axios.post('/products/delete-image',formData).then(response=>{
+                    if(response.data.code === 1)
+                    console.log(response.data.message);
+                }).catch(error=>{
+                })
             }
         }
     });
@@ -194,10 +233,6 @@ $(document).ready(function () {
         escapeMarkup : function(markup){ return markup; }
     });
 
-    createProductName.on('input',(event)=>{
-        createProductSlug.val(Helpers.slug(createProductName.val()));
-    });
-
     addAttributeBtn.click(event=>{
         event.preventDefault();
         if(createProductAttributeValue.val().length === 0 || createProductAttributeName.val().length === 0){
@@ -217,6 +252,7 @@ $(document).ready(function () {
         attributes.splice(index, 1);
         generateTableBody();
     });
+
     let manualUploader = new qq.FineUploader({
         element: document.getElementById('my-uploader'),
         template: 'qq-template',
@@ -228,15 +264,10 @@ $(document).ready(function () {
         },
         callbacks: {
             onAllComplete: function(succeeded,failed) {
-                Loading.close();
-                swal({
-                    title: 'Thành công!',
-                    text: 'Thêm sản phẩm thành công',
-                    type: 'success',
-                    confirmButtonClass: 'btn btn-primary btn-lg',
-                    buttonsStyling: false
-                });
+                toastr.clear();
+                toastr.success('Thêm sản phẩm thành công','Thông báo');
                 location.reload();
+                Loading.close();
             },
         },
         thumbnails: {
@@ -261,6 +292,7 @@ $(document).ready(function () {
         createProductCategory.val(null).trigger('change');
         createProductPrice.val(0);
         createProductDiscount.val(0);
+        createProductQuantity.val(0);
         createProductNote.summernote('reset');
         createProductDescription.summernote('reset');
         $('#table_attribute_body').html('');
@@ -268,12 +300,23 @@ $(document).ready(function () {
         createProductAttributeName.val('');
         attributes = [];
         if(descriptionImg.length > 0){
+            let formData = new FormData();
+            formData.append('images',JSON.stringify(descriptionImg));
+            formData.append('type','0');
+            axios.post('/products/delete-image',formData).then(response=>{
+                if(response.data.code === 1)
+                    console.log(response.data.message);
+                descriptionImg = [];
+            }).catch(error=>{
+
+            })
         }
+        $('.dropify-clear').click();
         manualUploader.reset();
         Loading.close();
     });
 
-    formCreateCustomer.submit(event=>{
+    formCreateProduct.submit(event=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
         let imageBtn = document.getElementsByClassName('qq-upload-cancel');

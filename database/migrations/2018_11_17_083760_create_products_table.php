@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('thumbnail')->nullable();
             $table->longText('description')->nullable();
             $table->text('note')->nullable();
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->decimal('price',10,0)->default(0);
             $table->float('discount',2,1)->default(0);
             $table->unsignedInteger('quantity')->default(0);
