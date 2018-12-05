@@ -86,16 +86,26 @@
                             <form id="form_create_customer" action="{{ route('products.store') }}" method="post" id="qq-form">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="create_product_code">Mã sản phẩm</label>
+                                            <label class="custom-control custom-checkbox ml-20">
+                                                <input type="checkbox" class="custom-control-input" id="create_product_check_auto_code" name="create_product_check_auto_code">
+                                                <span class="custom-control-indicator"></span>
+                                                <span class="custom-control-description">Tự động tạo mã</span>
+                                            </label>
+                                            <div class="form-group add-code">
+                                                <input type="text" class="form-control" id="create_product_code" name="create_product_code" placeholder="Mã sản phẩm">
+                                                <p class="text-muted m-b-30 font-13 mt-20">Mã phải là một chuỗi kí tự có độ dài tối thiểu 10, bao gồm chữ in hoa và số</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="create_product_name">Tên sản phẩm</label>
                                             <input type="text" class="form-control" id="create_product_name" name="create_product_name" placeholder="Tên sản phẩm">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="create_product_slug">Tên slug</label>
-                                            <input type="text" class="form-control" id="create_product_slug" name="create_product_slug" placeholder="Tên slug" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -192,15 +202,13 @@
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="edit_brand_logo">Ảnh Thumbnail</label>
                                             <input type="file" id="create_product_thumbnail" name="create_product_thumbnail" class="dropify" accept="image/*">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="edit_brand_logo">Hình sản phẩm</label>
                                             <div id="my-uploader"></div>

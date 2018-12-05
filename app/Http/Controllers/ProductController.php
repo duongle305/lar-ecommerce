@@ -158,13 +158,31 @@ class ProductController extends Controller
     }
 
     public function deleteImage(Request $request){
+        $images = json_decode($request->images);
+        $type = intval($request->type);
 
+        $folder = null;
+        switch ($type){
+            case 0:{
+                $folder = 'product_description_images';
+                break;
+            }
+            case 1:{
+                $folder = 'product_images';
+                break;
+            }
+        }
+        foreach ($images as $image) {
+            $this->deleteSingleImage($folder,$image);
+        }
+
+        return response()->json(['code'=>1,'message'=>'Xóa thành công'],200);
     }
 
     private function deleteSingleImage($folder,$imageName){
-        if(File::exists(storage_path('app/public/uploads/'.$folder.'/'.$imageName)))
-            File::delete(storage_path('app/public/uploads/'.$folder.'/'.$imageName));
-    }
+    if(File::exists(storage_path('app/public/uploads/'.$folder.'/'.$imageName)))
+        File::delete(storage_path('app/public/uploads/'.$folder.'/'.$imageName));
+}
 
 
     public function changeState($id){
@@ -189,9 +207,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if(!$request->create_product_check_auto_code){
+            $validator = Validator::make($request->all(),[
+                'create_product_code'=>'required|string|unique:products,code|min:10',
+            ],[],[
+                'create_product_code'=>'Mã sản phẩm',
+            ]);
+            if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+        }
+
         $validator = Validator::make($request->all(),[
             'create_product_name'=>'required|string|unique:products,title',
-            'create_product_slug'=>'required|string',
             'create_product_brand'=>'required|exists:brands,id',
             'create_product_category' => 'required',
             'create_product_price' => 'required|numeric',
@@ -202,32 +228,35 @@ class ProductController extends Controller
             'attributes' => 'required',
         ],[],[
             'create_product_name'=>'tên',
-            'create_product_slug'=>'slug',
             'create_product_brand'=>'Thương hiệu',
             'create_product_category' => 'Loại sản phẩm',
             'create_product_price' => 'Giá',
             'create_product_discount' => 'Khuyến mãi',
             'create_product_note' => 'Ghi chú',
             'create_product_description' => 'Mô tả',
-            'create_product_thumbnail' => 'Ảnh nhỏ',
+            'create_product_thumbnail' => 'Ảnh Thumbnail',
             'attributes' => 'Thông số kỹ thuật',
             'create_product_quantity' => 'Số lượng',
         ]);
         if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
         $all = $request->all();
         $attributes = json_decode($all['attributes']);
+        $categories = json_decode($all['create_product_category']);
 
         $product = Product::create([
             'title' => $all['create_product_name'],
-            'slug' => $all['create_product_slug'],
+            'slug' => str_slug($all['create_product_name']),
             'description' => $all['create_product_description'],
             'note' => $all['create_product_note'],
-            'code' => $this->generateCode($request),
             'price' => $all['create_product_price'],
             'discount' => $all['create_product_discount'],
             'quantity' => $all['create_product_quantity'],
             'brand_id' => $all['create_product_brand']
         ]);
+
+        if($request->create_product_check_auto_code){
+            $product->code = $this->generateCode($request);
+        } else $product->code = $request->create_product_code;
 
         foreach ($attributes as $attribute){
             Attribute::create([
@@ -237,12 +266,15 @@ class ProductController extends Controller
             ]);
         }
 
+        foreach ($categories as $category){
+            $product->categories()->attach($category);
+        }
+
         $imageData = $this->uploadSingleImage($request,'create_product_thumbnail','product_images');
         $product->thumbnail = 'storage/uploads/product_images/'.$imageData['image_name'];
         $product->save();
 
         return response()->json(['code'=>1,'data'=>$product],200);
-
     }
 
     private function generateCode(Request $request)
