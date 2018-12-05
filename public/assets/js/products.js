@@ -57,6 +57,7 @@ $(document).ready(function () {
     let createProductAttributeName = $('input[id=create_product_attribute_name]');
     let createProductCode = $('input[name=create_product_code]');
     let createProductCheckAutoCode = $('input[name=create_product_check_auto_code]');
+    let createProductQuantity = $('input[name=create_product_quantity]');
     let addAttributeBtn = $('#add_attribute_btn');
     let formCreateProduct = $('#form_create_product');
 
@@ -291,6 +292,7 @@ $(document).ready(function () {
         createProductCategory.val(null).trigger('change');
         createProductPrice.val(0);
         createProductDiscount.val(0);
+        createProductQuantity.val(0);
         createProductNote.summernote('reset');
         createProductDescription.summernote('reset');
         $('#table_attribute_body').html('');
