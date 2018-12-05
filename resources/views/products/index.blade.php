@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="{{ asset('assets/vendors/dropify/dist/css/dropify.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendors/summernote/dist/summernote-bs4.css') }}">
-<link rel="stylesheet" href="{{asset('assets/vendors/select2/dist/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendors/fine-uploader/fine-uploader-new.css')}}">
 <style>
     #trigger-upload {
