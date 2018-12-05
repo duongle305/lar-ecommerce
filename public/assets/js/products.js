@@ -46,7 +46,6 @@ $(document).ready(function () {
     let descriptionImg = [];
     let attributes = [];
     let createProductName = $('input[name=create_product_name]');
-    let createProductSlug = $('input[name=create_product_slug]');
     let createProductBrand =$('select[name=create_product_brand]');
     let createProductCategory = $('select[name=create_product_category]');
     let createProductPrice = $('input[name=create_product_price]');
@@ -69,8 +68,7 @@ $(document).ready(function () {
         axios.post(url, formData).then(res=>{
             descriptionImg.push(res.data.image_name);
             input.summernote('editor.insertImage',res.data.image_url);
-        }).catch(error=>{
-        });
+        }).catch();
     }
 
     function generateTableBody(){
@@ -122,8 +120,7 @@ $(document).ready(function () {
                 axios.post('/products/delete-image',formData).then(response=>{
                     if(response.data.code === 1)
                         console.log(response.data.message);
-                }).catch(error=>{
-                })
+                }).catch()
             }
         }
     });
@@ -145,8 +142,7 @@ $(document).ready(function () {
                 axios.post('/products/delete-image',formData).then(response=>{
                     if(response.data.code === 1)
                     console.log(response.data.message);
-                }).catch(error=>{
-                })
+                }).catch()
             }
         }
     });
@@ -343,19 +339,7 @@ $(document).ready(function () {
                 });
                 manualUploader.uploadStoredFiles();
             }
-        }).catch(errors=>{
-            Loading.close();
-            let resp = errors.response;
-            if(resp.status == 403){
-                toastr.clear();
-                let errors = resp.data.errors;
-                let message = '';
-                for(let key in errors){
-                    message += errors[key][0]+"<br>";
-                }
-                toastr.error(message,'Thông báo');
-            }
-        })
+        }).catch(feedback)
     });
 
     $(document).on('click','.change-state',event=>{
@@ -369,13 +353,7 @@ $(document).ready(function () {
                 toastr.success(response.data.message,'Thông báo');
                 Loading.close();
             }
-        }).catch(error=>{
-            Loading.close();
-            if(error.response.status === 403){
-                toastr.clear();
-                toastr.error(error.response.data.error,'Thông báo')
-            }
-        })
+        }).catch(feedback)
     });
 
     $(document).on('click','.delete',event=>{

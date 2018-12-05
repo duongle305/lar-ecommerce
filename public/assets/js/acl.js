@@ -506,7 +506,6 @@ $(document).ready(() => {
 
 });
 $(document).ready(()=>{
-
     /* create user*/
     let isInputAddress = false;
     let isCustomPassword = false;
@@ -727,17 +726,6 @@ $(document).ready(()=>{
                 $('#table_users').DataTable().ajax.reload();
                 modalCreateUser.modal("hide");
             }
-        }).catch(error=>{
-            Loading.close();
-            if(error.response.status === 403){
-                toastr.clear();
-                let errors = error.response.data.errors;
-                let message = '';
-                for (let key in errors){
-                    message+=errors[key]+'<br>';
-                }
-                toastr.error(message,'Thông báo');
-            }
-        })
+        }).catch(feedback)
     })
 });

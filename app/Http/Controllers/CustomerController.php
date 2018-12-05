@@ -196,9 +196,10 @@ class CustomerController extends Controller
             $customer->zip_code ?? $customer->zip_code = 'N/A';
             $customer->avatar ? $customer->avatar = '<img src="http://lar-ecommerce.local/storage/uploads/customer_avatar/'.$customer->avatar.'" class="img-fluid img-thumbnail" alt="">' :
                 $customer->avatar = '<img src="http://lar-ecommerce.local/storage/uploads/customer_avatar/customer_default.png" class="img-fluid img-thumbnail" alt="">';
-            return response()->json(['code'=>1,'data'=>$customer,],200);
+            return response()->json($customer,200);
         }
-        return response()->json(['code'=>0,'error'=>'Có lỗi xảy ra, liên hệ System Admin'],200);
+
+        return response()->json(['message'=>'Không tìm thấy dữ liệu phù hợp'],500);
     }
 
     /**
