@@ -16,9 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class District extends Model
 {
-    protected $table='districts';
-    protected $fillable = ['id','name','slug_name','province_id','type'];
-    public $timestamps =true;
+    protected $fillable = ['id','name','slug','province_id','type'];
 
     public function wards(){
         return $this->hasMany('App\Ward');

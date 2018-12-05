@@ -106,4 +106,9 @@ Route::middleware('auth')->group(function (){
         Route::post('store','ProductController@store')->name('products.store');
         Route::post('delete-image','ProductController@deleteImage')->name('products.delete-image');
     });
+
+    Route::prefix('orders')->group(function(){
+        Route::get('','OrderController@index')->name('orders.index');
+        Route::get('all','OrderController@allOrders')->name('orders.orders');
+    });
 });

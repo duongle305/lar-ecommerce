@@ -22,4 +22,5 @@ class Attribute extends Model
     public function categories(){
         return $this->belongsToMany('App\Attribute','attribute_category');
     }
+
 }
