@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Attribute extends Model
 {
     protected $table='attributes';
-    protected $fillable=['title','slug','value'];
+    protected $fillable=['title','slug','product_id','value'];
     public $timestamps = true;
 
     public function categories(){

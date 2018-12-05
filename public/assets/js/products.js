@@ -58,12 +58,13 @@ $(document).ready(function () {
     let addAttributeBtn = $('#add_attribute_btn');
     let formCreateCustomer = $('#form_create_customer');
 
-    function uploadImage(files){
+    function uploadImage(files,input){
         let url = createProductDescription.data('url');
         var formData = new FormData();
+        formData.append('image_type','0');
         formData.append("description_image", files[0]);
         axios.post(url, formData).then(res=>{
-            createProductDescription.summernote('editor.insertImage',res.data.image_url);
+            input.summernote('editor.insertImage',res.data.image_url);
             descriptionImg.push(res,data.image_name);
         }).catch(error=>{
         });
@@ -83,12 +84,14 @@ $(document).ready(function () {
 
     createProductPrice.autoNumeric('init', {mDec: '0'});
 
+    $('.dropify').dropify();
+
     createProductNote.summernote({
         height: 100,
         placeholder: 'Ghi chú sản phẩm',
         callbacks:{
             onImageUpload: function(files, editor, welEditable) {
-                uploadImage(files);
+                uploadImage(files,createProductNote);
             },
             onMediaDelete : function(target) {
                 console.log(target[0].src);
@@ -101,7 +104,7 @@ $(document).ready(function () {
         placeholder: 'Mô tả sản phẩm',
         callbacks:{
             onImageUpload: function(files, editor, welEditable) {
-                uploadImage(files);
+                uploadImage(files,createProductDescription);
             },
             onMediaDelete : function(target) {
                 console.log(target[0].src);
@@ -214,6 +217,34 @@ $(document).ready(function () {
         attributes.splice(index, 1);
         generateTableBody();
     });
+    let manualUploader = new qq.FineUploader({
+        element: document.getElementById('my-uploader'),
+        template: 'qq-template',
+        request: {
+            customHeaders: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            endpoint: '/products/upload-image'
+        },
+        callbacks: {
+            onAllComplete: function(succeeded,failed) {
+                Loading.close();
+                toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+                location.reload();
+            },
+        },
+        thumbnails: {
+            placeholders: {
+                waitingPath: '/storage/uploads/image_source/waiting-generic.png',
+                notAvailablePath: '/storage/uploads/image_source/not_available-generic.png'
+            }
+        },
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'png','gif'],
+        },
+        autoUpload: false,
+        debug: false
+    });
 
     $('.reload').click(event=>{
         Loading.show();
@@ -232,36 +263,57 @@ $(document).ready(function () {
         attributes = [];
         if(descriptionImg.length > 0){
         }
+        manualUploader.reset();
         Loading.close();
     });
+
+
 
     formCreateCustomer.submit(event=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
+        let imageBtn = document.getElementsByClassName('qq-upload-cancel');
+        if(imageBtn.length < 1){
+            toastr.clear();
+            toastr.error('Thêm ít nhất 1 hình ảnh cho sản phẩm','Thông báo');
+            return false;
+        }
 
+        Loading.show();
         let formData = new FormData(event.target);
 
+        if(attributes.length > 0)
+            formData.append('attributes',JSON.stringify(attributes));
+
+        let categories = [];
+
+        for (let category of createProductCategory.select2('data')){
+            categories.push(category.id)
+        }
+
+        formData.append('create_product_category',JSON.stringify(categories));
+        formData.append('create_product_price',createProductPrice.val().replace(/\./gi, ""));
         axios.post(url,formData).then(res=>{
-
+            if(res.data.code === 1){
+                manualUploader.setParams({
+                    'image_type': 1,
+                    'product_slug': Helpers.slug(createProductName.val()),
+                    'product_id' : res.data.data.id
+                });
+                manualUploader.uploadStoredFiles();
+            }
+        }).catch(errors=>{
+            Loading.close();
+            let resp = errors.response;
+            if(resp.status == 403){
+                toastr.clear();
+                let errors = resp.data.errors;
+                let message = '';
+                for(let key in errors){
+                    message += errors[key][0]+"<br>";
+                }
+                toastr.error(message,'Thông báo');
+            }
         })
-    })
+    });
 });
-
-// var parent = [];
-// var menu  = $('.lv1');
-// menu.each(function () {
-//     let ul = $(this).children('.row');
-//     let lv2 = $(ul[0]).children('.lv2');
-//     let aaa = [];
-//     lv2.each(function () {
-//         let ul = $(this).children('.ul_content_right_2');
-//         let lv3 = $(ul[0]).children('.lv3');
-//         let bbb = [];
-//         lv3.each(function () {
-//             bbb.push($($(this).children('a')[0]).text().trim());
-//         });
-//         aaa.push({'title': $($(this).children('a')[0]).text().trim(), 'child' : bbb});
-//     });
-//     parent.push({'title': $($(this).children('a')[0]).text().trim(),'child': aaa});
-// });
-// console.log(JSON.stringify(parent));

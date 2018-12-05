@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Attribute;
 use App\Brand;
 use App\Category;
 use App\Product;
+use App\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
@@ -60,12 +63,21 @@ class ProductController extends Controller
                             </div>';
                 })
                 ->addColumn('thumbnail',function ($product){
-                    return '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset('storage/uploads/product_images/'.$product->thumbnail).'"/></div>';
+                    return '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset($product->thumbnail).'"/></div>';
+                })
+                ->addColumn('brand',function ($product){
+                    return $product->brand->name;
+                })
+                ->addColumn('state',function ($product){
+                    return $product->state == 'ACTIVE' ? '<div class="text-success">Hiển thị</div>' : '<div class="text-danger">Ẩn</div>';
+                })
+                ->addColumn('price',function ($product){
+                    return number_format($product->price,0). ' VNĐ';
                 })
                 ->addIndexColumn()
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
-                ->rawColumns(['actions'])
+                ->rawColumns(['actions','thumbnail','state'])
                 ->make(true);
         }catch (\Exception $e){
             return response()->json([],200);
@@ -101,17 +113,36 @@ class ProductController extends Controller
 
     }
 
-
     public function uploadImage(Request $request){
-        $imageData = $this->uploadSingleImage($request,'description_image','product_description_image');
-        return response()->json($imageData,200);
+        $type = intval($request->image_type);
+        $imageData = null;
+        switch ($type) {
+            case 0:{
+                    $imageData = $this->uploadSingleImage($request, 'description_image', 'product_description_images');
+                    return response()->json($imageData, 200);
+                    break;
+                }
+            case 1:{
+                    $imageData = $this->uploadSingleImage($request,'qqfile','product_images');
+                    $product = Product::find($request->product_id);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'path' => 'storage/uploads/product_images/'.$imageData['image_name']
+                    ]);
+                    return response()->json(["success"=>true, "newUuid"=>$imageData],200);
+                    break;
+                }
+        }
     }
 
     private function uploadSingleImage(Request $request,$fileName,$path){
 
         if($request->hasFile($fileName)){
             $image = $request->file($fileName);
-            $newName = time().'-'.$image->getClientOriginalName();
+            if($request->product_slug){
+                $newName = time().'_'.$request->product_slug.'_'.$image->getClientOriginalName();
+            } else
+                $newName = time().'-'.$image->getClientOriginalName();
 
             if(File::exists(storage_path('app/public/uploads/'.$path.'/'.$newName)))
                 $newName = rand(100,999).$newName;
@@ -138,7 +169,85 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $validator = Validator::make($request->all(),[
+            'create_product_name'=>'required|string|unique:products,title',
+            'create_product_slug'=>'required|string',
+            'create_product_brand'=>'required|exists:brands,id',
+            'create_product_category' => 'required',
+            'create_product_price' => 'required|numeric',
+            'create_product_discount' => 'nullable',
+            'create_product_note' => 'required|string',
+            'create_product_description' => 'required|string',
+            'create_product_thumbnail' => 'required|file|mimes:jpeg,jpg,png,gif',
+            'attributes' => 'required',
+        ],[],[
+            'create_product_name'=>'tên',
+            'create_product_slug'=>'slug',
+            'create_product_brand'=>'Thương hiệu',
+            'create_product_category' => 'Loại sản phẩm',
+            'create_product_price' => 'Giá',
+            'create_product_discount' => 'Khuyến mãi',
+            'create_product_note' => 'Ghi chú',
+            'create_product_description' => 'Mô tả',
+            'create_product_thumbnail' => 'Ảnh nhỏ',
+            'attributes' => 'Thông số kỹ thuật',
+            'create_product_quantity' => 'Số lượng',
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+        $all = $request->all();
+        $attributes = json_decode($all['attributes']);
+
+        $product = Product::create([
+            'title' => $all['create_product_name'],
+            'slug' => $all['create_product_slug'],
+            'description' => $all['create_product_description'],
+            'note' => $all['create_product_note'],
+            'code' => $this->generateCode($request),
+            'price' => $all['create_product_price'],
+            'discount' => $all['create_product_discount'],
+            'quantity' => $all['create_product_quantity'],
+            'brand_id' => $all['create_product_brand']
+        ]);
+
+        foreach ($attributes as $attribute){
+            Attribute::create([
+                'title'=>$attribute->title,
+                'value' => $attribute->value,
+                'product_id' => $product->id
+            ]);
+        }
+
+        $imageData = $this->uploadSingleImage($request,'create_product_thumbnail','product_images');
+        $product->thumbnail = 'storage/uploads/product_images/'.$imageData['image_name'];
+        $product->save();
+
+        return response()->json(['code'=>1,'data'=>$product],200);
+
+    }
+
+    private function generateCode(Request $request)
+    {
+        $productName = $request->create_product_name;
+        if($productName){
+            $productName = explode(' ',$productName);
+            $temp = '';
+            foreach($productName as $item){
+                $temp .= strtoupper(str_slug(substr($item,0,1)));
+            }
+            $rand = (string)rand(0,99999999);
+            if(strlen($rand) < 8){
+                $tmp = '';
+                for($i = 0; $i < 8-strlen($rand); $i++){
+                    $tmp .= '0';
+                }
+                $rand = $tmp.$rand;
+            }
+            $temp = substr($temp,0,3).$rand;
+            $check = Product::where('code',$temp)->count();
+            if($check > 0)
+                $this->generateCode($request);
+            return $temp;
+        }
     }
 
     /**
