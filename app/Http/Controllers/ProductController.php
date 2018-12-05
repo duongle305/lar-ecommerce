@@ -180,10 +180,9 @@ class ProductController extends Controller
     }
 
     private function deleteSingleImage($folder,$imageName){
-    if(File::exists(storage_path('app/public/uploads/'.$folder.'/'.$imageName)))
-        File::delete(storage_path('app/public/uploads/'.$folder.'/'.$imageName));
-}
-
+        if(File::exists(storage_path('app/public/uploads/'.$folder.'/'.$imageName)))
+            File::delete(storage_path('app/public/uploads/'.$folder.'/'.$imageName));
+    }
 
     public function changeState($id){
         $product = Product::find($id);
@@ -197,7 +196,7 @@ class ProductController extends Controller
             }
             return response()->json(['code'=>1,'message'=>'Thay đổi trạng thái thành công!'],200);
         }
-        return response()->json(['code'=>0,'error'=>'Có lỗi xảy ra, liên hệ System admin'],403);
+        return response()->json(['message'=>'Không tìm thấy dữ liệu phù hợp'],500);
     }
     /**
      * Store a newly created resource in storage.
@@ -348,6 +347,27 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+
+        if($product instanceof Product){
+            $tmp = explode('/',$product->thumbnail);
+            $thumbnailName = $tmp[count($tmp) -1];
+            $this->deleteSingleImage('product_images',$thumbnailName);
+
+            $images = $product->images;
+
+            foreach ($images as $image){
+                $tmp = explode('/',$image->path);
+                $imageName = $tmp[count($tmp) -1];
+                $this->deleteSingleImage('product_images',$imageName);
+            }
+
+            $product->categories()->detach();
+
+            $product->delete();
+
+            return response()->json(['code'=>1,'message'=>'Xóa thành công'],200);
+        }
+        return response()->json(['message'=>'Không tìm thấy dữ liệu phù hợp'],500);
     }
 }

@@ -229,6 +229,7 @@ $(document).ready(function () {
            $('.add-address').hide();
        }
     });
+
     createCustomerCheckAddAvatar.change(event=>{
        if($(event.target).is(':checked')){
            isAddAvatar = true;
@@ -268,23 +269,11 @@ $(document).ready(function () {
                 toastr.success(response.data.message,'Thông báo');
                 modalCreateCustomer.modal('hide');
             }
-        }).catch(error=>{
-            Loading.close();
-            $('#table_customers').DataTable().ajax.reload();
-            if(error.response.status == 403){
-                toastr.clear();
-                let html = '';
-                let errors = error.response.data.errors;
-                for (let key in errors){
-                    html+=errors[key]+"<br>";
-                }
-                toastr.error(html,'Thông báo');
-                return false;
-            }
-        })
+        }).catch(feedback)
 
     });
 });
+
 $(document).ready(function () {
     let modalViewCustomer = $('#modal_view_customer');
     modalViewCustomer.on('show.bs.modal',event=>{
@@ -311,25 +300,17 @@ $(document).ready(function () {
 
         Loading.show();
         axios.get(url).then(response=>{
-            if(response.data.code === 1){
-                let data = response.data.data;
-                viewInfoName.text(data.name);
-                viewInfoEmail.text(data.email);
-                viewInfoAddress.text(data.address);
-                viewInfoPhone.text(data.phone);
-                viewInfoBirthday.text(data.birthday);
-                viewInfoCompany.text(data.company);
-                viewInfoCountry.text(data.country);
-                viewInfoZip_code.text(data.zip_code);
-                viewInfoAvatar.html(data.avatar);
-            } else {
-                toastr.error(response.data.error,'Thông báo');
-            }
+            let data = response.data;
+            viewInfoName.text(data.name);
+            viewInfoEmail.text(data.email);
+            viewInfoAddress.text(data.address);
+            viewInfoPhone.text(data.phone);
+            viewInfoBirthday.text(data.birthday);
+            viewInfoCompany.text(data.company);
+            viewInfoCountry.text(data.country);
+            viewInfoZip_code.text(data.zip_code);
+            viewInfoAvatar.html(data.avatar);
             Loading.close();
-        }).catch(error=>{
-            Loading.close();
-            toastr.error(error.response.data.message,'Thông báo');
-            return false;
-        })
+        }).catch(feedback)
     })
 });

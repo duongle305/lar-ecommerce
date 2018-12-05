@@ -39,13 +39,17 @@ $(document).ready(function () {
     })
 });
 $(document).ready(function () {
+    let deleteBrand = null;
+    let currentBrand = $('input[name=current_brand]');
+    let transferBrand = $('select[name=transfer_brand]');
+    let transferBrandID = $('input[name=transfer_brand_id]');
+
     $('.dropify').dropify();
     $('#modal_edit_brand').on('show.bs.modal', (event) => {
         Loading.show();
         let id = $(event.relatedTarget).data('id');
         let editUrl = $(event.relatedTarget).data('edit');
         let editBrandID = $('input[name=edit_brand_id]');
-        let editBrandSlug = $('input[name=edit_brand_slug]');
         let editBrandName = $('input[name=edit_brand_name]');
         let editBrandNote = $('textarea[name=edit_brand_note]');
         let editBrandLogo = $('input[name=edit_brand_logo]');
@@ -53,7 +57,6 @@ $(document).ready(function () {
         let removeBtn = $('.dropify-clear')[0];
         editBrandID.val('');
         editBrandName.val('');
-        editBrandSlug.val('');
         editBrandNote.val('');
         editBrandLogo.val(null);
         $(inputShowImg).removeAttr('src');
@@ -61,14 +64,11 @@ $(document).ready(function () {
         axios.get(editUrl).then(response => {
             editBrandID.val(id);
             editBrandName.val(response.data.name);
-            editBrandSlug.val(response.data.slug);
             editBrandNote.val(response.data.note);
             $(inputShowImg).attr('src', response.data.logo_url);
             $(removeBtn).hide();
             Loading.close();
-        }).catch(error => {
-            Loading.close();
-        })
+        }).catch(feedback)
     });
 
     $('input[name=edit_brand_logo]').change(event=>{
@@ -89,25 +89,14 @@ $(document).ready(function () {
             $('#table_brands').DataTable().ajax.reload();
             $('#modal_edit_brand').modal('hide');
             Loading.close();
-        }).catch(er=>{
-            if(parseInt(er.response.status) === 500){
-                toastr.error(er.response.data.error,'Thông báo');
-            } else{
-                let errors = er.response.data.errors;
-                let message = '';
-                for (let key in errors) {
-                    message += errors[key][0] + "\n";
-                }
-                toastr.error(message,'Thông báo');
-            }
-            Loading.close();
-        });
-
+        }).catch(feedback);
     });
+
     /*delete brand*/
     $(document).on('click','.delete',(event)=>{
         event.preventDefault();
         let href = $(event.target).data('delete');
+        deleteBrand = $(event.target).data('id');
         swal({
             title: 'Are you sure?',
             text: "Bạn sẽ không thể khôi phục lại điều này !",
@@ -122,27 +111,100 @@ $(document).ready(function () {
             buttonsStyling: false
         }).then(function (isConfirm) {
             if (isConfirm === true) {
+                Loading.show();
                 axios.delete(href).then(res=>{
-                    swal({
-                        title: 'Deleted!',
-                        text: res.data.message,
-                        type: 'success',
-                        confirmButtonClass: 'btn btn-primary',
-                        buttonsStyling: false
-                    });
-                    $('#table_brands').DataTable().ajax.reload();
-                }).catch(er=>{
-                    swal({
-                        title: 'Thông báo',
-                        text: er.response.message,
-                        type: 'error',
-                        confirmButtonClass: 'btn btn-primary',
-                        buttonsStyling: false
-                    });
                     Loading.close();
-                })
+                    if(res.data.has_product > 0){
+                        swal({
+                            title: 'Thông báo',
+                            type: 'info',
+                            html: res.data.message,
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: 'Chuyển sản phẩm',
+                            cancelButtonText: 'Đóng',
+                            confirmButtonClass: 'btn btn-primary btn-lg mr-1',
+                            cancelButtonClass: 'btn btn-danger btn-lg',
+                            buttonsStyling: false
+                        }).then(function(isConfirm) {
+                            if (isConfirm) {
+                                $('#modal_transfer_brand').modal('show');
+                            }
+                        });
+                    } else {
+                        toastr.success(res.data.message,'Thông báo');
+                        $('#table_brands').DataTable().ajax.reload();
+                    }
+
+                }).catch(feedback)
             }
         })
+    });
+
+    $('#modal_transfer_brand').on('show.bs.modal',event=>{
+        currentBrand.val('');
+        transferBrand.val(null).trigger('change');
+        transferBrandID.val(deleteBrand);
+
+        Loading.show();
+        axios.get(`/brands/get-info-change-brand/${deleteBrand}`).then(response=>{
+            currentBrand.val(response.data.name);
+            Loading.close();
+        }).catch(feedback)
+    });
+
+    transferBrand.select2({
+        ajax: {
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url : '/brands/get-brands',
+            dataType: 'json',
+            delay : 250,
+            method:'POST',
+            data : function(params){
+                return {
+                    current_brand: deleteBrand,
+                    keyword : params.term,
+                    page : params.page
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: $.map(data.data, function (item) {
+                        return {
+                            text: `${item.name}`,
+                            id: item.id
+                        }
+                    }),
+                    pagination: {
+                        more : (params.page  * 10) < data.total
+                    }
+                };
+            },
+            cache: true
+        },
+        templateResult : function (repo) {
+            if(repo.loading) return repo.text;
+            var markup = repo.text;
+            return markup;
+        },
+        templateSelection : function(repo) {
+            return repo.text;
+        },
+        escapeMarkup : function(markup){ return markup; }
+    });
+
+    $('#form_transfer_brand').submit(event=>{
+        event.preventDefault();
+        Loading.show();
+        let url = $(event.target).attr('action');
+        let formData = new FormData(event.target);
+        axios.post(url,formData).then(response=>{
+            Loading.close();
+            $('#table_brands').DataTable().ajax.reload();
+            toastr.success(response.data.message,'Thông báo');
+            $('#modal_transfer_brand').modal('hide');
+        }).catch(feedback)
     });
 
     $('#modal_create_brand').on('show.bs.modal',(event)=>{
@@ -150,12 +212,6 @@ $(document).ready(function () {
         let drEvent = $('input[name=create_brand_logo]').dropify().data('dropify');
         drEvent.resetPreview();
         drEvent.clearElement();
-    });
-
-    /*bind name to slug when typing*/
-    $('#create_brand_name').on('input',(event)=>{
-        let displayName = $(event.currentTarget).val();
-        $('input[name=create_brand_slug]').val(Helpers.slug(displayName));
     });
 
     $('#form_create_brand').submit((event)=>{
@@ -168,20 +224,8 @@ $(document).ready(function () {
             $('#table_brands').DataTable().ajax.reload();
             $('#modal_create_brand').modal('hide');
             Loading.close();
-        }).catch(err=>{
-            let resp = err.response;
-            if(resp.status == 403){
-                let errors = resp.data.errors;
-                let message = '';
-                for(let key in errors){
-                    message += errors[key][0]+"\n";
-                }
-                toastr.error(message,'Thông báo');
-            }
-            if(resp.status === 500){
-                toastr.error(resp.data.message,'Thông báo');
-            }
-            Loading.close();
-        });
+        }).catch(feedback);
     });
 });
+
+

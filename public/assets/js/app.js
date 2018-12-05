@@ -310,7 +310,7 @@ function feedback(err){
         let errors = resp.data.errors;
         let message = '';
         for(let key in errors){
-            message += errors[key][0]+"\n";
+            message += errors[key][0]+"<br>";
         }
         toastr.error(message,'Thông báo');
     }
