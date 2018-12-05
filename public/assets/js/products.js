@@ -229,7 +229,13 @@ $(document).ready(function () {
         callbacks: {
             onAllComplete: function(succeeded,failed) {
                 Loading.close();
-                toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+                swal({
+                    title: 'Thành công!',
+                    text: 'Thêm sản phẩm thành công',
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-primary btn-lg',
+                    buttonsStyling: false
+                });
                 location.reload();
             },
         },
