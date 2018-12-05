@@ -348,6 +348,27 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+
+        if($product instanceof Product){
+            $tmp = explode('/',$product->thumbnail);
+            $thumbnailName = $tmp[count($tmp) -1];
+            $this->deleteSingleImage('product_images',$thumbnailName);
+
+            $images = $product->images;
+
+            foreach ($images as $image){
+                $tmp = explode('/',$image->path);
+                $imageName = $tmp[count($tmp) -1];
+                $this->deleteSingleImage('product_images',$imageName);
+            }
+
+            $product->categories()->detach();
+
+            $product->delete();
+
+            return response()->json(['code'=>1,'message'=>'Xóa thành công'],200);
+        }
+        return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
     }
 }

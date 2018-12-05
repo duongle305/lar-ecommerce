@@ -82,6 +82,9 @@ Route::middleware('auth')->group(function (){
         Route::post('update','BrandController@update')->name('brands.update');
         Route::delete('delete/{id}','BrandController@destroy')->name('brands.delete');
         Route::post('store','BrandController@store')->name('brands.store');
+        Route::get('get-info-change-brand/{id}','BrandController@getInfoChangeBrand')->name('brands.get-info-change-brand');
+        Route::post('get-brands','BrandController@getBrands')->name('brands.get-brands');
+        Route::post('transfer-submit','BrandController@transferSubmit')->name('brands.transfer-submit');
     });
 
     Route::prefix('customers')->group(function (){
@@ -98,7 +101,7 @@ Route::middleware('auth')->group(function (){
         Route::get('','ProductController@index')->name('products.index');
         Route::get('all-products','ProductController@allProducts')->name('products.all');
         Route::get('edit','ProductController@edit')->name('products.edit');
-        Route::delete('delete','ProductController@destroy')->name('products.delete');
+        Route::delete('delete/{id}','ProductController@destroy')->name('products.delete');
         Route::get('create','ProductController@create')->name('products.create');
         Route::post('get-brand','ProductController@getBrand')->name('products.get-brand');
         Route::post('get-categories','ProductController@getCategories')->name('products.get-categories');

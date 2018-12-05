@@ -286,18 +286,12 @@ $(document).ready(function () {
     $('.reload').click(event=>{
         Loading.show();
         event.preventDefault();
-        createProductName.val('');
-        createProductSlug.val('');
+        formCreateProduct.trigger('reset');
         createProductBrand.val(null).trigger('change');
         createProductCategory.val(null).trigger('change');
-        createProductPrice.val(0);
-        createProductDiscount.val(0);
-        createProductQuantity.val(0);
         createProductNote.summernote('reset');
         createProductDescription.summernote('reset');
         $('#table_attribute_body').html('');
-        createProductAttributeValue.val('');
-        createProductAttributeName.val('');
         attributes = [];
         if(descriptionImg.length > 0){
             let formData = new FormData();
@@ -382,5 +376,40 @@ $(document).ready(function () {
                 toastr.error(error.response.data.error,'Thông báo')
             }
         })
-    })
+    });
+
+    $(document).on('click','.delete',event=>{
+        event.preventDefault();
+        let href = $(event.target).data('delete');
+        swal({
+            title: 'Are you sure?',
+            text: "Bạn sẽ không thể khôi phục lại điều này !",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            confirmButtonClass: 'btn btn-primary mr-1',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
+                axios.delete(href).then(res=>{
+                    swal({
+                        title: 'Deleted!',
+                        text: res.data.message,
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-primary',
+                        buttonsStyling: false
+                    });
+                    $('#table_products').DataTable().ajax.reload();
+                }).catch(feedback)
+            }
+        })
+    });
+
+    $(document).on('click','.view',event=>{
+
+    });
 });

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/DataTables/Buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/dropify/dist/css/dropify.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/select2/dist/css/select2.min.css') }}">
 
 @endsection
 
@@ -70,13 +71,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="edit_brand_id" id="edit_brand_id">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="edit_brand_slug">Tên <span class="text-danger">*</span></label>
-                                <input class="form-control bg-faded" id="edit_brand_slug" name="edit_brand_slug" readonly>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="edit_brand_name">Tên hiển thị <span class="text-danger">*</span></label>
                                 <input class="form-control" name="edit_brand_name" id="edit_brand_name">
@@ -113,13 +108,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="create_brand_slug">Tên <span class="text-danger">*</span></label>
-                                <input class="form-control bg-faded" id="create_brand_slug" name="create_brand_slug" readonly>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="create_brand_name">Tên hiển thị <span class="text-danger">*</span></label>
                                 <input class="form-control" name="create_brand_name" id="create_brand_name">
@@ -137,6 +126,40 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Hoàn thành') }}</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal change brand of product -->
+<div id="modal_transfer_brand" class="modal animated bounceInDown" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="form_transfer_brand" action="{{ route('brands.transfer-submit') }}">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Chuyển thương hiệu</h5>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="transfer_brand_id" id="transfer_brand_id">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="create_brand_name">Thương hiệu hiện tại</label>
+                                <input class="form-control" readonly id="current_brand" name="current_brand">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create_brand_note">Chuyển tất cả đến thương hiệu</label>
+                        <select class="form-control" name="transfer_brand" id="transfer_brand" data-placeholder="Chọn Thương hiệu"></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Hoàn thành & xóa thương hiệu') }}</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
                 </div>
             </form>
@@ -167,5 +190,6 @@
     <script type="text/javascript"
             src="{{ asset('assets/vendors/DataTables/Buttons/js/buttons.colVis.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/dropify/dist/js/dropify.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendors/select2/dist/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/brands.js') }}"></script>
 @endsection

@@ -43,6 +43,7 @@ class BrandController extends Controller
                                     <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
+                                       data-id="'.$brand->id.'"
                                        data-delete="'.route('brands.delete',$brand->id).'" >
                                     <i class="ti-trash"></i> Xóa</a>
                                 </div>
@@ -89,12 +90,10 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'create_brand_slug'=>'required|string|unique:brands,slug',
             'create_brand_name'=>'required|string|unique:brands,name',
             'create_brand_note'=>'nullable|string',
             'create_brand_logo' => 'required|file|mimes:jpeg,jpg,png,gif'
         ],[],[
-            'create_brand_slug'=>'tên',
             'create_brand_name'=>'tên hiển thị',
             'create_brand_note'=>'mô tả',
             'create_brand_logo' => 'Logo'
@@ -103,7 +102,7 @@ class BrandController extends Controller
 
         $brand = Brand::create([
             'name' => $request->create_brand_name,
-            'slug' => $request->create_brand_slug,
+            'slug' => str_slug($request->create_brand_name),
             'note' => $request->create_brand_note,
             'logo' => $this->uploadLogo($request,'create_brand_logo'),
         ]);
@@ -141,6 +140,48 @@ class BrandController extends Controller
         return response()->json(['message'=>'Không tìm thấy dữ liệu'],500);
     }
 
+    public function getInfoChangeBrand($id){
+        $brand = Brand::find($id);
+        if($brand instanceof Brand){
+            return response()->json($brand,200);
+        }
+        return response()->json(['message'=>'Không tìm thấy dữ liệu'],500);
+    }
+
+    public function getBrands(Request $request){
+        $keyword = $request->keyword;
+        $currentCrand = $request->current_brand;
+        $brands = Brand::where('name','like',"%{$keyword}%")
+            ->where('id','!=',$currentCrand)
+            ->paginate(10);
+
+        return response()->json($brands,200);
+    }
+
+    public function transferSubmit(Request $request){
+        $validator = Validator::make($request->all(),[
+            'transfer_brand_id'=>'required|exists:brands,id',
+            'transfer_brand'=>'required|exists:brands,id',
+        ],[],[
+            'transfer_brand_id'=>'Thương hiệu hiện tại',
+            'transfer_brand'=>'Thương hiệu mới',
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+
+        $brand = Brand::find($request->transfer_brand_id);
+
+        if($brand instanceof Brand){
+            $products = $brand->products;
+            foreach ($products as $product){
+                $product->brand_id = $request->transfer_brand;
+                $product->save();
+            }
+            return $this->destroy($brand->id);
+        }
+        return response()->json(['message'=>'Không tìm thấy dữ liệu'],500);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -151,12 +192,10 @@ class BrandController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'edit_brand_slug'=>'required|string',
             'edit_brand_name'=>'required|string',
             'edit_brand_note'=>'nullable|string',
             'edit_brand_logo' => 'nullable|file|mimes:jpeg,jpg,png,gif'
         ],[],[
-            'edit_brand_slug'=>'tên',
             'edit_brand_name'=>'tên hiển thị',
             'edit_brand_note'=>'mô tả',
             'edit_brand_logo' => 'Logo'
@@ -166,7 +205,7 @@ class BrandController extends Controller
         if($brand instanceof Brand){
             $brand->update([
                 'name' => $request->edit_brand_name,
-                'slug' => $request->edit_brand_slug,
+                'slug' => str_slug($request->edit_brand_name),
                 'note' => $request->edit_brand_note
             ]);
 
@@ -183,7 +222,7 @@ class BrandController extends Controller
             }
             return response()->json(['message' => 'Cập nhật thương hiệu thành công!'],200);
         }
-        return response()->json(['error' => 'Không tìm thấy dữ liệu phù hợp!'],500);
+        return response()->json(['message' => 'Không tìm thấy dữ liệu phù hợp!'],500);
     }
     /**
      * Remove the specified resource from storage.
@@ -193,13 +232,19 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        $brand = Brand::findOrFail($id);
-        if($brand->delete())
+        $brand = Brand::find($id);
+        if($brand instanceof Brand){
+            if($brand->products->count() > 0){
+                return response()->json(['has_product'=> $brand->products->count(),'message'=>'Thương hiệu này đang có sản phẩm, Vui lòng chuyển hoặc xóa các sản phẩm trước khi xóa thương hiệu này'],200);
+            }
+
             if(!empty($brand->logo)){
                 if(File::exists(storage_path('app/public/uploads/brand_logo/'.$brand->logo)))
                     File::delete(storage_path('app/public/uploads/brand_logo/'.$brand->logo));
             }
+            $brand->delete();
             return response()->json(['message'=>'Xóa thương hiệu <strong>'.$brand->name.'</strong> thành công.'],200);
-        return response()->json(['message'=>'Đã xảy ra lỗi trong quá trình xử lý vui lòng kiểm tra lại.'],403);
+        }
+        return response()->json(['message' => 'Không tìm thấy dữ liệu phù hợp!'],500);
     }
 }
