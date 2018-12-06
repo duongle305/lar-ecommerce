@@ -26,7 +26,7 @@
                             <div id="tab1" class="tab-pane active">
                                 <div class="row mb-2">
                                     <div class="col-lg-12">
-                                        <h5 class="mb-2">{{ $product->title }}</h5>
+                                        <h4 class="mb-2">{{ $product->title }}</h4>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="row mb-2 text-center justify-content-center">
                                     <div class="col-lg-12">
-                                        <h5 class="mb-2">Mô tả sản phẩm</h5>
+                                        <h4 class="mb-2">Mô tả sản phẩm</h4>
                                         {!! $product->description !!}
                                     </div>
                                 </div>
