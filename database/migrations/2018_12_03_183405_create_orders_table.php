@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
         });
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code')->nullable();
             $table->unsignedInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('customer')->nullable();
@@ -39,8 +40,10 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
         });
         Schema::create('order_details', function(Blueprint $table){
-            $table->unsignedInteger('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->unsignedInteger('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->unsignedInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedInteger('quantity')->default(1);
         });
     }
