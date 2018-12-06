@@ -48,9 +48,12 @@ class CategoryController extends Controller
             'note'=>'ghi chú',
         ]);
         if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+        $order = Category::max('orders');
         Category::create([
             'title'=>$request->title,
             'slug'=>str_slug($request->title),
+            'orders' => intval($order) + 1,
             'note'=>$request->note,
         ]);
         return response()->json(['message'=>'Thêm mới danh mục sản phẩm thành công.'],200);
