@@ -74,5 +74,15 @@ $(document).ready(function () {
            $('#ordrt_products').html(html);
            Loading.close();
        }).catch(feedback)
+   });
+   $(document).on('click','.next-status',event=>{
+       Loading.show();
+       let url = $(event.target).data('url');
+       axios.get(url).then(response=>{
+           toastr.clear();
+           toastr.success(response.data.message,'Thông báo');
+           $('#table_orders').DataTable().ajax.reload();
+           Loading.close();
+       }).catch(feedback)
    })
 });

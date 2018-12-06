@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\OrderStatus;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -23,6 +25,19 @@ class OrderController extends Controller
 
             return \DataTables::of($orders)
                 ->addColumn('actions',function($order){
+                    $status = $order->orderStatus;
+                    $nextStatuses = DB::table('order_status_switches')
+                        ->where('current_status_id',$status->id)
+                        ->get();
+                    $html = '';
+                    if($nextStatuses->count() > 0){
+                        foreach ($nextStatuses as $item){
+                            $statusTmp = OrderStatus::find($item->next_status_id);
+                            $html.='<a href="#" data-url="'.route('orders.change-status',[$order->id,$statusTmp->id]).'"
+                                       class="dropdown-item next-status">
+                                    <i class="ti-arrow-right"></i> '.$statusTmp->name.'</a>';
+                        }
+                    }
                     return '<div class="dropdown dropup float-xs-right">
                                 <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
                                     <i class="ti-menu"></i>
@@ -34,11 +49,7 @@ class OrderController extends Controller
                                        data-toggle="modal" 
                                        data-target="#modal_order_detail" >
                                     <i class="ti-eye"></i> Chi tiết</a>
-                                    <a href="#" 
-                                       class="dropdown-item delete" 
-                                       data-id="'.$order->id.'"
-                                       data-delete="" >
-                                    <i class="ti-trash"></i> Xóa</a>
+                                    '.$html.'
                                 </div>
                             </div>';
                 })
@@ -85,6 +96,18 @@ class OrderController extends Controller
             $order->address ?? $order->address = $order->customerInfo->address;
 
             return response()->json($order,200);
+        }
+        return response()->json(['message'=>'Không tìm thấy dữ liệu phù hợp'],500);
+    }
+
+    public function changeStatus($orderID,$nextStatus){
+        $order = Order::find($orderID);
+        $status = OrderStatus::find($nextStatus);
+
+        if($order instanceof Order && $status instanceof OrderStatus){
+            $order->order_status_id = $status->id;
+            $order->save();
+            return response()->json(['message'=>'Đổi trạng thái thành công!'],200);
         }
         return response()->json(['message'=>'Không tìm thấy dữ liệu phù hợp'],500);
     }
