@@ -107,7 +107,7 @@ class OrderController extends Controller
         if($order instanceof Order && $status instanceof OrderStatus){
             $order->order_status_id = $status->id;
             $order->save();
-            return response()->json(['message'=>'Đổi trạng thái thành công!'],200);
+            return response()->json(['message'=>'Đổi trạng thái "'.$status->name.'" thành công!'],200);
         }
         return response()->json(['message'=>'Không tìm thấy dữ liệu phù hợp'],500);
     }
