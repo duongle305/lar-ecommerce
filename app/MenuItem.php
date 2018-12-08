@@ -20,12 +20,12 @@ class MenuItem extends Model
     protected $hidden = ['updated_at','created_at'];
     public function parent()
     {
-        return $this->belongsTo('App\MenuItem')->with(['children']);
+        return $this->belongsTo('App\MenuItem');
     }
 
     public function children()
     {
-        return $this->hasMany('App\MenuItem','parent_id');
+        return $this->hasMany('App\MenuItem','parent_id')->with(['children']);
     }
 
 }
