@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $('.dropify').dropify();
     $('#categories').nestable().on('change', function(e){
         let list = e.length ? e : $(e.target);
         let data = list.nestable('serialize');
@@ -42,31 +43,85 @@ $(document).ready(function(){
     /* create new category */
     $('#form_create_category').submit(function(e){
         e.preventDefault();
+
         let action  = $(e.target).attr('action');
         let formData = new FormData(e.target);
         Loading.show();
         axios.post(action, formData).then(resp=>{
             Loading.close();
             $(e.target).trigger('reset');
+            $('.dropify-clear').click();
             toastr.success(resp.data.message,'Thông báo');
             loadCategories().then(function(resp){
                 $('#categories').html(parseNestable(resp.data));
+
             }).catch(feedback);
         }).catch(feedback);
     });
+
+
     /* edit category */
+
+    function clickRemove(element){
+        let button = $(element).next();
+        $(button).click();
+    }
     $('#modal_edit_category').on('show.bs.modal',function(e){
         Loading.show();
         let categoryId = $(e.relatedTarget).data('id');
         let title = $('#edit_title');
         let note = $('#edit_note');
+
+        let preview1 = $('input[name=edit_category_icon]').next().next();
+        let render1 = $(preview1).children('.dropify-render');
+
+        let preview2 = $('input[name=edit_category_icon_hover]').next().next();
+        let render2 = $(preview2).children('.dropify-render');
+
+
+        $(render1).removeAttr('src');
+        $(render2).removeAttr('src');
+
         $('#edit_category_id').val(categoryId);
         axios.get('categories/edit/'+categoryId).then(resp=>{
             title.val(resp.data.title);
             note.val(resp.data.note);
+            if(resp.data.icon_default){
+                render1.html(`<img src="${resp.data.icon_default}" style="background:#20B9AE"/>`);
+                $(render1.parent()).attr('style','background:#20B9AE').show();
+            } else {
+                clickRemove($('input[name=edit_category_icon]'))
+            }
+
+            if(resp.data.icon_hover){
+                render2.html(`<img src="${resp.data.icon_hover}" style="background:#20B9AE"/>`);
+                $(render2.parent()).attr('style','background:#20B9AE').show();
+            } else {
+                clickRemove($('input[name=edit_category_icon_hover]'))
+            }
             Loading.close();
         }).catch(feedback);
     });
+
+    $('input[name=edit_category_icon_hover]').change(function(event) {
+        setTimeout(function () {
+            let preview = $(event.target).next().next();
+            $(preview).attr('style','background:#20B9AE').show();
+            let render = $(preview).children('.dropify-render');
+            $(render).children('img').attr('style','background:#20B9AE');
+        },100);
+    });
+
+    $('input[name=edit_category_icon]').change(function(event) {
+        setTimeout(function () {
+            let preview = $(event.target).next().next();
+            $(preview).attr('style','background:#20B9AE').show();
+            let render = $(preview).children('.dropify-render');
+            $(render).children('img').attr('style','background:#20B9AE');
+        },100);
+    });
+
+
     $('#form_edit_category').submit(function(e){
         e.preventDefault();
         Loading.show();
@@ -75,6 +130,9 @@ $(document).ready(function(){
         axios.post(action, formData).then(resp=>{
             toastr.success(resp.data.message,'Thông báo');
             $('#modal_edit_category').modal('hide');
+            clickRemove($('input[name=edit_category_icon]'));
+            clickRemove($('input[name=edit_category_icon_hover]'));
+
             loadCategories().then(function(resp){
                 $('#categories').html(parseNestable(resp.data));
             }).catch(feedback);
@@ -100,18 +158,24 @@ $(document).ready(function(){
         }).then(function (isConfirm) {
             if (isConfirm === true) {
                 axios.delete('categories/delete/'+categoryId).then(res=>{
-                    swal({
-                        title: 'Deleted!',
-                        text: res.data.message,
-                        type: 'success',
-                        confirmButtonClass: 'btn btn-primary',
-                        buttonsStyling: false
-                    });
-                    loadCategories().then(function(resp){
-                        $('#categories').html(parseNestable(resp.data));
-                    }).catch(feedback);
+                    if(res.data.code === 1){
+                        toastr.clear();
+                        toastr.error(res.data.message,'Thông báo');
+                    } else {
+                        swal({
+                            title: 'Deleted!',
+                            text: res.data.message,
+                            type: 'success',
+                            confirmButtonClass: 'btn btn-primary',
+                            buttonsStyling: false
+                        });
+                        loadCategories().then(function(resp){
+                            $('#categories').html(parseNestable(resp.data));
+                        }).catch(feedback);
+                    }
                 }).catch(feedback)
             }
         })
     });
+
 });

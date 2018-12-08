@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug',255);
             $table->unsignedInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('categories');
+            $table->text('menu_icons')->nullable();
             $table->text('note')->nullable();
             $table->unsignedInteger('orders')->nullable();
             $table->timestamps();
