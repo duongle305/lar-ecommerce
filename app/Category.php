@@ -33,6 +33,6 @@ class Category extends Model
         return static::where('parent_id',NULL)
             ->with(['children'])
             ->orderBy('orders')
-            ->get(['id','title','slug','menu_icons','note']);
+            ->get(['id','title','slug','menu_icons','parent_id','note']);
     }
 }
