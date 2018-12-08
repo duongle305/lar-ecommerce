@@ -388,6 +388,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click','.view',event=>{
-
+        let url = $(event.target).data('view');
+        window.open(url,'_blank');
     });
 });

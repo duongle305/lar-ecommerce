@@ -116,6 +116,8 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('orders')->group(function(){
         Route::get('','OrderController@index')->name('orders.index');
-        Route::get('all','OrderController@allOrders')->name('orders.orders');
+        Route::get('all-order/{id}','OrderController@allOrders')->name('orders.all-orders');
+        Route::get('show/{id}','OrderController@show')->name('orders.show');
+        Route::get('change-status/{orderID}/{nextStatus}','OrderController@changeStatus')->name('orders.change-status');
     });
 });
