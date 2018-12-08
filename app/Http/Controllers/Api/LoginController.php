@@ -37,7 +37,7 @@ class LoginController extends Controller
      */
     public function me()
     {
-        $user = auth()->guard('api')->user();
+        $user = auth()->guard('api')->user()->with(['orders'])->first();
         return response()->json(collect($user)->forget(['created_at','updated_at'])->all());
     }
 

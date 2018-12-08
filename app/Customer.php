@@ -33,6 +33,10 @@ class Customer extends Authenticatable implements JWTSubject
 
     protected $hidden = ['password','remember_token'];
 
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
     public function getJWTIdentifier()
     {
         return $this->getKey();
