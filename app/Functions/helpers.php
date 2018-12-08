@@ -11,7 +11,7 @@ if(!function_exists('dgg_menu')){
                 $iconClass = $item->icon_class ? '<span class="s-icon"><i class="'.$item->icon_class.'"></i></span>':'';
                 if(!empty($item->route) && Route::has($item->route)){
                     $href = $item->route ? route($item->route) : $item->url;
-                    if((count($item->children) > 0)) $href = 'javascript:void();';
+                    if(count($item->children) > 0) $href = 'javascript:void();';
                     $html .= '<li '.$withSub.'>
                         <a href="'.$href.'" class="waves-effect waves-light">
                             '.$arrowSub.$iconClass.'
@@ -32,6 +32,7 @@ if(!function_exists('dgg_menu')){
                 $childWithSub = (count($child->children) > 0) ? 'class="with-sub"' : '';
                 $childArrowSub = (count($child->children) > 0) ? '<span class="s-caret"><i class="fa fa-angle-down"></i></span>' : '';
                 $childHref = $child->route ? route($child->route) : $child->url;
+                if(count($child->children) > 0) $childHref = 'javascript:void();';
                 $childHtml .= '<li '.$childWithSub.'>                                    
                                     <a href="'.$childHref.'" class="waves-effect waves-light">
                                         '.$childArrowSub.'

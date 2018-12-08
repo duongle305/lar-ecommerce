@@ -19,6 +19,7 @@ class CategoryController extends Controller
         $categories = Category::tree();
         return response()->json($categories,200);
     }
+
     private function prepareNestable($items, $parentId = null, $index = 0){
         foreach ($items as $item){
             $item = (object) $item;
