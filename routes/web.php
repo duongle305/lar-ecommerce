@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('acl')->group(function(){
         Route::get('','AclController@index')->name('acl.index');
+
         Route::prefix('users')->group(function (){
             Route::get('','AclController@allUsers')->name('acl.users');
             Route::post('get-provinces','AclController@getProvinces')->name('acl.users.get-provinces');
@@ -85,6 +86,7 @@ Route::middleware('auth')->group(function (){
         Route::get('get-info-change-brand/{id}','BrandController@getInfoChangeBrand')->name('brands.get-info-change-brand');
         Route::post('get-brands','BrandController@getBrands')->name('brands.get-brands');
         Route::post('transfer-submit','BrandController@transferSubmit')->name('brands.transfer-submit');
+        Route::get('change-state/{id}','BrandController@changeStatus')->name('brands.change');
     });
 
     Route::prefix('customers')->group(function (){
