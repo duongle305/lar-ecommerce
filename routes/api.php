@@ -25,6 +25,7 @@ Route::get('brands','Api\BrandController@index');
 Route::get('logo','Api\SettingController@logo');
 Route::get('sliders','Api\SliderController@index');
 Route::get('provinces','Api\RegisterController@getProvinces');
+Route::get('search','Api\ProductController@search');
 Route::middleware('auth:api')->prefix('auth')->group(function(){
     Route::post('logout','Api\LoginController@logout');
     Route::post('refresh', 'Api\LoginController@refresh');

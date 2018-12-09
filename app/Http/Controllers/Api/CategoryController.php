@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
     public function products($category)
     {
-        $products = Category::whereSlug($category)->first()->products()->paginate(8);
+        $products = Category::whereSlug($category)->first()->products()->select(['id','title','slug','thumbnail','price','discount'])->paginate(8);
         return response()->json($products,200);
     }
 }

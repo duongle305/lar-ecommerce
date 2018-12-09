@@ -4,8 +4,8 @@ $(document).ready(function(){
         let list = e.length ? e : $(e.target);
         let data = list.nestable('serialize');
         axios.put('categories/nestable/update',{items: data}).then(resp=>{
-            toastr.clear();
-            toastr.success(resp.data.message,'Thông báo');
+            // toastr.clear();
+            // toastr.success(resp.data.message,'Thông báo');
         }).catch(feedback);
     });
     function parseNestable(items){
@@ -43,7 +43,6 @@ $(document).ready(function(){
     /* create new category */
     $('#form_create_category').submit(function(e){
         e.preventDefault();
-
         let action  = $(e.target).attr('action');
         let formData = new FormData(e.target);
         Loading.show();
@@ -54,7 +53,6 @@ $(document).ready(function(){
             toastr.success(resp.data.message,'Thông báo');
             loadCategories().then(function(resp){
                 $('#categories').html(parseNestable(resp.data));
-
             }).catch(feedback);
         }).catch(feedback);
     });
