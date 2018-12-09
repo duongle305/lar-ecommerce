@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('auth/login','Api\LoginController@login');
 Route::get('categories','Api\CategoryController@index');
+Route::get('category/{slug}','Api\CategoryController@products');
+Route::get('brands','Api\BrandController@index');
 Route::middleware('auth:api')->prefix('auth')->group(function(){
     Route::post('logout','Api\LoginController@logout');
     Route::post('refresh', 'Api\LoginController@refresh');

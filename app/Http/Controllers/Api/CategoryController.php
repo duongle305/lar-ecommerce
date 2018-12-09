@@ -12,4 +12,10 @@ class CategoryController extends Controller
         $categories =  Category::tree();
         return response()->json($categories, 200);
     }
+
+    public function products($category)
+    {
+        $products = Category::whereSlug($category)->first()->products()->paginate(8);
+        return response()->json($products,200);
+    }
 }

@@ -19,6 +19,11 @@ class Category extends Model
     protected $fillable = ['title','slug','parent_id','note','menu_icons','orders'];
     protected $hidden = ['created_at','updated_at'];
 
+
+    public function products()
+    {
+        return $this->belongsToMany('App\Product');
+    }
     public function parent()
     {
         return $this->belongsTo('App\Category');
