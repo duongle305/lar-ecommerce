@@ -54,7 +54,7 @@ class BrandController extends Controller
                 })
                 ->addColumn('logo',function ($brand){
                     return $brand->logo ?
-                        '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset('storage/uploads/brand_logo/'.$brand->logo).'"/></div>' :
+                        '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset($brand->logo).'"/></div>' :
                         '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset('storage/uploads/brand_logo/default_logo.png').'"/></div>';
                 })
                 ->addIndexColumn()
@@ -77,7 +77,7 @@ class BrandController extends Controller
             $logo = $request->file($key);
             $logoName = time().'-'.$logo->getClientOriginalName();
             $logo->move(storage_path('app/public/uploads/brand_logo'),$logoName);
-            return $logoName;
+            return 'storage/uploads/brand_logo/'.$logoName;
         }
         return 'default_logo.png';
     }
@@ -133,7 +133,7 @@ class BrandController extends Controller
         if($brand instanceof Brand){
             empty($brand->logo) ?
                 $brand->logo_url = asset('storage/uploads/brand_logo/default_logo.png'):
-                $brand->logo_url = asset('storage/uploads/brand_logo/'.$brand->logo)
+                $brand->logo_url = asset($brand->logo)
             ;
             return response()->json($brand,200);
         }
@@ -214,10 +214,10 @@ class BrandController extends Controller
                 $logoName = time().'-'.$logo->getClientOriginalName();
                 $logo->move(storage_path('app/public/uploads/brand_logo'),$logoName);
                 if(!empty($brand->logo)){
-                    if(File::exists(storage_path('app/public/uploads/brand_logo/'.$brand->logo)))
-                        File::delete(storage_path('app/public/uploads/brand_logo/'.$brand->logo));
+                    if(File::exists(storage_path($brand->logo)))
+                        File::delete(storage_path($brand->logo));
                 }
-                $brand->logo = $logoName;
+                $brand->logo = 'storage/uploads/brand_logo/'.$logoName;
                 $brand->save();
             }
             return response()->json(['message' => 'Cập nhật thương hiệu thành công!'],200);
@@ -239,8 +239,8 @@ class BrandController extends Controller
             }
 
             if(!empty($brand->logo)){
-                if(File::exists(storage_path('app/public/uploads/brand_logo/'.$brand->logo)))
-                    File::delete(storage_path('app/public/uploads/brand_logo/'.$brand->logo));
+                if(File::exists(storage_path($brand->logo)))
+                    File::delete(storage_path($brand->logo));
             }
             $brand->delete();
             return response()->json(['message'=>'Xóa thương hiệu <strong>'.$brand->name.'</strong> thành công.'],200);
