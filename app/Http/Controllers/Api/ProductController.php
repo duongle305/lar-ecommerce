@@ -14,7 +14,7 @@ class ProductController extends Controller
                 $query->where('discount','>',0)
                     ->whereState('ACTIVE')
                     ->where('quantity','>',0);
-            })->orderByDesc('discount')->limit(10)->get(['title','slug','thumbnail','price','discount']);
+            })->orderByDesc('discount')->limit(10)->get(['id','title','slug','thumbnail','price','discount']);
         return response()->json($products, 200);
     }
 }
