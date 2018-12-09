@@ -100,20 +100,19 @@ class ProductController extends Controller
 
     public function getCategories(Request $request){
        $keyword = $request->keyword;
-       $categories = Category::whereNotNull('parent_id')
-            ->where(function ($query) use($keyword){
+       $categories = Category::where(function ($query) use($keyword){
                 $query->where('title','like',"%{$keyword}%")
                 ->orWhere('note','like',"%{$keyword}%");
             })
            ->select(['id','title'])
            ->paginate(10);
 
-       $categories->getCollection()->transform(function ($category){
-           $tmp = Category::where('parent_id','=',$category->id)->first();
-           if(!$tmp instanceof Category){
-               return $category;
-           }
-       });
+//       $categories->getCollection()->transform(function ($category){
+//           $tmp = Category::where('parent_id','=',$category->id)->first();
+//           if(!$tmp instanceof Category){
+//               return $category;
+//           }
+//       });
        return response()->json($categories,200);
 
     }
