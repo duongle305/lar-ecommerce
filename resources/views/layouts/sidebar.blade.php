@@ -12,8 +12,7 @@
                 </a>
                 <ul style="display: none;">
                     <li><a href="{{ route('sliders.index') }}">Slider</a></li>
-                    <li><a href="utilities-color.html">Color utilities</a></li>
-                    <li><a href="utilities-other.html">Other utilities</a></li>
+                    <li><a href="{{ route('settings.index') }}">Cài đặt khác</a></li>
                 </ul>
             </li>
         </ul>
