@@ -95,6 +95,21 @@
                                     </div>
                                 </div>
                                 <div class="row mb-2 text-center justify-content-center">
+                                    <div class="col-lg-6">
+                                        <h4 class="mb-2">Thông số kỹ thuật</h4>
+                                        <table class="table mb-md-0">
+                                            <tbody>
+                                            @foreach($product->attributes as $attribute)
+                                            <tr>
+                                                <td>{{ $attribute->title }}</td>
+                                                <td>{{ $attribute->value }}</td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row mb-2 text-center justify-content-center">
                                     <div class="col-lg-12">
                                         <h4 class="mb-2">Mô tả sản phẩm</h4>
                                         {!! $product->description !!}

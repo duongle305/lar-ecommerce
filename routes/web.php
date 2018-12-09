@@ -120,4 +120,14 @@ Route::middleware('auth')->group(function (){
         Route::get('show/{id}','OrderController@show')->name('orders.show');
         Route::get('change-status/{orderID}/{nextStatus}','OrderController@changeStatus')->name('orders.change-status');
     });
+
+    Route::prefix('slider')->group(function (){
+        Route::get('','SliderController@index')->name('sliders.index');
+        Route::get('all-sliders','SliderController@allSliders')->name('sliders.all');
+        Route::get('edit/{id}','SliderController@edit')->name('sliders.edit');
+        Route::post('update','SliderController@update')->name('sliders.update');
+        Route::delete('delete/{id}','SliderController@destroy')->name('sliders.delete');
+        Route::post('store','SliderController@store')->name('sliders.store');
+        Route::get('change-state/{id}','SliderController@changeState')->name('sliders.change-state');
+    });
 });
