@@ -132,4 +132,9 @@ Route::middleware('auth')->group(function (){
         Route::post('store','SliderController@store')->name('sliders.store');
         Route::get('change-state/{id}','SliderController@changeState')->name('sliders.change-state');
     });
+
+    Route::prefix('settings')->group(function (){
+        Route::get('','SettingController@index')->name('settings.index');
+        Route::post('update-logo','SettingController@updateLogo')->name('settings.update-logo');
+    });
 });
