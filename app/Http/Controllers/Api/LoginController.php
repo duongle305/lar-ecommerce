@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Province;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -70,4 +71,5 @@ class LoginController extends Controller
             'expires_in' => auth()->guard('api')->factory()->getTTL() * 60
         ]);
     }
+
 }
