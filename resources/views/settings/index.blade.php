@@ -27,12 +27,12 @@
                                 <div class="row">
                                     <div class="col-lg-6 text-center" id="view_logo">
                                         <h5>Logo web</h5>
-                                        <img class="img-fluid" src="{{ asset($logo->value) }}" alt="web logo">
+                                        <img class="img-fluid" src="{{ asset(optional($logo)->value) }}" alt="web logo">
                                     </div>
                                     <div class="col-lg-6">
                                         <h5>Cập nhật logo</h5>
                                         <form id="form_edit_logo" action="{{ route('settings.update-logo') }}">
-                                            <input type="hidden" value="{{ $logo->id }}" name="setting_id">
+                                            <input type="hidden" value="{{ optional($logo)->id }}" name="setting_id">
                                             <div class="form-group">
                                                 <label for="web_logo_note">Ghi chú</label>
                                                 <textarea class="form-control" name="web_logo_note" id="web_logo_note" rows="3"></textarea>
