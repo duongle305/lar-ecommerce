@@ -42,6 +42,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Trạng thái</th>
                                     <th>Tên</th>
                                     <th>Tên hiển thị</th>
                                     <th>Logo</th>

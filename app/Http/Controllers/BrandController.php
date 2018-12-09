@@ -29,11 +29,17 @@ class BrandController extends Controller
         try{
             return  DataTables::of(Brand::all())
                 ->addColumn('actions',function($brand){
+                    $text = $brand->state == 1 ? 'Không hiển thị': 'Hiển thị';
                     return '<div class="dropdown dropup float-xs-right">
                                 <a class="btn btn-secondary waves-effect waves-light dropdown-toggle" href="#" data-toggle="dropdown">
                                     <i class="ti-menu"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated flipInX">
+                                    <a href="#" 
+                                       class="dropdown-item change" 
+                                       data-id="'.$brand->id.'"
+                                       data-change="'.route('brands.change',$brand->id).'" >
+                                    <i class="ti-reload"></i> '.$text.'</a>
                                     <a href="#" 
                                        class="dropdown-item" 
                                        data-id="'.$brand->id.'" 
@@ -52,6 +58,9 @@ class BrandController extends Controller
                 ->addColumn('note',function($brand){
                     return $brand->note ?? 'N/A';
                 })
+                ->addColumn('state',function($brand){
+                    return $brand->state == 1? '<div class="text-success text-center">Hiển thị</div>' : '<div class="text-danger text-center">Không hiển thị</div>';
+                })
                 ->addColumn('logo',function ($brand){
                     return $brand->logo ?
                         '<div class="text-center"><img style="width: auto;height: 60px;" class="rounded" src="'.asset($brand->logo).'"/></div>' :
@@ -60,7 +69,7 @@ class BrandController extends Controller
                 ->addIndexColumn()
                 ->removeColumn('created_at')
                 ->removeColumn('updated_at')
-                ->rawColumns(['actions','logo'])
+                ->rawColumns(['actions','logo','state'])
                 ->make(true);
         }catch (\Exception $e){
             return response()->json([],200);
@@ -223,6 +232,23 @@ class BrandController extends Controller
             return response()->json(['message' => 'Cập nhật thương hiệu thành công!'],200);
         }
         return response()->json(['message' => 'Không tìm thấy dữ liệu phù hợp!'],500);
+    }
+
+    public function changeStatus($id){
+        $brand = Brand::find($id);
+
+        if($brand instanceof Brand){
+            if($brand->state == 1){
+                $brand->state = 0;
+                $brand->save();
+            } else {
+                $brand->state = 1;
+                $brand->save();
+            }
+
+            return response()->json(['message'=>'Thay đổi trạng thái thành công!'],200);
+        }
+        return response()->json(['message','Không tìm thấy dữ liệu'],500);
     }
     /**
      * Remove the specified resource from storage.

@@ -16,6 +16,7 @@ $(document).ready(function () {
         },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'state', name: 'state'},
             {data: 'slug', name: 'slug'},
             {data: 'name', name: 'name'},
             {data: 'logo', name: 'logo'},
@@ -226,6 +227,18 @@ $(document).ready(function () {
             Loading.close();
         }).catch(feedback);
     });
+
+    $(document).on('click','.change',event=>{
+        event.preventDefault();
+        Loading.show();
+        let url = $(event.target).data('change');
+        axios.get(url).then(response=>{
+            toastr.clear();
+            toastr.success(response.data.message,'Thông báo');
+            $('#table_brands').DataTable().ajax.reload();
+            Loading.close();
+        }).catch(feedback)
+    })
 });
 
 
