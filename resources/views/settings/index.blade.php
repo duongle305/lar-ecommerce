@@ -27,6 +27,9 @@
                                 <div class="row">
                                     <div class="col-lg-6 text-center" id="view_logo">
                                         <h5>Logo web</h5>
+                                        <div style="background-color: #0b76cc">
+                                            
+                                        </div>
                                         <img class="img-fluid" src="{{ asset($logo->value) }}" alt="web logo">
                                     </div>
                                     <div class="col-lg-6">

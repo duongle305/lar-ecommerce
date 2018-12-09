@@ -11,7 +11,6 @@ class SettingController extends Controller
 
     public function logo(){
         $setting = Setting::where('title','logo')->first();
-
         return response()->json(asset($setting->value),200);
     }
 }
