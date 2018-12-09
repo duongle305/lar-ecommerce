@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->text('note')->nullable();
             $table->string('code')->nullable();
             $table->decimal('price',10,0)->default(0);
-            $table->float('discount',2,1)->default(0);
+            $table->unsignedInteger('discount')->default(0);
             $table->unsignedInteger('quantity')->default(0);
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands');
