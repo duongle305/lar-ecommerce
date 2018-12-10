@@ -103,6 +103,7 @@ class ProductController extends Controller
         $categories = Category::where(function ($query) use($keyword){
             $query->where('title','like',"%{$keyword}%")
                 ->orWhere('note','like',"%{$keyword}%");
+<<<<<<< HEAD
         })
             ->select(['id','title'])
             ->paginate(10);
@@ -125,6 +126,19 @@ class ProductController extends Controller
 ////           }
 ////       });
 //       return response()->json($categories,200);
+=======
+            })
+           ->select(['id','title'])
+           ->paginate(10);
+
+        return response()->json($categories,200);
+//       $categories->getCollection()->transform(function ($category){
+//           $tmp = Category::where('parent_id','=',$category->id)->first();
+//           if(!$tmp instanceof Category){
+//               return $category;
+//           }
+//       });
+>>>>>>> 88f7ada81fad527871a1385d56e35301d59a2ebc
 
     }
 
