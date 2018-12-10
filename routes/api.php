@@ -21,7 +21,7 @@ Route::get('categories','Api\CategoryController@index');
 Route::get('sale-products','Api\ProductController@saleProducts');
 Route::get('category/{slug}','Api\CategoryController@products');
 Route::get('brands','Api\BrandController@index');
-
+Route::get('product/{id}','Api\ProductController@getProduct');
 Route::get('logo','Api\SettingController@logo');
 Route::get('sliders','Api\SliderController@index');
 Route::get('provinces','Api\RegisterController@getProvinces');
