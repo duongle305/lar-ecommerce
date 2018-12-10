@@ -99,21 +99,32 @@ class ProductController extends Controller
     }
 
     public function getCategories(Request $request){
-       $keyword = $request->keyword;
-       $categories = Category::where(function ($query) use($keyword){
-                $query->where('title','like',"%{$keyword}%")
+        $keyword = $request->keyword;
+        $categories = Category::where(function ($query) use($keyword){
+            $query->where('title','like',"%{$keyword}%")
                 ->orWhere('note','like',"%{$keyword}%");
-            })
-           ->select(['id','title'])
-           ->paginate(10);
+        })
+            ->select(['id','title'])
+            ->paginate(10);
 
-//       $categories->getCollection()->transform(function ($category){
-//           $tmp = Category::where('parent_id','=',$category->id)->first();
-//           if(!$tmp instanceof Category){
-//               return $category;
-//           }
-//       });
-       return response()->json($categories,200);
+        return response()->json($categories,200);
+//
+//
+//       $keyword = $request->keyword;
+//       $categories = Category::where(function ($query) use($keyword){
+//                $query->where('title','like',"%{$keyword}%")
+//                ->orWhere('note','like',"%{$keyword}%");
+//            })
+//           ->select(['id','title'])
+//           ->paginate(10);
+//
+////       $categories->getCollection()->transform(function ($category){
+////           $tmp = Category::where('parent_id','=',$category->id)->first();
+////           if(!$tmp instanceof Category){
+////               return $category;
+////           }
+////       });
+//       return response()->json($categories,200);
 
     }
 

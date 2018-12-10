@@ -262,10 +262,10 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>A</th>
-                                    <th>B</th>
-                                    <th>C</th>
-                                    <th>D</th>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Tình trạng</th>
+                                    <th>Tổng giá</th>
+                                    <th>Ghi chú</th>
                                 </tr>
                                 </thead>
                             </table>
