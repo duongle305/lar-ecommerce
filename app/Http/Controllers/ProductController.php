@@ -57,8 +57,9 @@ class ProductController extends Controller
                                        class="dropdown-item view" 
                                        data-view="'.route('products.show',$product->id).'" >
                                         <i class="ti-eye"></i> Xem</a>
-                                    <a href="'.route('products.edit',$product->id).'" 
-                                       class="dropdown-item" >
+                                    <a href="#" 
+                                        data-edit="'.route('products.edit',$product->id).'"
+                                        class="dropdown-item edit" >
                                         <i class="ti-pencil"></i> Sửa</a>
                                     <a href="#" 
                                        class="dropdown-item delete" 
@@ -312,7 +313,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-
+        $product = Product::findOrFail($id);
+        return view('products.edit',compact(['product']));
     }
 
     public function jsonEdit($id){

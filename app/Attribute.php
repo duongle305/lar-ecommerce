@@ -20,6 +20,7 @@ class Attribute extends Model
     public $timestamps = true;
 
     public function categories(){
+    	
         return $this->belongsToMany('App\Attribute','attribute_category');
     }
 
