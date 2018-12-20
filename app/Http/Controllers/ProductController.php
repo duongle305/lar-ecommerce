@@ -317,6 +317,43 @@ class ProductController extends Controller
         return view('products.edit',compact(['product']));
     }
 
+    public function editProductImage(Request $request){
+        $validator = Validator::make($request->all(),[
+            'edit_product_image'=>'required|file|mimes:jpeg,jpg,png,gif',
+            'image_id' => 'required|exists:product_images,id'
+        ],[],[
+            'edit_product_image'=>'Ảnh sản phẩm',
+            'image_id'=> 'ID Hình'
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+        $image = ProductImage::find($request->image_id);
+        $oldName = $image->name($image->id);
+        $newImageInfo = $this->uploadSingleImage($request,'edit_product_image','product_images');
+        $image->path = 'storage/uploads/product_images/'.$newImageInfo['image_name'];
+        $image->save();
+        $this->deleteSingleImage('product_images',$oldName);
+
+        $images = ProductImage::where('product_id',$image->product_id)->get();
+
+        $images = $images->map(function ($image){
+            $image->image_url = asset($image->path);
+            $image->name = $image->name($image->id);
+            $image->url = route('product.get-image',$image->id);
+            $image->delete_url = route('products.delete-image');
+            return $image;
+        });
+
+        return response()->json(['code'=>1,'message'=> 'Cập nhật thành công!','images'=>$images],200);
+    }
+
+    public function getImage($id){
+        $image = ProductImage::find($id);
+        $image->url = asset($image->path);
+        $image->image_name = $image->name($id);
+        return response()->json($image,200);
+    }
+
     public function jsonEdit($id){
 
     }
@@ -339,6 +376,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
         $product = Product::find($id);

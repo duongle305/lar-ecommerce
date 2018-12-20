@@ -52,7 +52,7 @@
                                         <h5 class="mb-2">Cập nhật Sản phẩm</h5>
                                     </div>
                                 </div>
-                                <form id="form_create_product" action="{{ route('products.store') }}" method="post">
+                                <form id="form_create_product" action="" method="post">
                                     @csrf
                                     <div class="row">
                                         <div class="col-lg-12">
@@ -75,16 +75,16 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="create_product_brand">Thương hiệu</label>
-                                                <select class="form-control" id="create_product_brand" name="create_product_brand" data-placeholder="Thương hiệu">
+                                                <label for="brand">Thương hiệu</label>
+                                                <select class="form-control" id="brand" name="brand" data-placeholder="Thương hiệu" >
                                                     <option value="{{ $product->brand->id }}" selected>{{ $product->brand->name }}</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="create_product_category">Loại sản phẩm</label>
-                                                <select class="form-control" id="create_product_category" name="create_product_category" data-placeholder="Loại sản phẩm" multiple="multiple">
+                                                <label for="categories">Loại sản phẩm</label>
+                                                <select class="form-control" id="categories" name="categories" data-placeholder="Loại sản phẩm" multiple="multiple">
                                                     @foreach($product->categories as $category)
                                                         <option value="{{ $category->id }}" selected>{{ $category->title }}</option>
                                                     @endforeach
@@ -95,20 +95,20 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="create_product_price">Giá (VNĐ)</label>
-                                                <input type="text" value="{{ $product->price }}" class="form-control" id="create_product_price" name="create_product_price" placeholder="Giá sản phẩm" data-a-sep="." data-a-dec=",">
+                                                <label for="price">Giá (VNĐ)</label>
+                                                <input type="text" value="{{ $product->price }}" class="form-control" id="price" name="price" placeholder="Giá sản phẩm" data-a-sep="." data-a-dec=",">
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="create_product_discount">Khuyến mãi (%)</label>
-                                                <input type="number" min="0" class="form-control" id="create_product_discount" name="create_product_discount" placeholder="Khuyến mãi" value="{{ $product->discount }}">
+                                                <label for="discount">Khuyến mãi (%)</label>
+                                                <input type="number" min="0" class="form-control" id="discount" name="discount" placeholder="Khuyến mãi" value="{{ $product->discount }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="create_product_quantity">Số lượng</label>
-                                                <input type="number" min="0" value="{{ $product->quantity }}" class="form-control" id="create_product_quantity" name="create_product_quantity" placeholder="Số lượng" >
+                                                <label for="quantity">Số lượng</label>
+                                                <input type="number" min="0" value="{{ $product->quantity }}" class="form-control" id="quantity" name="quantity" placeholder="Số lượng" >
                                             </div>
                                         </div>
                                     </div>
@@ -120,12 +120,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="form-group">
-                                                            <input type="text" id="create_product_attribute_name" class="form-control"  placeholder="Tên">
+                                                            <input type="text" id="create_attribute_name" class="form-control"  placeholder="Tên">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-group">
-                                                            <input type="text" id="create_product_attribute_value" class="form-control"  placeholder="Thông tin">
+                                                            <input type="text" id="create_attribute_value" class="form-control"  placeholder="Thông tin">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -163,16 +163,16 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="create_product_note">Ghi chú sản phẩm</label>
-                                                <textarea id="create_product_note" name="create_product_note" class="note-editable panel-body" contenteditable="true">{{ $product->note }}</textarea>
+                                                <label for="note">Ghi chú sản phẩm</label>
+                                                <textarea id="note" name="note" class="note-editable panel-body" contenteditable="true">{{ $product->note }}</textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label for="create_product_description">Mô tả sản phẩm</label>
-                                                <textarea id="create_product_description" name="create_product_description" class="note-editable panel-body" contenteditable="true" data-url="{{ route('products.upload-image') }}">{{ $product->description }}</textarea>
+                                                <label for="description">Mô tả sản phẩm</label>
+                                                <textarea id="description" name="description" class="note-editable panel-body" contenteditable="true" data-url="{{ route('products.upload-image') }}">{{ $product->description }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -180,14 +180,36 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="edit_brand_logo">Ảnh Thumbnail</label>
-                                                <input type="file" id="create_product_thumbnail" name="create_product_thumbnail" class="dropify" accept="image/*" data-default-file="{{ asset($product->thumbnail) }}">
+                                                <label for="thumbnail">Ảnh Thumbnail</label>
+                                                <input type="file" id="thumbnail" name="thumbnail" class="dropify" accept="image/*" data-default-file="{{ asset($product->thumbnail) }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="edit_brand_logo">Hình sản phẩm</label>
-                                                <div id="my-uploader"></div>
+                                                <label for="product_images">Thêm hình sản phẩm</label>
+                                                <div id="product_images"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label for="thumbnail">Hình đang có</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row" id="product_images_show">
+                                                @foreach($product->images as $image)
+                                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                                        <div class="card">
+                                                            <img class="card-img-top img-fluid hoverZoomLink" src="{{ asset($image->path) }}" alt="Card image cap">
+                                                            <div class="card-block text-center">
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_edit_image" data-url="{{ route('product.get-image',$image->id) }}" data-id="{{ $image->id }}">Sửa</button>
+                                                                    <button type="button" class="btn btn-danger image-delete" data-url="{{ route('products.delete-image') }}" data-image_name="{{ $image->name($image->id) }}">Xóa</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -203,6 +225,31 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal edit product image -->
+    <div id="modal_edit_image" class="modal animated bounceInDown" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="form_edit_product_iamge" action="{{ route('products.edit-image') }}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h5 class="modal-title text-uppercase"><i class="ti-menu"></i> Cập nhật ảnh sản phẩm</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="image_id" name="image_id">
+                        <div class="form-group">
+                            <input type="file" id="edit_product_image" name="edit_product_image" class="dropify" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"><i class="ti-check"></i> {{ __('Hoàn thành') }}</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="ti-close"></i> {{ __('Đóng') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -286,5 +333,5 @@
         </div>
     </script>
 
-    <script type="text/javascript" src="{{ asset('assets/js/products.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/products_edit.js') }}"></script>
 @endsection
