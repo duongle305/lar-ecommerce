@@ -57,7 +57,7 @@ class ProductController extends Controller
                                        class="dropdown-item view" 
                                        data-view="'.route('products.show',$product->id).'" >
                                         <i class="ti-eye"></i> Xem</a>
-                                    <a href="#" 
+                                    <a href="'.route('products.edit',$product->id).'" 
                                         data-edit="'.route('products.edit',$product->id).'"
                                         class="dropdown-item edit" >
                                         <i class="ti-pencil"></i> Sửa</a>
@@ -380,7 +380,77 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request->all());
+        $validator = Validator::make($request->all(),[
+            'id' => 'required|exists:products,id',
+            'product_name'=>'required|string',
+            'brand'=>'required|exists:brands,id',
+            'categories' => 'required',
+            'price' => 'required|numeric',
+            'discount' => 'nullable',
+            'note' => 'required|string',
+            'description' => 'required|string',
+            'thumbnail' => 'nullable|file|mimes:jpeg,jpg,png,gif',
+            'attributes' => 'required',
+            'quantity' => 'required|numeric'
+        ],[],[
+            'product_name'=>'tên',
+            'brand'=>'Thương hiệu',
+            'categories' => 'Loại sản phẩm',
+            'price' => 'Giá',
+            'discount' => 'Khuyến mãi',
+            'note' => 'Ghi chú',
+            'description' => 'Mô tả',
+            'thumbnail' => 'Ảnh Thumbnail',
+            'attributes' => 'Thông số kỹ thuật',
+            'quantity' => 'Số lượng',
+        ]);
+        if($validator->fails()) return response()->json(['errors'=>$validator->errors()],403);
+
+        $all = $request->all();
+
+        $product = Product::find($request->id);
+
+        $product->update([
+            'title' => $all['product_name'],
+            'slug' => str_slug($all['product_name']),
+            'description' => $all['description'],
+            'note' => $all['note'],
+            'price' => $all['price'],
+            'quantity' => $all['quantity'],
+            'brand_id' => $all['brand'],
+        ]);
+
+        $product->categories()->detach();
+
+        $categories = json_decode($all['categories']);
+
+        foreach ($categories as $category){
+            $product->categories()->attach($category);
+        }
+
+        if($request->hasFile('thumbnail')){
+            $tmp = explode('/',$product->thumbnail);
+            $this->deleteSingleImage('product_images',$tmp[count($tmp)-1]);
+
+            $thumbnailData = $this->uploadSingleImage($request,'thumbnail','product_images');
+
+            $product->thumbnail = 'storage/uploads/product_images/'.$thumbnailData['image_name'];
+        }
+        $product->save();
+
+        $product->attributes()->delete();
+
+        $attributes = json_decode($all['attributes']);
+
+        foreach ($attributes as $attribute) {
+            Attribute::create([
+               'title' => $attribute->title,
+                'value' => $attribute->value,
+                'product_id' => $product->id
+            ]);
+        }
+
+        return response()->json(['code'=>1,'data'=>$product],200);
     }
 
     /**

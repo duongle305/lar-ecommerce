@@ -203,7 +203,7 @@ $(document).ready(function () {
         callbacks: {
             onAllComplete: function(succeeded,failed) {
                 toastr.clear();
-                toastr.success('Thêm sản phẩm thành công','Thông báo');
+                toastr.success('Cập nhật sản phẩm thành công!','Thông báo');
                 location.reload();
                 Loading.close();
             },
@@ -325,6 +325,31 @@ $(document).ready(function () {
         })
     });
 
+    $('#add_attribute_btn').click(event=>{
+        event.preventDefault();
+        let attributeName = $('#attribute_name');
+        let attributeValue =$('#attribute_value');
+        if(attributeName.val() === '' || attributeValue.val() === ''){
+            toastr.error('Chưa nhập đủ thông tin','Thông báo');
+            return false;
+        }
+
+        $('#table_attribute_body').append(`
+        <tr>
+            <td>${attributeName.val()}</td>
+            <td>${attributeValue.val()}</td>
+            <td class="text-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-warning edit-attribute">Sửa</button>
+                    <button type="button" class="btn btn-danger delete-attribute">Xóa</button>
+                </div>
+            </td>
+        </tr>
+        `);
+        attributeName.val('');
+        attributeValue.val('');
+    });
+
     $('#form_edit_product').submit(event=>{
         event.preventDefault();
         let url = $(event.target).attr('action');
@@ -333,6 +358,11 @@ $(document).ready(function () {
         let formData = new FormData(event.target);
 
         let attributes = [];
+
+        if(tableAttributeBody.children('tr').length < 1){
+            toastr.error('Thông số kỹ thuật không được để trống','Thông báo');
+            return false;
+        }
 
         for (let tr of tableAttributeBody.children('tr')){
             let title = $($(tr).children('td')[0]).text();
@@ -350,9 +380,24 @@ $(document).ready(function () {
         }
 
         formData.append('categories',JSON.stringify(categoriesData));
+        formData.append('price',price.val().replace(/\./gi, ""));
+        Loading.show();
 
         axios.post(url,formData).then(response=>{
-
+            let imageBtn = document.getElementsByClassName('qq-upload-cancel');
+            if(imageBtn.length > 0){
+                manualUploader.setParams({
+                    'image_type': 1,
+                    'product_slug': Helpers.slug(response.data.data.slug),
+                    'product_id' : response.data.data.id
+                });
+                manualUploader.uploadStoredFiles();
+            } else {
+                toastr.clear();
+                toastr.success('Cập nhật sản phẩm thành công!','Thông báo');
+                location.reload();
+                Loading.close();
+            }
         }).catch(feedback)
     });
 });

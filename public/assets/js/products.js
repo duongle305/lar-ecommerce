@@ -391,8 +391,8 @@ $(document).ready(function () {
         let url = $(event.target).data('view');
         window.open(url,'_blank');
     });
-    $(document).on('click','.edit',event=>{
-        let url = $(event.target).data('edit');
-        window.open(url,'_blank');
-    });
+    // $(document).on('click','.edit',event=>{
+    //     let url = $(event.target).data('edit');
+    //     window.open(url,'_blank');
+    // });
 });

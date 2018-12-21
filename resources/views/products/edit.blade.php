@@ -121,12 +121,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="form-group">
-                                                            <input type="text" id="create_attribute_name" class="form-control"  placeholder="Tên">
+                                                            <input type="text" id="attribute_name" class="form-control"  placeholder="Tên">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="form-group">
-                                                            <input type="text" id="create_attribute_value" class="form-control"  placeholder="Thông tin">
+                                                            <input type="text" id="attribute_value" class="form-control"  placeholder="Thông tin">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
