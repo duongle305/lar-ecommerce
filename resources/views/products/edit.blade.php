@@ -52,8 +52,9 @@
                                         <h5 class="mb-2">Cập nhật Sản phẩm</h5>
                                     </div>
                                 </div>
-                                <form id="form_create_product" action="" method="post">
+                                <form id="form_edit_product" action="{{ route('products.update') }}" method="post">
                                     @csrf
+                                    <input type="hidden" name="id" value="{{ $product->id }}">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
@@ -115,7 +116,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-lg-12 mb-20"><h5>Thông số kĩ thuật</h5></div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-5">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-lg-4">
@@ -136,7 +137,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-7">
                                             <div class="form-group">
                                                 <table class="table mb-md-0">
                                                     <thead>
@@ -151,7 +152,12 @@
                                                         <tr>
                                                             <td>{{ $attribute->title }}</td>
                                                             <td>{{ $attribute->value }}</td>
-                                                            <td class="text-center"><button type="button" class="btn btn-danger delete-attribute"><i class="ti-close"></i> Xóa</button></td>
+                                                            <td class="text-center">
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-warning edit-attribute">Sửa</button>
+                                                                    <button type="button" class="btn btn-danger delete-attribute">Xóa</button>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -204,7 +210,7 @@
                                                             <div class="card-block text-center">
                                                                 <div class="btn-group">
                                                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_edit_image" data-url="{{ route('product.get-image',$image->id) }}" data-id="{{ $image->id }}">Sửa</button>
-                                                                    <button type="button" class="btn btn-danger image-delete" data-url="{{ route('products.delete-image') }}" data-image_name="{{ $image->name($image->id) }}">Xóa</button>
+                                                                    <button type="button" class="btn btn-danger image-delete" data-url="{{ route('products.edit.delete-image',$image->id) }}">Xóa</button>
                                                                 </div>
                                                             </div>
                                                         </div>

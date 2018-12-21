@@ -20,7 +20,6 @@ $(document).ready(function () {
             input.summernote('editor.insertImage',res.data.image_url);
         }).catch();
     }
-
     function generateTableBody(){
         let html = '';
         attributes.forEach(function (item,index) {
@@ -32,7 +31,6 @@ $(document).ready(function () {
         });
         $('#table_attribute_body').html(html);
     }
-
     function setDropifyInfo(response,dropifyRender,dropifyFilenameInner,dropifyPreview){
         $(dropifyRender).html(`<img src="${response.data.url}"/>`);
         $(dropifyFilenameInner).text(response.data.image_name);
@@ -43,7 +41,6 @@ $(document).ready(function () {
         $(dropifyPreview).hide();
         $(dropifyFilenameInner).text('');
     }
-
     function generateImages(images){
         let html = '';
         for(image of images){
@@ -53,7 +50,7 @@ $(document).ready(function () {
                             <div class="card-block text-center">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal_edit_image" data-url="${image.url}" data-id="${image.id}">Sửa</button>
-                                    <button type="button" class="btn btn-danger image-delete" data-url="${image.delete_url}" data-image_name="${image.name}">Xóa</button>
+                                    <button type="button" class="btn btn-danger image-delete" data-url="${image.delete_url}">Xóa</button>
                                 </div>
                             </div>
                         </div>
@@ -62,6 +59,7 @@ $(document).ready(function () {
 
         $('#product_images_show').html(html);
     }
+
     $('.dropify').dropify();
 
     price.autoNumeric('init', {mDec: '0'});
@@ -244,6 +242,41 @@ $(document).ready(function () {
         })
     });
 
+    $(document).on('click','.edit-attribute',event=>{
+        let valueEl = $(event.target).parent().parent().prev()[0];
+        let titleEl = $(event.target).parent().parent().prev().prev()[0];
+        let value = $(valueEl).text();
+        let title = $(titleEl).text();
+        let input1 = document.createElement('input');
+        let input2 = document.createElement('input');
+        $(input1).addClass('form-control').val(title);
+        $(input2).addClass('form-control').val(value);
+        $(valueEl).text('').append(input2);
+        $(titleEl).text('').append(input1);
+
+        $(event.target).removeClass('btn-warning').removeClass('edit-attribute').addClass('btn-success').addClass('ok-edit').text('Ok');
+    });
+
+    $(document).on('click','.ok-edit',event=>{
+        event.preventDefault();
+        let valueEl = $(event.target).parent().parent().prev()[0];
+        let titleEl = $(event.target).parent().parent().prev().prev()[0];
+
+        let input1 = $(valueEl).children('input')[0];
+        let input2 = $(titleEl).children('input')[0];
+
+        $(valueEl).html('').text($(input1).val());
+        $(titleEl).html('').text($(input2).val());
+
+        $(event.target).removeClass('btn-success').removeClass('ok-edit').addClass('btn-warning').addClass('edit-attribute').text('Sửa');
+
+    });
+
+    $(document).on('click','.delete-attribute',event=>{
+        let tr = $(event.target).parent().parent().parent()[0];
+        $(tr).remove();
+    });
+
     formEditProductIamge.submit(event=>{
         event.preventDefault();
         Loading.show();
@@ -262,7 +295,64 @@ $(document).ready(function () {
     $(document).on('click','.image-delete',event=>{
         event.preventDefault();
         let url = $(event.target).data('url');
-        let name = $(event.target).data('image_name');
-        console.log(url,name)
-    })
+        swal({
+            title: 'Are you sure?',
+            text: "Bạn sẽ không thể khôi phục lại điều này !",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            confirmButtonClass: 'btn btn-primary mr-1',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
+                axios.get(url).then(res=>{
+                    if(res.data.code === 1){
+                        swal({
+                            title: 'Deleted!',
+                            text: res.data.message,
+                            type: 'success',
+                            confirmButtonClass: 'btn btn-primary',
+                            buttonsStyling: false
+                        });
+                        generateImages(res.data.images);
+                    }
+                }).catch(feedback)
+            }
+        })
+    });
+
+    $('#form_edit_product').submit(event=>{
+        event.preventDefault();
+        let url = $(event.target).attr('action');
+        let tableAttributeBody =$('#table_attribute_body');
+
+        let formData = new FormData(event.target);
+
+        let attributes = [];
+
+        for (let tr of tableAttributeBody.children('tr')){
+            let title = $($(tr).children('td')[0]).text();
+            let value = $($(tr).children('td')[1]).text();
+            attributes.push({title: title,value:value});
+        }
+
+        formData.append('attributes',JSON.stringify(attributes));
+
+
+        let categoriesData = [];
+
+        for (let category of categories.select2('data')){
+            categoriesData.push(category.id)
+        }
+
+        formData.append('categories',JSON.stringify(categoriesData));
+
+        axios.post(url,formData).then(response=>{
+
+        }).catch(feedback)
+    });
 });

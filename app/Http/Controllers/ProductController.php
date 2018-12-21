@@ -152,7 +152,6 @@ class ProductController extends Controller
     public function deleteImage(Request $request){
         $images = json_decode($request->images);
         $type = intval($request->type);
-
         $folder = null;
         switch ($type){
             case 0:{
@@ -169,6 +168,27 @@ class ProductController extends Controller
         }
 
         return response()->json(['code'=>1,'message'=>'Xóa thành công'],200);
+    }
+
+    public function editProductDeleteImage($id){
+        $image = ProductImage::find($id);
+        if($image instanceof  ProductImage){
+            $this->deleteSingleImage('product_images',$image->name($image->id));
+
+            $image->delete();
+
+            $images = ProductImage::where('product_id',$image->product_id)->get();
+
+            $images = $images->map(function ($image){
+                $image->image_url = asset($image->path);
+                $image->url = route('product.get-image',$image->id);
+                $image->delete_url = route('products.edit.delete-image',$image->id);
+                return $image;
+            });
+
+            return response()->json(['code'=>1,'message'=> 'Xóa thành công!','images'=>$images],200);
+        }
+        return response()->json(['errors'=> ['Dữ liệu gửi lên không đúng']],403);
     }
 
     private function deleteSingleImage($folder,$imageName){
@@ -338,9 +358,8 @@ class ProductController extends Controller
 
         $images = $images->map(function ($image){
             $image->image_url = asset($image->path);
-            $image->name = $image->name($image->id);
             $image->url = route('product.get-image',$image->id);
-            $image->delete_url = route('products.delete-image');
+            $image->delete_url = route('products.edit.delete-image',$image->id);
             return $image;
         });
 
@@ -353,21 +372,15 @@ class ProductController extends Controller
         $image->image_name = $image->name($id);
         return response()->json($image,200);
     }
-
-    public function jsonEdit($id){
-
-    }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

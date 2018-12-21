@@ -116,6 +116,8 @@ Route::middleware('auth')->group(function (){
         Route::get('json-edit/{id}','ProductController@jsonEdit')->name('products.json-edit');
         Route::get('/get-image/{id}','ProductController@getImage')->name('product.get-image');
         Route::post('edit-product-image','ProductController@editProductImage')->name('products.edit-image');
+        Route::get('edit-delete-image/{id}','ProductController@editProductDeleteImage')->name('products.edit.delete-image');
+        Route::post('update','ProductController@update')->name('products.update');
     });
 
     Route::prefix('orders')->group(function(){
